@@ -33,10 +33,13 @@ class SmartArray
         Array<T> *array;
         
     public:
+        // 为方便智能指针的定义
+        SmartArray();
         SmartArray(Array<T> *a);
         SmartArray(const SmartArray &sa);
         ~SmartArray();
         Array<T> *operator->();
+        bool isNull();
 };
 
 template <class T>
@@ -76,20 +79,32 @@ T Array<T>::get(int i, int j)
 }
 
 template <class T>
+SmartArray<T>::SmartArray(): array(null) {}
+
+template <class T>
 SmartArray<T>::SmartArray(Array<T> *a): array(a)
 {
+    assert(array != null);
     array -> count++;
 }
 
 template <class T>
 SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
 {
-    array -> count++;
+    if (array != null)
+    {
+        array -> count++;
+    }
 }
 
 template <class T>
 SmartArray<T>::~SmartArray()
 {
+    if (array == null)
+    {
+        return;
+    }
+    
     array -> count--;
     if (array -> count == 0)
     {
@@ -100,7 +115,14 @@ SmartArray<T>::~SmartArray()
 template <class T>
 Array<T> *SmartArray<T>::operator->()
 {
+    assert(array != null);
     return array;
+}
+
+template <class T>
+bool SmartArray<T>::isNull()
+{
+    return array == null;
 }
 
 #endif

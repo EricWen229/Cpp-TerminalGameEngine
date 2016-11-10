@@ -1,11 +1,15 @@
 #ifndef Screen_H
 #define Screen_H
 
+#include "Array.h"
+
+#define null nullptr
+
 class Screen
 {
     private:
-        char **buffer;
-        char **lastBuffer;
+        SmartArray<char> lastBuffer;
+        SmartArray<char> buffer;
         int width, height;
         
     public:
