@@ -2,6 +2,8 @@
 #define Screen_H
 
 #include "Array.h"
+#include <iostream>
+#include <curses.h>
 
 #define null nullptr
 

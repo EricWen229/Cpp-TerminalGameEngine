@@ -9,15 +9,13 @@ Screen::~Screen() {}
 
 void Screen::print()
 {
+    assert(!buffer.isNull());
     if (lastBuffer.isNull())
     {
-        if (buffer.isNull())
-        {
-            return;
-        }
-        else
-        {
-            std::cout <<
-        }
+        buffer -> print();
+    }
+    else
+    {
+    
     }
 }

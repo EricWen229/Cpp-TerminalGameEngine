@@ -2,6 +2,7 @@
 #define Array_H
 
 #include <assert.h>
+#include <iostream>
 
 #define null nullptr
 
@@ -24,6 +25,7 @@ class Array
         Array(int h, int w);
         ~Array();
         T get(int i, int j);
+        void print();
 };
 
 template <class T>
@@ -76,6 +78,15 @@ T Array<T>::get(int i, int j)
 {
     assert(i >= 0 && i < height && j >= 0 && j < width);
     return array[i][j];
+}
+
+template <class T>
+void Array<T>::print()
+{
+    for (int i = 0; i < height; i++)
+    {
+        std::cout << array[i] << std::endl;
+    }
 }
 
 template <class T>
