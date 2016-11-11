@@ -42,6 +42,7 @@ class SmartArray
         SmartArray(const SmartArray &sa);
         ~SmartArray();
         Array<T> *operator->();
+        T *operator[](int i);
         bool isNull();
 };
 
@@ -136,6 +137,12 @@ Array<T> *SmartArray<T>::operator->()
 {
     assert(array != null);
     return array;
+}
+
+template <class T>
+T *SmartArray<T>::operator[](int i)
+{
+    return array -> array[i];
 }
 
 template <class T>

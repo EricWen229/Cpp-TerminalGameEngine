@@ -8,9 +8,6 @@
 
 class Show
 {
-    private:
-        SmartArray<char> buffer;
-        
     public:
         Show(SmartArray<char> b);
         ~Show();
@@ -23,7 +20,6 @@ class Screen
 {
     private:
         Show *show;
-        SmartArray<char> lastBuffer;
         SmartArray<char> buffer;
         int width, height;
         
