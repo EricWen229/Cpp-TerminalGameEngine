@@ -2,7 +2,6 @@
 #define Array_H
 
 #include <assert.h>
-#include <iostream>
 
 #define null nullptr
 
@@ -98,14 +97,14 @@ SmartArray<T>::SmartArray(): array(null) {}
 template <class T>
 SmartArray<T>::SmartArray(Array<T> *a): array(a)
 {
-    assert(array != null);
+    assert(!isNull());
     array -> count++;
 }
 
 template <class T>
 SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
 {
-    if (array != null)
+    if (!isNull())
     {
         array -> count++;
     }
@@ -114,7 +113,7 @@ SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
 template <class T>
 SmartArray<T>::~SmartArray()
 {
-    if (array != null)
+    if (!isNull())
     {
         array -> count--;
         if (array -> count == 0)
@@ -127,14 +126,15 @@ SmartArray<T>::~SmartArray()
 template <class T>
 Array<T> *SmartArray<T>::operator->()
 {
-    assert(array != null);
+    assert(!isNull());
     return array;
 }
 
 template <class T>
 T *SmartArray<T>::operator[](int i)
 {
-    assert(array != null);
+    assert(!isNull());
+    assert(i >= 0 && i < array -> height);
     return array -> array[i];
 }
 
