@@ -56,9 +56,10 @@ SmartArray<T> createArray(int height, int width)
 }
 
 template <class T>
-SmartArray<T> createArray(int height, int width, Array<T> *a)
+SmartArray<T> createArray(int height, int width, T **a)
 {
-    SmartArray<T> sa(a, true);
+    Array<T> *b = new Array<T>(height, width, a);
+    SmartArray<T> sa(b, true);
     return sa;
 }
 
@@ -86,29 +87,6 @@ Array<T>::~Array()
     delete[] array;
 }
 
-/* template <class T> */
-/* T Array<T>::get(int i, int j) */
-/* { */
-/*     assert(i >= 0 && i < height && j >= 0 && j < width); */
-/*     return array[i][j]; */
-/* } */
-
-/* template <class T> */
-/* void Array<T>::set(int i, int j, T value) */
-/* { */
-/*     assert(i >= 0 && i < height && j >= 0 && j < width); */
-/*     return array[i][j] = value; */
-/* } */
-
-/* template <class T> */
-/* void Array<T>::print() */
-/* { */
-/*     for (int i = 0; i < height; i++) */
-/*     { */
-/*         std::cout << array[i] << std::endl; */
-/*     } */
-/* } */
-
 template <class T>
 SmartArray<T>::SmartArray(): array(null), part(false) {}
 
@@ -131,7 +109,7 @@ SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
 template <class T>
 SmartArray<T>::~SmartArray()
 {
-    if (array == null && !part)
+    if (array == null || part)
     {
         return;
     }
