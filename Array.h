@@ -17,6 +17,9 @@ class Array
         int width;
         T **array;
         
+        /* 如果是已分配Array的一部分，则不要释放内存 */
+        bool part;
+        
     private:
         int count;
         friend class SmartArray<T>;
@@ -31,14 +34,12 @@ template <class T>
 class SmartArray
 {
     private:
-        /* 如果持有的是已分配内存的某一部分，不必释放 */
-        bool part;
         Array<T> *array;
         
     public:
         /* 为方便智能指针的定义 */
         SmartArray();
-        SmartArray(Array<T> *a, bool p = false);
+        SmartArray(Array<T> *a);
         SmartArray(const SmartArray &sa);
         ~SmartArray();
         
@@ -59,12 +60,12 @@ template <class T>
 SmartArray<T> createArray(int height, int width, T **a)
 {
     Array<T> *b = new Array<T>(height, width, a);
-    SmartArray<T> sa(b, true);
+    SmartArray<T> sa(b);
     return sa;
 }
 
 template <class T>
-Array<T>::Array(int h, int w): height(h), width(w), count(0)
+Array<T>::Array(int h, int w): height(h), width(w), part(false), count(0)
 {
     array = new T*[height];
     for (int i = 0; i < height; i++)
@@ -74,24 +75,28 @@ Array<T>::Array(int h, int w): height(h), width(w), count(0)
 }
 
 template <class T>
-Array<T>::Array(int h, int w, T **a): height(h), width(w), array(a), count(0) {}
+Array<T>::Array(int h, int w, T **a):
+    height(h), width(w), array(a), part(true), count(0) {}
 
 template <class T>
 Array<T>::~Array()
 {
-    assert(count == 0);
-    for (int i = 0; i < height; i++)
+    if (!part)
     {
-        delete[] array[i];
+        assert(count == 0);
+        for (int i = 0; i < height; i++)
+        {
+            delete[] array[i];
+        }
+        delete[] array;
     }
-    delete[] array;
 }
 
 template <class T>
-SmartArray<T>::SmartArray(): array(null), part(false) {}
+SmartArray<T>::SmartArray(): array(null) {}
 
 template <class T>
-SmartArray<T>::SmartArray(Array<T> *a, bool p): array(a), part(p)
+SmartArray<T>::SmartArray(Array<T> *a): array(a)
 {
     assert(array != null);
     array -> count++;
@@ -100,7 +105,7 @@ SmartArray<T>::SmartArray(Array<T> *a, bool p): array(a), part(p)
 template <class T>
 SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
 {
-    if (array != null && !part)
+    if (array != null)
     {
         array -> count++;
     }
@@ -109,15 +114,13 @@ SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
 template <class T>
 SmartArray<T>::~SmartArray()
 {
-    if (array == null || part)
+    if (array != null)
     {
-        return;
-    }
-    
-    array -> count--;
-    if (array -> count == 0)
-    {
-        delete array;
+        array -> count--;
+        if (array -> count == 0)
+        {
+            delete array;
+        }
     }
 }
 
