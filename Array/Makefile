@@ -7,5 +7,4 @@ clean :
 	- @ rm *.o
 
 run : clean main.o
-	./main.o
 	valgrind --leak-check=full --tool=memcheck ./main.o
