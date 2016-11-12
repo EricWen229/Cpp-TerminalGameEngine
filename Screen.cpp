@@ -1,6 +1,6 @@
 #include "Screen.h"
 
-Screen::Screen(int w, int h, Show *s): width(w), height(h), show(s)
+Screen::Screen(int w, int h, Interface *s): width(w), height(h), show(s)
 {
     buffer = createArray<char>(width, height);
 }
