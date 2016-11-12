@@ -1,23 +1,31 @@
 #ifndef Screen_H
 #define Screen_H
 
-#include "Array.h"
+#include "Array/Array.h"
 #include <iostream>
 #include <vector>
 
 #define null nullptr
 
+enum Event
+{
+    up, down, let, right, none
+};
+
+typedef int Id;
+
+/* user interface */
+/* interact with user */
 class Interface
 {
     public:
-        Interface(SmartArray<char> b);
-        ~Interface();
-        virtual void init() = 0;
-        virtual void erase(int i, int j) = 0;
-        virtual void write(int i, int j, char c) = 0;
+        virtual void init(SmartArray<char> buffer) = 0;
+        virtual void output(SmartArray<char> buffer) = 0;
+        virtual Event input() = 0;
 };
 
-struct manageBook
+/* manage book */
+struct ManBook
 {
     int left;
     int top;
@@ -28,18 +36,18 @@ struct manageBook
 class Screen
 {
     private:
-        Interface *show;
+        Interface *interface;
         SmartArray<char> buffer;
         int width, height;
-        std::vector<manageBook> books;
+        std::vector<ManBook> books;
         
     public:
-        Screen(int w, int h, Interface *s);
+        Screen(int w, int h, Interface *i);
         ~Screen();
         
-        int alloc(int left, int right, int width, int height);
-        int get();
-        int free(int id);
+        Id alloc(int left, int right, int width, int height);
+        SmartArray<char> get(Id id);
+        void free(bool id);
         void print();
 };
 
