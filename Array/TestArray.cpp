@@ -27,6 +27,12 @@ void TestArray::testPart()
     
     p[0][0] = 100;
     CPPUNIT_ASSERT(s[2][2] == 100);
+    
+    SmartArray<int> q = createArray<int>(1, 1, 2, 2, p);
+    CPPUNIT_ASSERT(q[1][1] == 25);
+    q[1][1] = 200;
+    /* CPPUNIT_ASSERT(p[2][2] == 200); */
+    /* CPPUNIT_ASSERT(s[4][4] == 200); */
 }
 
 void TestArray::testShare()

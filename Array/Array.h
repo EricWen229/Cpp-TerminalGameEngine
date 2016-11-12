@@ -64,6 +64,17 @@ SmartArray<T> createArray(int height, int width, T **a)
 }
 
 template <class T>
+SmartArray<T> createArray(int top, int left, int height, int width, SmartArray<T> sa)
+{
+    T *arr[height];
+    for (int i = 0; i < height; i++)
+    {
+        arr[i] = &sa[top + i][left];
+    }
+    return createArray(height, width, arr);
+}
+
+template <class T>
 Array<T>::Array(int h, int w): height(h), width(w), part(false), count(0)
 {
     array = new T*[height];
