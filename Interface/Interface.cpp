@@ -48,9 +48,6 @@ void *Ncurses::input(void *)
             case 'd':
                 eb.put(Right);
                 break;
-            case 'q':
-                eb.put(Quit);
-                break;
         }
     }
     return null;
@@ -61,10 +58,8 @@ void *Ncurses::handler(void *unused)
     while (true)
     {
         pthread_testcancel();
-        if (hf(eb.get()))
-        {
-            break;
-        }
+        Event e  = eb.get();
+        hf(e);
     }
     return null;
 }
@@ -106,12 +101,12 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
 void Ncurses::loop()
 {
     pthread_t p1 = createPthread(input);
-    /* pthread_t p2 = createPthread(handler); */
+    pthread_t p2 = createPthread(handler);
     pthread_t p3 = createPthread(show);
     
     waitPthread(p1);
-    /* pthread_cancel(p2); */
-    /* waitPthread(p2); */
+    pthread_cancel(p2);
+    waitPthread(p2);
     pthread_cancel(p3);
     waitPthread(p3);
 }
