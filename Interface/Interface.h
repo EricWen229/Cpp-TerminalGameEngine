@@ -29,8 +29,11 @@ class EventBuffer
 /* interact with user */
 class Interface
 {
+    private:
+        typedef bool (*HandleFunc)(Event e);
+        
     public:
-        virtual void init(SmartArray<char> b, void h(Event e)) = 0;
+        virtual void init(SmartArray<char> b, HandleFunc h) = 0;
         virtual void loop() = 0;
 };
 
@@ -54,7 +57,7 @@ class Ncurses: public Interface
     public:
         void init(SmartArray<char>b, HandleFunc h);
         void loop();
-        ~Ncurses();
+        void end();
 };
 
 #endif

@@ -109,7 +109,7 @@ void Ncurses::loop()
     waitPthread(p3);
 }
 
-Ncurses::~Ncurses()
+void Ncurses::end()
 {
     delwin(win);
     endwin();
