@@ -3,20 +3,16 @@
 EventBuffer::EventBuffer()
 {
     s = new Semaphore(1200);
-    /* mutex = new Semaphore(1100, 1); */
 }
 
 EventBuffer::~EventBuffer()
 {
     delete s;
-    /* delete mutex; */
 }
 
 void EventBuffer::put(Event e)
 {
-    /* mutex -> P(); */
     q.push(e);
-    /* mutex -> V(); */
     s -> V();
 }
 
@@ -24,10 +20,8 @@ Event EventBuffer::get()
 {
     s -> P();
     assert(q.size() > 0);
-    /* mutex -> P(); */
     Event tmp = q.front();
     q.pop();
-    /* mutex -> V(); */
     return tmp;
 }
 
