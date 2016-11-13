@@ -2,31 +2,32 @@
 
 EventBuffer::EventBuffer()
 {
-    s = new Semaphore(1000);
-    mutex = new Semaphore(1100, 1);
+    s = new Semaphore(1200);
+    /* mutex = new Semaphore(1100, 1); */
 }
 
 EventBuffer::~EventBuffer()
 {
     delete s;
-    delete mutex;
+    /* delete mutex; */
 }
 
 void EventBuffer::put(Event e)
 {
-    mutex -> P();
+    /* mutex -> P(); */
     q.push(e);
-    mutex -> V();
+    /* mutex -> V(); */
     s -> V();
 }
 
 Event EventBuffer::get()
 {
     s -> P();
-    mutex -> P();
+    assert(q.size() > 0);
+    /* mutex -> P(); */
     Event tmp = q.front();
     q.pop();
-    mutex -> V();
+    /* mutex -> V(); */
     return tmp;
 }
 
