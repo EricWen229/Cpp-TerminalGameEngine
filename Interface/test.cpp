@@ -54,8 +54,6 @@ bool handler(Event e)
             break;
         case Right:
             break;
-        case Quit:
-            return true;
     }
     return false;
 }

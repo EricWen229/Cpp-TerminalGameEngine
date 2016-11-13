@@ -57,8 +57,12 @@ void *Ncurses::handler(void *unused)
 {
     while (true)
     {
-        pthread_testcancel();
-        Event e  = eb.get();
+        /* pthread_testcancel(); */
+        Event e = eb.get();
+        if (e == Exit)
+        {
+            break;
+        }
         hf(e);
     }
     return null;
@@ -107,7 +111,9 @@ void Ncurses::loop()
     waitPthread(p1);
     pthread_cancel(p2);
     waitPthread(p2);
-    pthread_cancel(p3);
+    /* 防止线程沉睡的时候收到退出信号 */
+    eb.put(Exit);
+    /* pthread_cancel(p3); */
     waitPthread(p3);
 }
 

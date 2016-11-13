@@ -8,7 +8,7 @@
 
 enum Event
 {
-    Up, Down, Left, Right, Quit
+    Up, Down, Left, Right, Exit
 };
 
 class EventBuffer
