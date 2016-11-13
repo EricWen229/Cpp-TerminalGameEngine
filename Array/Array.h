@@ -12,10 +12,7 @@ template <class T>
 class Array
 {
     private:
-        int height;
-        int width;
         T **array;
-        
         /* 如果是已分配Array的一部分，则不要释放内存 */
         bool part;
         
@@ -24,6 +21,9 @@ class Array
         friend class SmartArray<T>;
         
     public:
+        const int height;
+        const int width;
+        
         Array(int h, int w);
         Array(int h, int w, T **a);
         ~Array();
