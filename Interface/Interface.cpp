@@ -24,6 +24,11 @@ Event EventBuffer::get()
     return tmp;
 }
 
+WINDOW *Ncurses::win;
+EventBuffer Ncurses::eb;
+SmartArray<char> Ncurses::buffer;
+Ncurses::HandleFunc Ncurses::hf;
+
 void *Ncurses::input(void *)
 {
     char key;
@@ -80,8 +85,8 @@ void *Ncurses::show(void *unused)
 
 void Ncurses::init(SmartArray<char>b, HandleFunc h)
 {
-    buffer = b;
-    hf = h;
+    Ncurses::buffer = b;
+    Ncurses::hf = h;
     
     initscr();
     /* Line bufering disabled(input) */
@@ -93,7 +98,7 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
     /* Control the screen size, so we don't use \n. */
     /* 减少刷新缓冲区的次数，提高IO效率 */
     /* 需要为\0字符留出空位，所以width-1 */
-    win = newwin(buffer -> height, buffer -> width - 1, 0, 0);
+    Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0);
 }
 
 void Ncurses::loop()

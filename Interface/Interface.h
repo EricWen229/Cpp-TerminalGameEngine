@@ -29,10 +29,9 @@ class EventBuffer
 /* interact with user */
 class Interface
 {
-    private:
-        typedef bool (*HandleFunc)(Event e);
-        
     public:
+        /* isExit? */
+        typedef bool (*HandleFunc)(Event e);
         virtual void init(SmartArray<char> b, HandleFunc h) = 0;
         virtual void loop() = 0;
 };
@@ -45,9 +44,6 @@ class Ncurses: public Interface
         static WINDOW *win;
         static EventBuffer eb;
         static SmartArray<char> buffer;
-        
-        /* isExit? */
-        typedef bool (*HandleFunc)(Event e);
         static HandleFunc hf;
         
         static void *input(void *unused);
