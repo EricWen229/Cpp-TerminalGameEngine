@@ -17,6 +17,18 @@ Semaphore::~Semaphore()
 {
     union semun sem_union;
     int res = semctl(sem_id, 0, IPC_RMID, sem_union);
+#ifdef DEBUG
+    if (res == -1)
+    {
+        std::cout << errno << std::endl;
+        std::cout << EACCES << std::endl;
+        std::cout << EFAULT << std::endl;
+        std::cout << EIDRM << std::endl;
+        std::cout << EINVAL << std::endl;
+        std::cout << EPERM << std::endl;
+        std::cout << ERANGE << std::endl;
+    }
+#endif
     assert(res != -1);
 }
 
@@ -45,6 +57,11 @@ void Semaphore::V()
     sem_b.sem_flg = SEM_UNDO;
     
     semop(sem_id, &sem_b, 1);
+}
+
+int Semaphore::get()
+{
+    return semctl(sem_id, 0, GETVAL, 0);
 }
 
 pthread_t createPthread(void *func(void *unused))

@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <assert.h>
+#include <iostream>
 
 #define null nullptr
 
@@ -30,6 +31,7 @@ class Semaphore
         
         void P();
         void V();
+        int get();
 };
 
 pthread_t createPthread(void *func(void *unused));
