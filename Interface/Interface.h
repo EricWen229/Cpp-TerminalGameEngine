@@ -2,19 +2,24 @@
 #define Interface_H
 
 #include "../Array/Array.h"
-#include "Semaphore.h"
+#include "../Semaphore/Semaphore.h"
+#include <queue>
 
 enum Event
 {
-    None, Up, Down, Left, RIght
+    Up, Down, Left, Right
 };
 
 class EventBuffer
 {
     private:
-        Semaphore s;
+        Semaphore *s;
+        std::queue<Event> q;
         
     public:
+        EventBuffer();
+        ~EventBuffer();
+        
         void put(Event event);
         Event get();
 };
@@ -25,7 +30,7 @@ class Interface
 {
     public:
         virtual void init(SmartArray<char> buffer) = 0;
-        virtual void loopWork();
+        virtual void loop();
 };
 
 #endif
