@@ -6,7 +6,6 @@
 #include <queue>
 #include <ncurses.h>
 
-
 enum Event
 {
     Up, Down, Left, Right
@@ -49,6 +48,7 @@ class Ncurses: public Interface
         
         static void *input(void *unused);
         static void *handler(void *unused);
+        static void *show(void *unused);
         
     public:
         void init(SmartArray<char>b, HandleFunc h);

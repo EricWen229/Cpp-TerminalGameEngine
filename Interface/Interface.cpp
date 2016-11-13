@@ -60,6 +60,15 @@ void *Ncurses::handler(void *unused)
     return null;
 }
 
+void *Ncurses::show(void *unused)
+{
+    for (int i = 0; i < buffer -> height; i++)
+    {
+        printw(buffer[i]);
+    }
+    return null;
+}
+
 void Ncurses::init(SmartArray<char>b, HandleFunc h)
 {
     buffer = b;
@@ -78,4 +87,5 @@ void Ncurses::loop()
 {
     createPthread(input);
     createPthread(handler);
+    createPthread(show);
 }
