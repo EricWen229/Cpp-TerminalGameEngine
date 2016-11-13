@@ -7,22 +7,7 @@
 
 #define null nullptr
 
-enum Event
-{
-    up, down, let, right, none
-};
-
 typedef int Id;
-
-/* user interface */
-/* interact with user */
-class Interface
-{
-    public:
-        virtual void init(SmartArray<char> buffer) = 0;
-        virtual void output(SmartArray<char> buffer) = 0;
-        virtual Event input() = 0;
-};
 
 /* manage book */
 struct ManBook
