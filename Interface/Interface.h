@@ -15,6 +15,8 @@ class EventBuffer
 {
     private:
         Semaphore *s;
+        /* STL不提供线程安全的保障 */
+        Semaphore *mutex;
         std::queue<Event> q;
         
     public:
