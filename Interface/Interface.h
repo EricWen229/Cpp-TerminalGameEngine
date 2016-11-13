@@ -4,6 +4,8 @@
 #include "../Array/Array.h"
 #include "../Semaphore/Semaphore.h"
 #include <queue>
+#include <ncurses.h>
+
 
 enum Event
 {
@@ -29,8 +31,28 @@ class EventBuffer
 class Interface
 {
     public:
-        virtual void init(SmartArray<char> buffer) = 0;
-        virtual void loop();
+        virtual void init(SmartArray<char> b, void h(Event e)) = 0;
+        virtual void loop() = 0;
+};
+
+/* singleton */
+/* 类成员函数不能作为线程创建的函数 */
+class Ncurses: public Interface
+{
+    private:
+        static EventBuffer eb;
+        static SmartArray<char> buffer;
+        
+        /* isExit? */
+        typedef bool (*HandleFunc)(Event e);
+        static HandleFunc hf;
+        
+        static void *input(void *unused);
+        static void *handler(void *unused);
+        
+    public:
+        void init(SmartArray<char>b, HandleFunc h);
+        void loop();
 };
 
 #endif
