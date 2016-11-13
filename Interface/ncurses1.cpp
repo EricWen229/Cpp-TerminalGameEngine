@@ -84,14 +84,24 @@ int main(int argc, char *argv[])
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {
     WINDOW *local_win;
-    local_win = newwin(height, width, starty, startx);
-    char buffer[][11]=
+    local_win = newwin(10, 9, 0, 0);
+    char buffer[][10]=
     {
-        "abcdefgdge",
-        "0123456789"
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "abcdefgd3",
+        "012345678"
     };
-    wprintw(local_win, buffer[0]);
-    wprintw(local_win, buffer[1]);
+    for (int i = 0; i < 10; i++)
+    {
+        wprintw(local_win, buffer[i]);
+    }
     wrefresh(local_win); /* Show that box */
     return local_win;
 }

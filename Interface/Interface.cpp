@@ -32,7 +32,7 @@ Ncurses::HandleFunc Ncurses::hf;
 void *Ncurses::input(void *)
 {
     char key;
-    while ((key = getch()) != 'q')
+    while ((key = getchar()) != 'q')
     {
         switch (key)
         {
@@ -89,8 +89,10 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
     Ncurses::hf = h;
     
     initscr();
-    /* Line bufering disabled(input) */
-    raw();
+    /* Line bufering disabled */
+    /* raw(); */
+    /* pass everything to me, don't wait for \n(input) */
+    cbreak();
     /* We get F1, F2, arrow, etc */
     keypad(stdscr, true);
     /* Don't echo() while we do getch */
@@ -104,12 +106,12 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
 void Ncurses::loop()
 {
     pthread_t p1 = createPthread(input);
-    pthread_t p2 = createPthread(handler);
+    /* pthread_t p2 = createPthread(handler); */
     pthread_t p3 = createPthread(show);
     
     waitPthread(p1);
-    pthread_cancel(p2);
-    waitPthread(p2);
+    /* pthread_cancel(p2); */
+    /* waitPthread(p2); */
     pthread_cancel(p3);
     waitPthread(p3);
 }
