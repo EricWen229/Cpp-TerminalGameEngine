@@ -8,7 +8,7 @@
 
 enum Event
 {
-    Up, Down, Left, Right
+    Up, Down, Left, Right, Quit
 };
 
 class EventBuffer
@@ -39,6 +39,7 @@ class Interface
 class Ncurses: public Interface
 {
     private:
+        static WINDOW *win;
         static EventBuffer eb;
         static SmartArray<char> buffer;
         
@@ -53,6 +54,7 @@ class Ncurses: public Interface
     public:
         void init(SmartArray<char>b, HandleFunc h);
         void loop();
+        ~Ncurses();
 };
 
 #endif
