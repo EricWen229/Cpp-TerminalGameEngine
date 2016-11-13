@@ -17,10 +17,8 @@ void *producer(void *unused)
 
 void *producer2(void *unused)
 {
-    sleep(1);
     q.push(2);
     s.V();
-    sleep(1);
     q.push(3);
     s.V();
     return null;
