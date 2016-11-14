@@ -26,7 +26,7 @@ class Semaphore
         int sem_id;
         
     public:
-        Semaphore(int key, int v = 0);
+        Semaphore(int v = 0);
         ~Semaphore();
         
         void P();

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <unistd.h>
 
-Semaphore s(1000, 0);
+Semaphore s(0);
 std::queue<int> q;
 
 void *producer(void *unused)

@@ -1,6 +1,6 @@
 #include "Semaphore.h"
 
-Semaphore::Semaphore(int key, int v)
+Semaphore::Semaphore(int v)
 {
     /* 创建信号量 */
     /* sem_id = semget((key_t)key, 1, 0666 | IPC_CREAT); */
