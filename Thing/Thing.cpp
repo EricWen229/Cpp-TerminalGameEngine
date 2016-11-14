@@ -76,7 +76,7 @@ void Controller::draw()
     }
 }
 
-void Controller::init(int h, int w, Producer ps[], int nProducer)
+void Controller::init(int h, int w, Interface *i, Producer ps[], int nProducer)
 {
     height = h;
     width = w;
@@ -84,7 +84,7 @@ void Controller::init(int h, int w, Producer ps[], int nProducer)
     {
         producers.push_back(ps[i]);
     }
-    buffer = createArray<char>(height, width);
+    screen.init(h, w, i, ::handle);
 }
 
 void Controller::loop()

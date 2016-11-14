@@ -15,7 +15,6 @@ void *Screen::runHelper(void *unused)
 
 void Screen::init(
     int h, int w,
-    SmartArray<char>b,
     Interface *in,
     Interface::HandleFunc hf)
 {

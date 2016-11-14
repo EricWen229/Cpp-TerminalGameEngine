@@ -36,7 +36,6 @@ class Screen
     public:
         void init(
             int h, int w,
-            SmartArray<char>b,
             Interface *in,
             Interface::HandleFunc hf);
         void begin();

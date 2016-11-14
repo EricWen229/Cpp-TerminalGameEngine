@@ -2,7 +2,10 @@
 #define Thing_H
 
 #include "../Array/Array.h"
+#include "../Screen/Screen.h"
 #include <vector>
+
+void handle(Event e);
 
 enum ObjectType
 {
@@ -36,7 +39,7 @@ class UserControlThing: public Thing
 {
     public:
         /* user defined this function by himself */
-        friend void *handle(void *unused);
+        friend void handle(Event e);
 };
 
 class AutoControlThing: public Thing
@@ -56,6 +59,7 @@ class Controller
         static std::vector<Producer> producers;
         static int height, width;
         static bool exit;
+        static Screen screen;
         static SmartArray<char> buffer;
         
         void bang();
@@ -66,7 +70,7 @@ class Controller
         void draw();
         
     public:
-        void init(int h, int w, Producer ps[], int nProducer);
+        void init(int h, int w, Interface *i, Producer ps[], int nProducer);
         void loop();
 };
 
