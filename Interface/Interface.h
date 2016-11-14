@@ -2,30 +2,6 @@
 #define Interface_H
 
 #include "../Array/Array.h"
-#include "../Semaphore/Semaphore.h"
-#include <queue>
-#include <ncurses.h>
-
-enum Event
-{
-    Up, Down, Left, Right, Exit
-};
-
-class EventBuffer
-{
-    private:
-        Semaphore *s;
-        /* 不是STL的锅，不需要互斥使用队列 */
-        /* Semaphore *mutex; */
-        std::queue<Event> q;
-        
-    public:
-        EventBuffer();
-        ~EventBuffer();
-        
-        void put(Event event);
-        Event get();
-};
 
 /* user interface */
 /* interact with user */
