@@ -53,13 +53,12 @@ void TestArray::testPart()
             s[i][j] = (i + 1) * (j + 1);
         }
     }
-    /* 测试不能通过，应该是测试框架的锅 */
-    /* 在debug.cpp中有响应的补充 */
-    /* SmartArray<int> q = createArray<int>(1, 1, 2, 2, p); */
-    /* CPPUNIT_ASSERT(q[0][0] == 16); */
-    /* CPPUNIT_ASSERT(q[0][1] == 20); */
-    /* CPPUNIT_ASSERT(q[1][0] == 20); */
-    /* CPPUNIT_ASSERT(q[1][1] == 25); */
+    
+    SmartArray<int> q = createArray<int>(1, 1, 2, 2, p);
+    CPPUNIT_ASSERT(q[0][0] == 16);
+    CPPUNIT_ASSERT(q[0][1] == 20);
+    CPPUNIT_ASSERT(q[1][0] == 20);
+    CPPUNIT_ASSERT(q[1][1] == 25);
 }
 
 void TestArray::testShare()
