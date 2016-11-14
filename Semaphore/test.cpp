@@ -54,16 +54,19 @@ int main()
         createPthread(producer),
         createPthread(producer2)
     };
+    std::cout << "Semaphore's value" << s.get() << std::endl;
     for (int i = 0; i < 8; i++)
     {
         waitPthread(p[i]);
     }
-    std::cout << (s.get() == 0) << std::endl;
+    std::cout << "Judge" << (s.get() == 0) << std::endl;
     
     /* if you add the next line, the program should block. */
     sleep(1);
     pthread_t id = createPthread(customer);
     sleep(1);
-    std::cout << (s.get() == -1) << std::endl;
+    std::cout << "Judge" << (s.get() == 0) << std::endl;
+    waitPthread(createPthread(producer2));
     waitPthread(id);
+    std::cout << "Judge" << (s.get() == 2) << std::endl;
 }

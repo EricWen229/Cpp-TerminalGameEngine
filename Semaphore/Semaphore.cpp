@@ -3,7 +3,8 @@
 Semaphore::Semaphore(int key, int v)
 {
     /* 创建信号量 */
-    sem_id = semget((key_t)key, 1, 0666 | IPC_CREAT);
+    /* sem_id = semget((key_t)key, 1, 0666 | IPC_CREAT); */
+    sem_id  = semget(IPC_PRIVATE, 1, 0666 | IPC_CREAT);
     assert(sem_id != -1);
     
     /* 初始化信号量 */
