@@ -10,8 +10,12 @@ enum ObjectType
     Object1
 };
 
+class Controller;
 class Thing
 {
+    private:
+        friend class Controller;
+        
     protected:
         int height, width;
         int x, y;

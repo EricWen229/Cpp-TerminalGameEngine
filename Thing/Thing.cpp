@@ -64,6 +64,15 @@ void Controller::draw()
     int size = things.size();
     for (int i = 0; i < size; i++)
     {
+        int height = things[i] -> height, width = things[i] -> width;
+        int x = things[i] -> x, y = things[i] -> y;
+        for (int a = 0; a < height; a++)
+        {
+            for (int b = 0; b < width; b++)
+            {
+                buffer[y + a][x + b] = things[i] -> look[a][b];
+            }
+        }
     }
 }
 
