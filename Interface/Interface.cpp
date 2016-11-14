@@ -4,6 +4,7 @@ WINDOW *Ncurses::win;
 EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
 Ncurses::HandleFunc Ncurses::hf;
+pthread_t Ncurses::pid[3];
 
 void *Ncurses::input(void *)
 {
@@ -81,19 +82,19 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
 
 void Ncurses::loop()
 {
-    pthread_t p1 = createPthread(input);
-    pthread_t p2 = createPthread(handler);
-    pthread_t p3 = createPthread(show);
-    
-    waitPthread(p1);
-    eb.put(Exit);
-    waitPthread(p2);
-    pthread_cancel(p3);
-    waitPthread(p3);
+    pid[0] = createPthread(input);
+    pid[1] = createPthread(handler);
+    pid[2] = createPthread(show);
 }
 
 void Ncurses::end()
 {
+    waitPthread(pid[0]);
+    eb.put(Exit);
+    waitPthread(pid[1]);
+    pthread_cancel(pid[2]);
+    waitPthread(pid[2]);
+    
     delwin(win);
     endwin();
 }
