@@ -2,6 +2,8 @@
 #define Interface_H
 
 #include "../Array/Array.h"
+#include "../EventBuffer/EventBuffer.h"
+#include <ncurses.h>
 
 /* user interface */
 /* interact with user */
@@ -12,6 +14,7 @@ class Interface
         typedef bool (*HandleFunc)(Event e);
         virtual void init(SmartArray<char> b, HandleFunc h) = 0;
         virtual void loop() = 0;
+        virtual void end() = 0;
 };
 
 /* singleton */

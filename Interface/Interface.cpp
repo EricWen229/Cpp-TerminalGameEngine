@@ -1,6 +1,5 @@
 #include "Interface.h"
 
-
 WINDOW *Ncurses::win;
 EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
@@ -83,15 +82,15 @@ void Ncurses::loop()
 {
     pthread_t p1 = createPthread(input);
     pthread_t p2 = createPthread(handler);
-    pthread_t p3 = createPthread(show);
+    /* pthread_t p3 = createPthread(show); */
     
     waitPthread(p1);
-    pthread_cancel(p2);
+    /* pthread_cancel(p2); */
+    eb.put(Exit);
     waitPthread(p2);
     /* 防止线程沉睡的时候收到退出信号 */
-    eb.put(Exit);
     /* pthread_cancel(p3); */
-    waitPthread(p3);
+    /* waitPthread(p3); */
 }
 
 void Ncurses::end()
