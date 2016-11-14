@@ -6,6 +6,8 @@
 Semaphore s(0);
 std::queue<int> q;
 
+Semaphore s2(1);
+
 void *producer(void *unused)
 {
     sleep(1);
@@ -42,6 +44,7 @@ void *customer(void *unused)
 
 int main()
 {
+    std::cout << "Judge" << (s2.get() != s.get()) << std::endl;
     pthread_t p[] =
     {
         /* three customer should wait for 1, 2, 3 seconds */
