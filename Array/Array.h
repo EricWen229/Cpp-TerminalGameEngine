@@ -92,9 +92,9 @@ Array<T>::Array(int h, int w, T **a):
 template <class T>
 Array<T>::~Array()
 {
+    assert(count == 0);
     if (!part)
     {
-        assert(count == 0);
         for (int i = 0; i < height; i++)
         {
             delete[] array[i];
