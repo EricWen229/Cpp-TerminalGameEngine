@@ -66,7 +66,7 @@ SmartArray<T> createArray(int height, int width, T **a)
 template <class T>
 SmartArray<T> createArray(int top, int left, int height, int width, SmartArray<T> sa)
 {
-    T *arr[height];
+    T **arr = new T*[height];
     for (int i = 0; i < height; i++)
     {
         arr[i] = &sa[top + i][left];
