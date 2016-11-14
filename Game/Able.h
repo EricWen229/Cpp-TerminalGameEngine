@@ -1,8 +1,6 @@
 #ifndef Moveable_H
 #define Moveable_H
 
-#include <SFML/Graphics.hpp>
-
 class Moveable
 {
     protected:
@@ -46,23 +44,6 @@ class Lifeable: public virtual Moveable
     public:
         void attacked(int attack);
         bool isAilve();
-};
-
-// avoid conflict with Drawable of SFML
-class DRawable
-{
-    protected:
-        sf::Sprite sprite;
-        
-    protected:
-        DRawable(sf::Texture &texture);
-        virtual ~DRawable();
-        
-    protected:
-        void setPosition(int x, int y);
-        
-    public:
-        sf::Sprite &draw();
 };
 
 class Bullet;
