@@ -26,9 +26,11 @@ class Screen
         static SmartArray<char> buffer;
         static int width, height;
         static std::vector<ManBook> books;
+        static Interface::HandleFunc handleFunc;
         
     public:
-        Screen(int w, int h, Interface *i);
+        /* dependency injection */
+        Screen(int w, int h, Interface *i, Interface::HandleFunc hf);
         ~Screen();
         
         Id alloc(int top, int left, int height, int width);

@@ -4,13 +4,15 @@ Interface *Screen::interface;
 SmartArray<char> Screen::buffer;
 int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
+Interface::HandleFunc Screen::handleFunc;
 
-Screen::Screen(int w, int h, Interface *i)
+Screen::Screen(int w, int h, Interface *i, Interface::HandleFunc hf)
 {
     width = w;
     height = h;
     buffer = createArray<char>(width, height);
     interface = i;
+    handleFunc = hf;
 }
 
 Screen::~Screen() {}
@@ -67,7 +69,7 @@ SmartArray<char> Screen::get(Id id)
 
 void Screen::run()
 {
-    interface -> init();
+    interface -> init(buffer, handleFunc);
     interface -> loop();
     interface -> end();
 }
