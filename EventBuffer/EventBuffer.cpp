@@ -19,6 +19,10 @@ void EventBuffer::put(Event e)
 Event EventBuffer::get()
 {
     s -> P();
+    /* if (q.size() == 0) */
+    /* { */
+    /*     s -> P(); */
+    /* } */
     assert(q.size() > 0);
     Event tmp = q.front();
     q.pop();
