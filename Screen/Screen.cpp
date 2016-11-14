@@ -6,16 +6,35 @@ int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
 Interface::HandleFunc Screen::handleFunc;
 
-Screen::Screen(int w, int h, Interface *i, Interface::HandleFunc hf)
+void *Screen::runHelper(void *unused)
 {
-    width = w;
+    interface -> init(buffer, handleFunc);
+    interface -> loop();
+    return null;
+}
+
+void Screen::init(
+    int h, int w,
+    SmartArray<char>b,
+    Interface *in,
+    Interface::HandleFunc hf)
+{
     height = h;
+    width = w;
     buffer = createArray<char>(width, height);
-    interface = i;
+    interface = in;
     handleFunc = hf;
 }
 
-Screen::~Screen() {}
+void Screen::begin()
+{
+    pid = createPthread(runHelper);
+}
+
+void Screen::end()
+{
+    waitPthread(pid);
+}
 
 Id Screen::alloc(int top, int left, int height, int width)
 {
@@ -55,21 +74,14 @@ SmartArray<char> Screen::get(Id id)
     }
 }
 
-/* void Screen::free(Id id) */
-/* { */
-/*     if (id == -1) */
-/*     { */
-/*         return; */
-/*     } */
-/*     else */
-/*     { */
-/*         books.erase(books.begin() + id); */
-/*     } */
-/* } */
-
-void Screen::run()
+void Screen::free(Id id)
 {
-    interface -> init(buffer, handleFunc);
-    interface -> loop();
-    interface -> end();
+    if (id == -1)
+    {
+        return;
+    }
+    else
+    {
+        books.erase(books.begin() + id);
+    }
 }

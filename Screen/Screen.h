@@ -3,6 +3,7 @@
 
 #include "../Array/Array.h"
 #include "../Interface/Interface.h"
+#include  "../Semaphore/Semaphore.h"
 #include <vector>
 
 #define null nullptr
@@ -22,21 +23,28 @@ struct ManBook
 class Screen
 {
     private:
-        static Interface *interface;
+        static int height, width;
         static SmartArray<char> buffer;
-        static int width, height;
-        static std::vector<ManBook> books;
+        static Interface *interface;
         static Interface::HandleFunc handleFunc;
         
+        static std::vector<ManBook> books;
+        static pthread_t pid;
+        
+        static void *runHelper(void *unused);
+        
     public:
-        /* dependency injection */
-        Screen(int w, int h, Interface *i, Interface::HandleFunc hf);
-        ~Screen();
+        void init(
+            int h, int w,
+            SmartArray<char>b,
+            Interface *in,
+            Interface::HandleFunc hf);
+        void begin();
+        void end();
         
         Id alloc(int top, int left, int height, int width);
         SmartArray<char> get(Id id);
-        /* void free(Id id); */
-        void run();
+        void free(Id id);
 };
 
 #endif
