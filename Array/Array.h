@@ -63,11 +63,8 @@ SmartArray<T> createArray(int height, int width, T **a)
     return sa;
 }
 
-/* 这里有一个很奇怪的问题，sb在未返回之前是正确的，而且返回过程中也没有array的消亡 */
-/* 但返回之后就是结果不正确 */
-/* 故用inline避免此次函数调用 */
 template <class T>
-inline SmartArray<T> createArray(int top, int left, int height, int width, SmartArray<T> sa)
+SmartArray<T> createArray(int top, int left, int height, int width, SmartArray<T> sa)
 {
     T *arr[height];
     for (int i = 0; i < height; i++)
@@ -117,7 +114,7 @@ SmartArray<T>::SmartArray(Array<T> *a): array(a)
 }
 
 template <class T>
-SmartArray<T>::SmartArray(const SmartArray &sa): array(sa.array)
+SmartArray<T>::SmartArray(const SmartArray<T> &sa): array(sa.array)
 {
     if (!isNull())
     {

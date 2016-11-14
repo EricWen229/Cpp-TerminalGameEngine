@@ -94,11 +94,12 @@ void testTwo()
     }
     SmartArray<int> q = createArray<int>(1, 1, 5, 5, p);
     CPPUNIT_ASSERT(q[0][0] == 4);
+    CPPUNIT_ASSERT(q[4][4] == 36);
 }
 
 int main()
 {
     testSimple();
     testTwo();
-    /* testPart(); */
+    testPart();
 }
