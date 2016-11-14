@@ -5,22 +5,21 @@
 
 SmartArray<char> s = createArray<char>(10, 10);
 
-bool handler(Event e)
+void handler(Event e)
 {
     switch (e)
     {
         case Up:
-            s[0][0] += 1;
+            s[0][0] = 'w';
             break;
         case Down:
-            s[0][0] -= 1;
+            s[0][0] = 's';
             break;
         case Left:
             break;
         case Right:
             break;
     }
-    return false;
 }
 
 int main()

@@ -11,7 +11,7 @@ class Interface
 {
     public:
         /* isExit? */
-        typedef bool (*HandleFunc)(Event e);
+        typedef void (*HandleFunc)(Event e);
         virtual void init(SmartArray<char> b, HandleFunc h) = 0;
         virtual void loop() = 0;
         virtual void end() = 0;
