@@ -31,9 +31,10 @@ class Screen
         Screen(int w, int h, Interface *i);
         ~Screen();
         
-        Id alloc(int left, int right, int width, int height);
+        Id alloc(int top, int left, int height, int width);
         SmartArray<char> get(Id id);
-        void free(bool id);
+        /* void free(Id id); */
+        void run();
 };
 
 #endif
