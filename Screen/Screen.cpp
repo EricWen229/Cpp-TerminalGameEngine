@@ -70,7 +70,7 @@ SmartArray<char> Screen::get(Id id)
     }
     else
     {
-        ManBook book = books[books.size() - 1];
+        ManBook book = books[id];
         return createArray(book.top, book.left, book.height, book.width, buffer);
     }
 }
