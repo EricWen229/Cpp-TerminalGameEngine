@@ -10,10 +10,10 @@ void handler(Event e)
     switch (e)
     {
         case Up:
-            s[0][0] = 'w';
+            std::cout << 'w' << std::endl;
             break;
         case Down:
-            s[0][0] = 's';
+            std::cout << 'd' << std::endl;
             break;
         case Left:
             break;

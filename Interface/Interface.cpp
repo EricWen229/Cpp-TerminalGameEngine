@@ -84,7 +84,7 @@ void Ncurses::loop()
 {
     pid[0] = createPthread(input);
     pid[1] = createPthread(handler);
-    pid[2] = createPthread(show);
+    /* pid[2] = createPthread(show); */
 }
 
 void Ncurses::end()
@@ -92,8 +92,8 @@ void Ncurses::end()
     waitPthread(pid[0]);
     eb.put(Exit);
     waitPthread(pid[1]);
-    pthread_cancel(pid[2]);
-    waitPthread(pid[2]);
+    /* pthread_cancel(pid[2]); */
+    /* waitPthread(pid[2]); */
     
     delwin(win);
     endwin();
