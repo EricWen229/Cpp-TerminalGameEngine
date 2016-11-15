@@ -5,6 +5,7 @@ SmartArray<char> Screen::buffer;
 int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
 Interface::HandleFunc Screen::handleFunc;
+pthread_t Screen::pid;
 
 void *Screen::runHelper(void *unused)
 {
@@ -39,17 +40,17 @@ void Screen::end()
 Id Screen::alloc(int top, int left, int height, int width)
 {
     int size = books.size();
-    for (int i = 0; i < size; i++)
-    {
-        if
-        (
-            books[i].left + width > left &&
-            books[i].top + width > top
-        )
-        {
-            return -1;
-        }
-    }
+    /* for (int i = 0; i < size; i++) */
+    /* { */
+    /*     if */
+    /*     ( */
+    /*         books[i].left + width > left && */
+    /*         books[i].top + width > top */
+    /*     ) */
+    /*     { */
+    /*         return -1; */
+    /*     } */
+    /* } */
     
     ManBook book;
     book.left = left;
@@ -57,7 +58,7 @@ Id Screen::alloc(int top, int left, int height, int width)
     book.height = height;
     book.width = width;
     
-    books[size] = book;
+    books.push_back(book);
     return size;
 }
 
