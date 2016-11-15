@@ -10,8 +10,6 @@
 
 typedef int Id;
 
-extern SmartArray<char> buffer;
-
 /* manage book */
 struct ManBook
 {
@@ -26,7 +24,7 @@ class Screen
 {
     private:
         static int height, width;
-        /* static SmartArray<char> buffer; */
+        static SmartArray<char> buffer;
         static Interface *interface;
         static Interface::HandleFunc handleFunc;
         
