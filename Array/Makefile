@@ -5,6 +5,7 @@ main.o :
 
 clean :
 	- @ rm *.o
+	- @ rm res
 
 run : clean main.o
-	valgrind --leak-check=full --tool=memcheck ./main.o
+	valgrind --leak-check=full --tool=memcheck --log-file=res ./main.o
