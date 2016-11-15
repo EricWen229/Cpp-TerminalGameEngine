@@ -2,17 +2,17 @@
 #include "../Array/Array.h"
 #include "../Interface/Interface.h"
 
-SmartArray<char> sa;
+SmartArray<char> s;
 
 void handler(Event e)
 {
     switch (e)
     {
         case Up:
-            sa[0][0] += 1;
+            s[0][0] += 1;
             break;
         case Down:
-            sa[0][0] -= 1;
+            s[0][0] -= 1;
             break;
         case Left:
             break;
@@ -25,24 +25,46 @@ int main()
 {
     Screen screen;
     Ncurses in;
-    screen.init(12, 14, &in, handler);
-    int id1 = screen.alloc(1, 0, 10, 10);
-    int id2 = screen.alloc(0, 0, 1, 13);
-    sa = screen.get(id1);
+    screen.init(12, 13, &in, handler);
+    
+    int id1 = screen.alloc(0, 0, 1, 13);
+    int id2 = screen.alloc(11, 0, 1, 13);
+    int id3 = screen.alloc(1, 0, 10, 1);
+    int id4 = screen.alloc(1, 12, 10, 1);
+    int id5 = screen.alloc(1, 1, 10, 11);
+    
+    SmartArray<char> sa = screen.get(id1);
+    for (int i = 1; i < 12; i++)
+    {
+        sa[0][i] = '-';
+    }
+    sa[0][0] = sa[0][12] = '+';
     SmartArray<char> sb = screen.get(id2);
     for (int i = 1; i < 12; i++)
     {
         sb[0][i] = '-';
     }
-    sb[0][0] = '+';
-    sb[0][12] = '+';
+    sb[0][0] = sb[0][12] = '+';
+    SmartArray<char> sc = screen.get(id3);
     for (int i = 0; i < 10; i++)
     {
-        for (int j = 0; j < 10; j++)
+        sc[i][0] = '|';
+    }
+    SmartArray<char> sd = screen.get(id4);
+    for (int i = 0; i < 10; i++)
+    {
+        sd[i][0] = '|';
+    }
+    SmartArray<char> se = screen.get(id5);
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 11; j++)
         {
-            sa[i][j] = 'f';
+            se[i][j] = 'f';
         }
     }
+    s = se;
+    
     screen.begin();
     screen.end();
 }

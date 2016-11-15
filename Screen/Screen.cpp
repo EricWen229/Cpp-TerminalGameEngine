@@ -22,7 +22,7 @@ void Screen::init(
 {
     height = h;
     width = w;
-    buffer = createArray<char>(width, height);
+    buffer = createArray<char>(height, width + 1);
     interface = in;
     handleFunc = hf;
 }
@@ -40,17 +40,7 @@ void Screen::end()
 Id Screen::alloc(int top, int left, int height, int width)
 {
     int size = books.size();
-    /* for (int i = 0; i < size; i++) */
-    /* { */
-    /*     if */
-    /*     ( */
-    /*         books[i].left + width > left && */
-    /*         books[i].top + width > top */
-    /*     ) */
-    /*     { */
-    /*         return -1; */
-    /*     } */
-    /* } */
+    /* shoud check valid here */
     
     ManBook book;
     book.left = left;
