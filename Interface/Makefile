@@ -3,6 +3,7 @@ compile : clean test.cpp
 
 clean :
 	- rm *.o
+	- rm res
 
 run : compile
 	valgrind --leak-check=full --show-leak-kinds=all --log-file=res --tool=memcheck ./test.o

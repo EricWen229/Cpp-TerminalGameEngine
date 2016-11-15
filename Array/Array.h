@@ -16,7 +16,6 @@ class Array
         T **array;
         /* 如果是已分配Array的一部分，则不要释放内存 */
         bool part;
-        Semaphore *mutex;
         
     private:
         int count;
@@ -86,14 +85,12 @@ Array<T>::Array(int h, int w): height(h), width(w), part(false), count(0)
     {
         array[i] = new T[width];
     }
-    mutex = new Semaphore(1);
 }
 
 template <class T>
 Array<T>::Array(int h, int w, T **a):
     height(h), width(w), array(a), part(true), count(0)
 {
-    mutex = new Semaphore(1);
 }
 
 template <class T>
@@ -108,7 +105,6 @@ Array<T>::~Array()
         }
     }
     delete[] array;
-    delete mutex;
 }
 
 template <class T>
@@ -120,9 +116,7 @@ template <class T>
 SmartArray<T>::SmartArray(Array<T> *a): array(a)
 {
     assert(!isNull());
-    array -> mutex -> P();
     array -> count++;
-    array -> mutex -> V();
 }
 
 template <class T>
@@ -130,9 +124,7 @@ SmartArray<T>::SmartArray(const SmartArray<T> &sa): array(sa.array)
 {
     if (!isNull())
     {
-        array -> mutex -> P();
         array -> count++;
-        array -> mutex -> V();
     }
 }
 
@@ -145,19 +137,15 @@ SmartArray<T> &SmartArray<T>::operator=(const SmartArray<T> &sa)
     }
     if (!isNull())
     {
-        array -> mutex -> P();
         array -> count--;
         if (array -> count == 0)
         {
             delete array;
         }
-        array -> mutex -> V();
     }
     if (!sa.isNull())
     {
-        sa.array -> mutex -> P();
         sa.array -> count++;
-        sa.array -> mutex -> V();
     }
     array = sa.array;
 }
@@ -167,13 +155,11 @@ SmartArray<T>::~SmartArray()
 {
     if (!isNull())
     {
-        array -> mutex -> P();
         array -> count--;
         if (array -> count == 0)
         {
             delete array;
         }
-        array -> mutex -> V();
     }
 }
 

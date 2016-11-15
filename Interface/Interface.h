@@ -4,6 +4,11 @@
 #include "../Array/Array.h"
 #include "../EventBuffer/EventBuffer.h"
 #include <ncurses.h>
+#include <stdio.h>
+
+#define MOVETO(x,y) printf("\033[%d;%dH", (x), (y))
+#define HIDE_CURSOR() printf("\033[?25l")
+#define SHOW_CURSOR() printf("\033[?25h")
 
 /* user interface */
 /* interact with user */

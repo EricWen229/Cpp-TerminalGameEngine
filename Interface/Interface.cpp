@@ -49,7 +49,6 @@ void *Ncurses::show(void *unused)
 {
     while (!exit)
     {
-        /* wclear(win); */
         for (int i = 0; i < buffer -> height; i++)
         {
             mvwprintw(win, i, 0, buffer[i]);
