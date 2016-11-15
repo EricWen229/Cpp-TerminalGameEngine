@@ -5,6 +5,7 @@ EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
 Ncurses::HandleFunc Ncurses::hf;
 pthread_t Ncurses::pid[3];
+bool Ncurses::exit;
 
 void *Ncurses::input(void *)
 {
@@ -47,9 +48,8 @@ void *Ncurses::handler(void *unused)
 
 void *Ncurses::show(void *unused)
 {
-    while (true)
+    while (!exit)
     {
-        pthread_testcancel();
         for (int i = 0; i < buffer -> height; i++)
         {
             wprintw(win, buffer[i]);
@@ -78,13 +78,15 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
     /* 减少刷新缓冲区的次数，提高IO效率 */
     /* 需要为\0字符留出空位，所以width-1 */
     Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0);
+    
+    exit = false;
 }
 
 void Ncurses::loop()
 {
     pid[0] = createPthread(input);
     pid[1] = createPthread(handler);
-    /* pid[2] = createPthread(show); */
+    pid[2] = createPthread(show);
 }
 
 void Ncurses::end()
@@ -92,8 +94,8 @@ void Ncurses::end()
     waitPthread(pid[0]);
     eb.put(Exit);
     waitPthread(pid[1]);
-    /* pthread_cancel(pid[2]); */
-    /* waitPthread(pid[2]); */
+    exit = true;
+    waitPthread(pid[2]);
     
     delwin(win);
     endwin();
