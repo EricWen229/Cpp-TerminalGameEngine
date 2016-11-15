@@ -33,9 +33,8 @@ void *Ncurses::input(void *)
 
 void *Ncurses::handler(void *unused)
 {
-    while (true)
+    while (!exit)
     {
-        /* pthread_testcancel(); */
         Event e = eb.get();
         if (e == Exit)
         {
@@ -53,7 +52,6 @@ void *Ncurses::show(void *unused)
         for (int i = 0; i < buffer -> height; i++)
         {
             wprintw(win, buffer[i]);
-            /* printf("%s\n", buffer[i]); */
         }
         wrefresh(win);
     }

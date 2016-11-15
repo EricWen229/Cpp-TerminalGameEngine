@@ -11,9 +11,11 @@ void handler(Event e)
     {
         case Up:
             std::cout << 'w' << std::endl;
+            s[0][0] += 1;
             break;
         case Down:
             std::cout << 'd' << std::endl;
+            s[0][0] -= 1;
             break;
         case Left:
             break;
