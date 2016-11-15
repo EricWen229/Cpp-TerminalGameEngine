@@ -55,7 +55,6 @@ void *Ncurses::show(void *unused)
             mvwprintw(win, i, 0, buffer[i]);
         }
         wrefresh(win);
-        /* usleep(5); */
     }
     return null;
 }
