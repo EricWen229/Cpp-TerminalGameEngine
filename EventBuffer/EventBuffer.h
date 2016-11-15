@@ -14,7 +14,7 @@ class EventBuffer
     private:
         Semaphore *s;
         /* 不是STL的锅，不需要互斥使用队列 */
-        /* Semaphore *mutex; */
+        Semaphore *mutex;
         std::queue<Event> q;
         
     public:

@@ -26,6 +26,7 @@ void *put(void *unused)
 
 void TestEventBuffer::testA()
 {
+    /* CPPUNIT_ASSERT(eb.get() == 0); */
     pthread_t p[] =
     {
         createPthread(get),
@@ -38,10 +39,12 @@ void TestEventBuffer::testA()
     {
         waitPthread(p[i]);
     }
+    /* CPPUNIT_ASSERT(eb.get() == 0); */
 }
 
 void TestEventBuffer::testB()
 {
+    CPPUNIT_ASSERT(eb.get() == 0);
     pthread_t p[] =
     {
         createPthread(get),
@@ -54,10 +57,12 @@ void TestEventBuffer::testB()
     {
         waitPthread(p[i]);
     }
+    CPPUNIT_ASSERT(eb.get() == 0);
 }
 
 void TestEventBuffer::testC()
 {
+    CPPUNIT_ASSERT(eb.get() == 0);
     pthread_t p[] =
     {
         createPthread(put),
@@ -70,10 +75,12 @@ void TestEventBuffer::testC()
     {
         waitPthread(p[i]);
     }
+    CPPUNIT_ASSERT(eb.get() == 0);
 }
 
 void TestEventBuffer::testD()
 {
+    CPPUNIT_ASSERT(eb.get() == 0);
     pthread_t p[] =
     {
         createPthread(put),
@@ -90,4 +97,5 @@ void TestEventBuffer::testD()
     {
         waitPthread(p[i]);
     }
+    CPPUNIT_ASSERT(eb.get() == 0);
 }
