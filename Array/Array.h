@@ -29,7 +29,6 @@ class Array
         ~Array();
 };
 
-/* 智能指针的问题，对于全局变量或者静态变量有时会出现处理不当的问题 */
 template <class T>
 class SmartArray
 {
@@ -41,11 +40,12 @@ class SmartArray
         SmartArray();
         SmartArray(Array<T> *a);
         SmartArray(const SmartArray &sa);
+        SmartArray &operator=(const SmartArray &sa);
         ~SmartArray();
         
         Array<T> *operator->();
         T *operator[](int i);
-        bool isNull();
+        bool isNull() const;
 };
 
 template <class T>
@@ -124,6 +124,24 @@ SmartArray<T>::SmartArray(const SmartArray<T> &sa): array(sa.array)
 }
 
 template <class T>
+SmartArray<T> &SmartArray<T>::operator=(const SmartArray<T> &sa)
+{
+    if (!isNull())
+    {
+        array -> count--;
+        if (array -> count == 0)
+        {
+            delete array;
+        }
+    }
+    if (!sa.isNull())
+    {
+        sa.array -> count++;
+    }
+    array = sa.array;
+}
+
+template <class T>
 SmartArray<T>::~SmartArray()
 {
     if (!isNull())
@@ -152,7 +170,7 @@ T *SmartArray<T>::operator[](int i)
 }
 
 template <class T>
-bool SmartArray<T>::isNull()
+bool SmartArray<T>::isNull() const
 {
     return array == null;
 }
