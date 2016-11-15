@@ -10,6 +10,7 @@ void *Screen::runHelper(void *unused)
 {
     interface -> init(buffer, handleFunc);
     interface -> loop();
+    interface -> end();
     return null;
 }
 
