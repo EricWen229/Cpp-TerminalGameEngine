@@ -1,7 +1,7 @@
 #include "Screen.h"
 
 Interface *Screen::interface;
-SmartArray<char> Screen::buffer;
+SmartArray<char> buffer;
 int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
 Interface::HandleFunc Screen::handleFunc;
@@ -22,7 +22,8 @@ void Screen::init(
 {
     height = h;
     width = w;
-    buffer = createArray<char>(width, height);
+    SmartArray<char> b = createArray<char>(width, height);
+    /* buffer = b; */
     interface = in;
     handleFunc = hf;
 }

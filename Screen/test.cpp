@@ -1,7 +1,8 @@
 #include "Screen.h"
+#include "../Array/Array.h"
 #include "../Interface/Interface.h"
 
-SmartArray<char> sa;
+SmartArray<char> sa = createArray<char>(10, 11);
 
 void handler(Event e)
 {
