@@ -29,6 +29,7 @@ class Array
         ~Array();
 };
 
+/* 智能指针的问题，对于全局变量或者静态变量有时会出现处理不当的问题 */
 template <class T>
 class SmartArray
 {
