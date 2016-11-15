@@ -49,12 +49,13 @@ void *Ncurses::show(void *unused)
 {
     while (!exit)
     {
+        wclear(win);
         for (int i = 0; i < buffer -> height; i++)
         {
-            /* wprintw(win, buffer[i]); */
+            wprintw(win, buffer[i]);
         }
-        printf("%c", buffer[0][0]);
         wrefresh(win);
+        /* usleep(5); */
     }
     return null;
 }

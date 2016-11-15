@@ -4,6 +4,7 @@
 #include "../Array/Array.h"
 #include "../EventBuffer/EventBuffer.h"
 #include <ncurses.h>
+#include <unistd.h>
 
 /* user interface */
 /* interact with user */
