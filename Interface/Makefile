@@ -5,4 +5,4 @@ clean :
 	- rm *.o
 
 run : compile
-	valgrind --tool=memcheck ./test.o
+	valgrind --leak-check=full --show-leak-kinds=all --log-file=res --tool=memcheck ./test.o
