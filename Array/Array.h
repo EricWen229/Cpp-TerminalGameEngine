@@ -99,8 +99,8 @@ Array<T>::~Array()
         {
             delete[] array[i];
         }
-        delete[] array;
     }
+    delete[] array;
 }
 
 template <class T>

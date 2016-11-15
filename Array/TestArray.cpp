@@ -16,12 +16,15 @@ void TestArray::testPart()
         }
     }
     
-    int *arr[3] =
-    {
-        &s[2][2],
-        &s[3][2],
-        &s[4][2]
-    };
+    int **arr = new int *[3];
+    arr[0] = &s[2][2];
+    arr[1] = &s[3][2];
+    arr[2] = &s[4][2];
+    /* { */
+    /*     &s[2][2], */
+    /*     &s[3][2], */
+    /*     &s[4][2] */
+    /* }; */
     SmartArray<int> p = createArray<int>(3, 3, arr);
     CPPUNIT_ASSERT(p[0][0] == 9);
     CPPUNIT_ASSERT(p[0][2] == 15);
@@ -31,11 +34,9 @@ void TestArray::testPart()
     p[0][0] = 100;
     CPPUNIT_ASSERT(s[2][2] == 100);
     
-    int *brr[2] =
-    {
-        &p[1][1],
-        &p[2][1]
-    };
+    int **brr = new int *[2];
+    brr[0] = &p[1][1];
+    brr[1] = &p[2][1];
     SmartArray<int> r = createArray<int>(2, 2, brr);
     CPPUNIT_ASSERT(r[0][0] == 16);
     CPPUNIT_ASSERT(r[0][1] == 20);

@@ -11,4 +11,3 @@ clean :
 
 run : clean main.o debug.o
 	valgrind --leak-check=full --tool=memcheck ./main.o
-	valgrind --leak-check=full --tool=memcheck ./debug.o
