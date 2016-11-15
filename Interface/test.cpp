@@ -10,7 +10,7 @@ void handler(Event e)
     switch (e)
     {
         case Up:
-            std::cout << 'w' << std::endl;
+            std::cout << s[0][0] << std::endl;
             s[0][0] += 1;
             break;
         case Down:

@@ -51,8 +51,9 @@ void *Ncurses::show(void *unused)
     {
         for (int i = 0; i < buffer -> height; i++)
         {
-            wprintw(win, buffer[i]);
+            /* wprintw(win, buffer[i]); */
         }
+        printf("%c", buffer[0][0]);
         wrefresh(win);
     }
     return null;
@@ -90,6 +91,7 @@ void Ncurses::loop()
 void Ncurses::end()
 {
     waitPthread(pid[0]);
+    /* 线程2有沉睡风险，所以用退出消息处理 */
     eb.put(Exit);
     waitPthread(pid[1]);
     exit = true;
