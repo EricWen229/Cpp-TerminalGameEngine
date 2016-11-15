@@ -126,6 +126,10 @@ SmartArray<T>::SmartArray(const SmartArray<T> &sa): array(sa.array)
 template <class T>
 SmartArray<T> &SmartArray<T>::operator=(const SmartArray<T> &sa)
 {
+    if (this == &sa)
+    {
+        return *this;
+    }
     if (!isNull())
     {
         array -> count--;
