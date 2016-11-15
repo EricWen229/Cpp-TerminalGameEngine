@@ -75,3 +75,23 @@ void TestArray::testNull()
     SmartArray<int> sa;
     CPPUNIT_ASSERT(sa.isNull() == true);
 }
+
+void TestArray::testReassign()
+{
+    SmartArray<int> sa;
+    sa = createArray<int>(3, 3);
+    sa = createArray<int>(4, 4);
+}
+
+void TestArray::testStatic()
+{
+    static SmartArray<int> sa;
+    sa = createArray<int>(3, 3);
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            sa[i][j] = (i + 1) * (j + 1);
+        }
+    }
+}

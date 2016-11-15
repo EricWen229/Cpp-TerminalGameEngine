@@ -8,6 +8,8 @@ class TestArray: public CppUnit::TestFixture
         CPPUNIT_TEST(testPart);
         CPPUNIT_TEST(testShare);
         CPPUNIT_TEST(testNull);
+        CPPUNIT_TEST(testReassign);
+        CPPUNIT_TEST(testStatic);
         CPPUNIT_TEST_SUITE_END();
         
     public:
@@ -16,4 +18,7 @@ class TestArray: public CppUnit::TestFixture
         void testPart();
         void testShare();
         void testNull();
+        /* 看一看对同一个变量重新赋值会不会导致内存泄漏 */
+        void testReassign();
+        void testStatic();
 };
