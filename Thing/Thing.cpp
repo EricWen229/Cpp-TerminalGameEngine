@@ -4,6 +4,8 @@ std::vector<Thing *> Controller::things;
 std::vector<Controller::Producer> Controller::producers;
 int Controller::height, Controller::width;
 bool Controller::exit;
+Screen Controller::screen;
+std::vector<int> Controller::ids;
 
 void Controller::bang()
 {
@@ -66,6 +68,7 @@ void Controller::draw()
     {
         int height = things[i] -> height, width = things[i] -> width;
         int x = things[i] -> x, y = things[i] -> y;
+        SmartArray<char> buffer = screen.get(ids[0]);
         for (int a = 0; a < height; a++)
         {
             for (int b = 0; b < width; b++)

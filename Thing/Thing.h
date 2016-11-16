@@ -10,7 +10,7 @@ void handle(Event e);
 enum ObjectType
 {
     /* for example */
-    Object1
+    User, Auto
 };
 
 class Controller;
@@ -21,7 +21,7 @@ class Thing
         
     protected:
         int height, width;
-        int x, y;
+        int i, j;
         SmartArray<char> look;
         
     public:
@@ -38,6 +38,7 @@ class Thing
 class UserControlThing: public Thing
 {
     public:
+        UserControlThing(ObjectType o);
         /* user defined this function by himself */
         friend void handle(Event e);
 };
@@ -45,6 +46,7 @@ class UserControlThing: public Thing
 class AutoControlThing: public Thing
 {
     public:
+        AutoControlThing(ObjectType o);
         virtual void handle() = 0;
 };
 
@@ -60,14 +62,14 @@ class Controller
         static int height, width;
         static bool exit;
         static Screen screen;
-        static SmartArray<char> buffer;
+        static std::vector<int> ids;
         
         void bang();
         void bound();
         void clean();
         virtual void produce();
         void handle();
-        void draw();
+        virtual void draw();
         
     public:
         void init(int h, int w, Interface *i, Producer ps[], int nProducer);
