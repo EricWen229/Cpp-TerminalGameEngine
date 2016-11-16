@@ -47,8 +47,16 @@ void handle(Event e)
     {
         case Up:
             u[0] -> moveAdd(-1, 0);
+            break;
         case Down:
             u[0] -> moveAdd(1, 0);
+            break;
+        case Left:
+            u[0] -> moveAdd(0, -1);
+            break;
+        case Right:
+            u[0] -> moveAdd(0, 1);
+            break;
     }
 }
 

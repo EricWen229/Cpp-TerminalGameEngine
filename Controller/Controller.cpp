@@ -294,6 +294,8 @@ void Controller::init
     {
         se[i][0] = '|';
     }
+    
+    users[0] -> moveTo(0, 0);
 }
 
 void Controller::loop()
