@@ -20,6 +20,7 @@ class Interface
         virtual void init(SmartArray<char> b, HandleFunc h) = 0;
         virtual void loop() = 0;
         virtual void end() = 0;
+        virtual bool isExit() = 0;
 };
 
 /* singleton */
@@ -42,6 +43,7 @@ class Ncurses: public Interface
         void init(SmartArray<char>b, HandleFunc h);
         void loop();
         void end();
+        bool isExit();
 };
 
 #endif

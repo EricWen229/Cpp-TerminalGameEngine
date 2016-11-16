@@ -84,3 +84,8 @@ void Screen::free(Id id)
         books.erase(books.begin() + id);
     }
 }
+
+bool Screen::isExit()
+{
+    return interface -> isExit();
+}

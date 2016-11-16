@@ -227,7 +227,7 @@ void Controller::init
 void Controller::loop()
 {
     screen.begin();
-    while (true)
+    while (!screen.isExit())
     {
         bound();
         bang();
