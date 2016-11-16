@@ -11,6 +11,14 @@ class U: public UserControlThing
         {
             look = createArray<char>(3, 3);
             look[0][0] = 'A';
+            look[0][1] = 'B';
+            look[0][2] = 'C';
+            look[1][0] = 'D';
+            look[1][1] = 'E';
+            look[1][2] = 'F';
+            look[2][0] = 'G';
+            look[2][1] = 'H';
+            look[2][2] = 'I';
             height = width = 3;
         }
         void ifBang(Thing *thing)
@@ -38,9 +46,9 @@ void handle(Event e)
     switch (e)
     {
         case Up:
-            u[0] -> i--;
+            u[0] -> moveAdd(-1, 0);
         case Down:
-            u[0] -> i++;
+            u[0] -> moveAdd(1, 0);
     }
 }
 

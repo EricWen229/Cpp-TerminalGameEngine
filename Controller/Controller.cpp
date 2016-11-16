@@ -6,9 +6,38 @@ std::vector<Controller::Producer> Controller::producers;
 int Controller::height, Controller::width;
 Screen Controller::screen;
 std::vector<int> Controller::ids;
+SmartArray<char> Controller::gameBuffer;
 
 Thing::Thing(ObjectType o): objectType(o) {}
 Thing::~Thing() {}
+
+void Thing::moveTo(int newI, int newJ)
+{
+    for (int a = 0; a < height; a++)
+    {
+        for (int b = 0; b < width; b++)
+        {
+            Controller::gameBuffer[i + a][j + b] = ' ';
+        }
+    }
+    
+    i = newI;
+    j = newJ;
+    Controller::boundHelper(this);
+    
+    for (int a = 0; a < height; a++)
+    {
+        for (int b = 0; b < width; b++)
+        {
+            Controller::gameBuffer[i + a][j + b] = look[a][b];
+        }
+    }
+}
+
+void Thing::moveAdd(int deltaI, int deltaJ)
+{
+    moveTo(i + deltaI, j + deltaJ);
+}
 
 UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
@@ -235,6 +264,7 @@ void Controller::init
     int id6 = screen.alloc(1, 1, height - 2, width - 7);
     int id7 = screen.alloc(1, width - 5, height - 2, 5);
     ids.push_back(id6);
+    gameBuffer = screen.get(id6);
     ids.push_back(id7);
     
     SmartArray<char> sa = screen.get(id1);
@@ -278,7 +308,7 @@ void Controller::loop()
         handle();
         shoot();
         handle();
-        draw();
+        /* draw(); */
     }
     screen.end();
     

@@ -33,6 +33,9 @@ class Thing
         Thing(ObjectType o);
         virtual ~Thing();
         
+        void moveTo(int newI, int newJ);
+        void moveAdd(int deltaI, int deltaJ);
+        
         virtual void ifBound(bool top, bool bottom, bool left, bool right) = 0;
         virtual void ifBang(Thing *thing) = 0;
         virtual AutoControlThing *shoot() = 0;
@@ -61,15 +64,18 @@ class Controller
         typedef AutoControlThing *(*Producer)();
         
     private:
+        friend class Thing;
+        
         static std::vector<UserControlThing *> users;
         static std::vector<AutoControlThing *> autos;
         static std::vector<Producer> producers;
+        static SmartArray<char> gameBuffer;
         
         static int height, width;
         static Screen screen;
         static std::vector<int> ids;
         
-        void boundHelper(Thing *a);
+        static void boundHelper(Thing *a);
         void bound();
         bool bangHelper(Thing *a, Thing *b);
         void bang();
