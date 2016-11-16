@@ -97,6 +97,6 @@ int main()
     Controller c;
     U *uu[] = { new U };
     u = uu;
-    c.init(12, 20, &n, (UserControlThing **)uu, 1, null, 0);
+    c.init(20, 80, &n, (UserControlThing **)uu, 1, null, 0);
     c.loop();
 }
