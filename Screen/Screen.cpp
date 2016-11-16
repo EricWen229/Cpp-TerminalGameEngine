@@ -23,6 +23,14 @@ void Screen::init(
     height = h;
     width = w;
     buffer = createArray<char>(height, width + 1);
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            buffer[i][j] = ' ';
+        }
+        buffer[i][width] = '\0';
+    }
     interface = in;
     handleFunc = hf;
 }
