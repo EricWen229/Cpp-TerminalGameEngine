@@ -1,12 +1,12 @@
-#ifndef Thing_H
-#define Thing_H
+#ifndef Controller_H
+#define Controller_H
 
 #include "../Array/Array.h"
 #include "../Screen/Screen.h"
 #include <vector>
 
-class UserControlThing;
-UserControlThing **u;
+/* class UserControlThing; */
+/* UserControlThing **u; */
 void handle(Event e);
 
 /* 为方便扩展，不使用enum，而是用define的方式 */

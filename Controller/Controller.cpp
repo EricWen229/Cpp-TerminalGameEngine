@@ -1,4 +1,4 @@
-#include "Thing.h"
+#include "Controller.h"
 
 std::vector<UserControlThing *> Controller::users;
 std::vector<AutoControlThing *> Controller::autos;
@@ -6,6 +6,11 @@ std::vector<Controller::Producer> Controller::producers;
 int Controller::height, Controller::width;
 Screen Controller::screen;
 std::vector<int> Controller::ids;
+
+Thing::Thing(ObjectType o): objectType(o) {}
+Thing::~Thing() {}
+
+UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
 void Controller::bound()
 {
@@ -115,13 +120,21 @@ void Controller::shoot()
     int size = users.size();
     for (int i = 0; i < size; i++)
     {
-        autos.push_back(users[i] -> shoot());
+        AutoControlThing *bullet = users[i] -> shoot();
+        if (bullet != null)
+        {
+            autos.push_back(bullet);
+        }
     }
     
     size = autos.size();
     for (int i = 0; i < size; i++)
     {
-        autos.push_back(autos[i] -> shoot());
+        AutoControlThing *bullet = autos[i] -> shoot();
+        if (bullet != null)
+        {
+            autos.push_back(bullet);
+        }
     }
 }
 

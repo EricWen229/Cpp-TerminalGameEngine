@@ -1,41 +1,42 @@
-#include "Thing.h"
+#include "Controller.h"
 #include "../Interface/Interface.h"
+
+#define User 1
+#define Auto 2
 
 class U: public UserControlThing
 {
     public:
         U(): UserControlThing(User)
         {}
-        void ifBang(Thing &thing)
+        void ifBang(Thing *thing)
         {
         }
-        void ifBound(int height, int width)
+        void ifBound(bool, bool, bool, bool)
         {
-            if (i > height)
-            {
-                i = height;
-            }
-            if (j > width)
-            {
-                j = width;
-            }
         }
         bool live()
         {
             return  true;
         }
+        AutoControlThing *shoot()
+        {
+            return nullptr;
+        }
+        ~U()
+        {}
 };
 
-U u;
+U **u;
 
 void handle(Event e)
 {
     switch (e)
     {
         case Up:
-            u.i--;
+            u[0] -> i--;
         case Down:
-            u.i++;
+            u[0] -> i++;
     }
 }
 
@@ -74,6 +75,8 @@ int main()
 {
     Ncurses n;
     Controller c;
-    c.init(12, 20, &n, null, 0);
+    U *uu[] = { new U };
+    u = uu;
+    c.init(12, 20, &n, (UserControlThing **)uu, 1, null, 0);
     c.loop();
 }
