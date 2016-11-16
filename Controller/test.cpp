@@ -24,7 +24,7 @@ class U: public UserControlThing
         void ifBang(Thing *thing)
         {
         }
-        void ifBound(bool, bool, bool, bool)
+        void ifBound(OutBoundType o)
         {
         }
         bool live()

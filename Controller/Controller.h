@@ -15,6 +15,14 @@ typedef unsigned int ObjectType;
 /* #define UserType 1 */
 /* #define AutoType 2 */
 
+enum OutBoundType
+{
+    OutBoundTop,
+    OutBoundBottom,
+    OutBoundLeft,
+    OutBoundRight
+};
+
 class Controller;
 class AutoControlThing;
 class Thing
@@ -36,7 +44,7 @@ class Thing
         void moveTo(int newI, int newJ);
         void moveAdd(int deltaI, int deltaJ);
         
-        virtual void ifBound(bool top, bool bottom, bool left, bool right) = 0;
+        virtual void ifBound(OutBoundType o) = 0;
         virtual void ifBang(Thing *thing) = 0;
         virtual AutoControlThing *shoot() = 0;
         virtual bool live() = 0;
@@ -76,14 +84,12 @@ class Controller
         static std::vector<int> ids;
         
         static void boundHelper(Thing *a);
-        void bound();
         bool bangHelper(Thing *a, Thing *b);
         void bang();
         void clean();
         void produce();
         void shoot();
         void handle();
-        virtual void draw();
         
     public:
         virtual void init

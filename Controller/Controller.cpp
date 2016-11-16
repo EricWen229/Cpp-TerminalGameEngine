@@ -49,37 +49,23 @@ void Controller::boundHelper(Thing *thing)
     if (thing -> i < 0)
     {
         thing -> i = 0;
-        thing -> ifBound(true, false, false, false);
+        thing -> ifBound(OutBoundTop);
     }
     else if (thing -> i + thing -> height > height)
     {
         thing -> i = height - thing -> height;
-        thing -> ifBound(false, true, false, false);
+        thing -> ifBound(OutBoundBottom);
     }
     
     if (thing -> j < 0)
     {
         thing -> j = 0;
-        thing -> ifBound(false, false, true, true);
+        thing -> ifBound(OutBoundLeft);
     }
     else if (thing -> j + thing -> width > width)
     {
         thing -> j = width - thing -> width;
-        thing -> ifBound(false, false, false, true);
-    }
-}
-
-void Controller::bound()
-{
-    int size = users.size();
-    for (int i = 0; i < size; i++)
-    {
-        boundHelper(users[i]);
-    }
-    size = autos.size();
-    for (int i = 0; i < size; i++)
-    {
-        boundHelper(autos[i]);
+        thing -> ifBound(OutBoundRight);
     }
 }
 
@@ -204,40 +190,6 @@ void Controller::handle()
     }
 }
 
-void Controller::draw()
-{
-    screen.clean();
-    int size = users.size();
-    for (int i = 0; i < size; i++)
-    {
-        int height = users[i] -> height, width = users[i] -> width;
-        int top = users[i] -> i, left = users[i] -> j;
-        SmartArray<char> buffer = screen.get(ids[i]);
-        for (int a = 0; a < height; a++)
-        {
-            for (int b = 0; b < width; b++)
-            {
-                screen.get(ids[0])[top + a][left + b] = users[i] -> look[a][b];
-            }
-        }
-    }
-    
-    size = autos.size();
-    for (int i = 0; i < size; i++)
-    {
-        int height = autos[i] -> height, width = autos[i] -> width;
-        int top = autos[i] -> i, left = autos[i] -> j;
-        SmartArray<char> buffer = screen.get(ids[i]);
-        for (int a = 0; a < height; a++)
-        {
-            for (int b = 0; b < width; b++)
-            {
-                screen.get(ids[0])[top + a][left + b] = autos[i] -> look[a][b];
-            }
-        }
-    }
-}
-
 void Controller::init
 (int h, int w, Interface *i,
  UserControlThing *u[], int nUser,
@@ -303,14 +255,12 @@ void Controller::loop()
     screen.begin();
     while (!screen.isExit())
     {
-        bound();
         bang();
         clean();
         produce();
         handle();
         shoot();
         handle();
-        /* draw(); */
     }
     screen.end();
     
