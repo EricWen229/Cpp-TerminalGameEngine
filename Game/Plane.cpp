@@ -31,7 +31,8 @@ bool Player::live()
 
 AutoControlThing *Player::shoot()
 {
-    return nullptr;
+    /* return new Bullet(i - 1, j + 2, -1, 0); */
+    return null;
 }
 
 Enemy::Enemy(): AutoControlThing(EnemyType), life(2)
@@ -69,8 +70,13 @@ AutoControlThing *Enemy::shoot()
     return nullptr;
 }
 
-Bullet::Bullet(int i, int j): AutoControlThing(BulletType), life(2)
+Bullet::Bullet(int posI, int posJ, int speedI, int speedJ):
+    AutoControlThing(BulletType), life(2)
 {
+    i = posI;
+    j = posJ;
+    di = speedI;
+    dj = speedJ;
     look = createArray<char>(1, 1);
     look[0][0] = '|';
     height = 1;

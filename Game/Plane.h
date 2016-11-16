@@ -41,7 +41,7 @@ class Bullet: public AutoControlThing
         
     public:
         int life;
-        Bullet(int i, int j);
+        Bullet(int posI, int posJ, int speedI, int speedJ);
         void ifBang(Thing *thing);
         void ifBound(OutBoundType o);
         bool live();
