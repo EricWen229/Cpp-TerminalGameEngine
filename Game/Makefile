@@ -1,7 +1,2 @@
-run :
-	g++ -c -ggdb Able.cpp
-	g++ -c -ggdb Fly.cpp
-	g++ -c -ggdb Control.cpp
-
-clean :
-	- rm *.o
+compile :
+	g++ -ggdb Plane.cpp test.cpp ../Controller/Controller.cpp ../EventBuffer/EventBuffer.cpp ../Interface/Interface.cpp ../Screen/Screen.cpp ../Semaphore/Semaphore.cpp -std=c++11 -lpthread -lncurses -o test.o
