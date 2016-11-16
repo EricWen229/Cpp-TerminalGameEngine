@@ -41,3 +41,11 @@ AutoControlThing *Player::shoot()
 {
     return nullptr;
 }
+
+EnemyC::EnemyC(): AutoControlThing(Auto), life(2)
+{
+}
+
+void EnemyC::ifBang(Thing *thing)
+{
+}
