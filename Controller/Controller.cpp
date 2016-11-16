@@ -41,6 +41,8 @@ void Thing::moveAdd(int deltaI, int deltaJ)
 
 UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
+AutoControlThing::AutoControlThing(ObjectType o): Thing(o) {}
+
 void Controller::boundHelper(Thing *thing)
 {
     int height = screen.get(ids[0]) -> height,

@@ -5,9 +5,11 @@
 #include "../Interface/Interface.h"
 #include "../Array/Array.h"
 
-#define User 1
-#define Enemy 2
-#define Bullet 3
+#define UserType 0
+#define EnemyType 1
+#define BulletType 2
+
+extern int AttackTable[3][3];
 
 class Player: public UserControlThing
 {
@@ -15,18 +17,33 @@ class Player: public UserControlThing
         int life;
         Player();
         void ifBang(Thing *thing);
-        void ifBound(bool top, bool bottom, bool left, bool right);
+        void ifBound(OutBoundType o);
         bool live();
         AutoControlThing *shoot();
 };
 
-class EnemyC: public AutoControlThing
+class Enemy: public AutoControlThing
 {
     public:
         int life;
-        EnemyC();
+        Enemy();
         void ifBang(Thing *thing);
-        void ifBound(bool top, bool bootom, bool left, bool right);
+        void ifBound(OutBoundType o);
+        bool live();
+        void handle();
+        AutoControlThing *shoot();
+};
+
+class Bullet: public AutoControlThing
+{
+    private:
+        int di, dj;
+        
+    public:
+        int life;
+        Bullet(int i, int j);
+        void ifBang(Thing *thing);
+        void ifBound(OutBoundType o);
         bool live();
         void handle();
         AutoControlThing *shoot();

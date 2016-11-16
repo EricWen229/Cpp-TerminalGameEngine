@@ -24,12 +24,27 @@ void handle(Event e)
     }
 }
 
+AutoControlThing *produce()
+{
+    static int count = 0;
+    if (count == 500)
+    {
+        return new Enemy;
+    }
+    else
+    {
+        count++;
+        return null;
+    }
+}
+
 int main()
 {
     Ncurses n;
     Controller c;
     UserControlThing *uu[] = { new Player };
     u = uu;
-    c.init(20, 80, &n, uu, 1, null, 0);
+    Controller::Producer ps[] = { produce };
+    c.init(20, 80, &n, uu, 1, ps, 1);
     c.loop();
 }

@@ -1,34 +1,26 @@
 #include "Plane.h"
 
-Player::Player(): UserControlThing(User), life(10)
+int AttackTable[3][3];
+
+Player::Player(): UserControlThing(UserType), life(10)
 {
-    look = createArray<char>(3, 3);
-    look[0][0] = 'A';
-    look[0][1] = 'B';
-    look[0][2] = 'C';
-    look[1][0] = 'D';
-    look[1][1] = 'E';
-    look[1][2] = 'F';
-    look[2][0] = 'G';
-    look[2][1] = 'H';
-    look[2][2] = 'I';
-    height = width = 3;
+    look = createArray<char>(1, 5);
+    look[0][0] = '/';
+    look[0][1] = '-';
+    look[0][2] = '^';
+    look[0][3] = '-';
+    look[0][4] = '\\';
+    height = 1;
+    width = 5;
 }
 
 void Player::ifBang(Thing *thing)
 {
     /* table-driven */
-    if (thing -> objectType == Enemy)
-    {
-        life -= 2;
-    }
-    if (thing -> objectType == Bullet)
-    {
-        life -= 1;
-    }
+    life -= AttackTable[objectType][thing -> objectType];
 }
 
-void Player::ifBound(bool top, bool bottom, bool left, bool right)
+void Player::ifBound(OutBoundType o)
 {
 }
 
@@ -42,10 +34,70 @@ AutoControlThing *Player::shoot()
     return nullptr;
 }
 
-EnemyC::EnemyC(): AutoControlThing(Auto), life(2)
+Enemy::Enemy(): AutoControlThing(EnemyType), life(2)
 {
+    look = createArray<char>(1, 3);
+    look[0][0] = '-';
+    look[0][1] = 'o';
+    look[0][2] = '-';
+    height = 1;
+    width = 3;
 }
 
-void EnemyC::ifBang(Thing *thing)
+void Enemy::ifBang(Thing *thing)
 {
+    life -= AttackTable[objectType][thing -> objectType];
+}
+
+void Enemy::ifBound(OutBoundType o)
+{
+    life = 0;
+}
+
+bool Enemy::live()
+{
+    return life > 0;
+}
+
+void Enemy::handle()
+{
+    moveAdd(1, 0);
+}
+
+AutoControlThing *Enemy::shoot()
+{
+    return nullptr;
+}
+
+Bullet::Bullet(int i, int j): AutoControlThing(BulletType), life(2)
+{
+    look = createArray<char>(1, 1);
+    look[0][0] = '|';
+    height = 1;
+    width = 1;
+}
+
+void Bullet::ifBang(Thing *thing)
+{
+    life -= AttackTable[objectType][thing -> objectType];
+}
+
+void Bullet::ifBound(OutBoundType o)
+{
+    life = 0;
+}
+
+bool Bullet::live()
+{
+    return life > 0;
+}
+
+void Bullet::handle()
+{
+    moveAdd(di, dj);
+}
+
+AutoControlThing *Bullet::shoot()
+{
+    return nullptr;
 }
