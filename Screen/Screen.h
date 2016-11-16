@@ -44,7 +44,9 @@ class Screen
         Id alloc(int top, int left, int height, int width);
         SmartArray<char> get(Id id);
         void free(Id id);
+        
         bool isExit();
+        void clean();
 };
 
 #endif
