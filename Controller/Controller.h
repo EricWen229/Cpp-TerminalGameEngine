@@ -69,7 +69,9 @@ class Controller
         static Screen screen;
         static std::vector<int> ids;
         
+        void boundHelper(Thing *a);
         void bound();
+        bool bangHelper(Thing *a, Thing *b);
         void bang();
         void clean();
         void produce();

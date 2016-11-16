@@ -12,48 +12,67 @@ Thing::~Thing() {}
 
 UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
+void Controller::boundHelper(Thing *thing)
+{
+    int height = screen.get(ids[0]) -> height,
+        width = screen.get(ids[0]) -> width;
+        
+    if (thing -> i < 0)
+    {
+        thing -> i = 0;
+        thing -> ifBound(true, false, false, false);
+    }
+    else if (thing -> i + thing -> height > height)
+    {
+        thing -> i = height - thing -> height;
+        thing -> ifBound(false, true, false, false);
+    }
+    
+    if (thing -> j < 0)
+    {
+        thing -> j = 0;
+        thing -> ifBound(false, false, true, true);
+    }
+    else if (thing -> j + thing -> width > width)
+    {
+        thing -> j = width - thing -> width;
+        thing -> ifBound(false, false, false, true);
+    }
+}
+
 void Controller::bound()
 {
     int size = users.size();
     for (int i = 0; i < size; i++)
     {
-        if (users[i] -> i < 0)
-        {
-            users[i] -> ifBound(true, false, false, false);
-        }
-        else if (users[i] -> i > height)
-        {
-            users[i] -> ifBound(false, true, false, false);
-        }
-        else if (users[i] -> j < 0)
-        {
-            users[i] -> ifBound(false, false, true, true);
-        }
-        else if (users[i] -> j > width)
-        {
-            users[i] -> ifBound(false, false, false, true);
-        }
+        boundHelper(users[i]);
     }
     size = autos.size();
     for (int i = 0; i < size; i++)
     {
-        if (autos[i] -> i < 0)
-        {
-            autos[i] -> ifBound(true, false, false, false);
-        }
-        else if (autos[i] -> i > height)
-        {
-            autos[i] -> ifBound(false, true, false, false);
-        }
-        else if (autos[i] -> j < 0)
-        {
-            autos[i] -> ifBound(false, false, true, true);
-        }
-        else if (autos[i] -> j > width)
-        {
-            autos[i] -> ifBound(false, false, false, true);
-        }
+        boundHelper(autos[i]);
     }
+}
+
+bool Controller::bangHelper(Thing *a, Thing *b)
+{
+    if (a -> i >= b -> i && a -> i >= b -> i + b -> height)
+    {
+        return false;
+    }
+    else if (a -> i <= b -> i && a -> i + a -> height <= b -> i)
+    {
+        return false;
+    }
+    else if (a -> j >= b -> j && a -> j >= b -> j + b -> width)
+    {
+        return false;
+    }
+    else if (a -> j <= b -> j && a -> j + a -> width <= b -> j)
+    {
+        return false;
+    }
+    return false;
 }
 
 void Controller::bang()
@@ -64,21 +83,30 @@ void Controller::bang()
     {
         for (int j = i + 1; j < sizeU; j++)
         {
-            users[i] -> ifBang(users[j]);
-            users[j] -> ifBang(users[i]);
+            if (bangHelper(users[i], users[j]))
+            {
+                users[i] -> ifBang(users[j]);
+                users[j] -> ifBang(users[i]);
+            }
         }
         for (int k = 0; k < sizeA; k++)
         {
-            users[i] -> ifBang(autos[k]);
-            autos[k] -> ifBang(users[i]);
+            if (bangHelper(users[i], autos[k]))
+            {
+                users[i] -> ifBang(autos[k]);
+                autos[k] -> ifBang(users[i]);
+            }
         }
     }
     for (int i = 0; i < sizeA; i++)
     {
         for (int j = i + 1; j < sizeA; j++)
         {
-            autos[i] -> ifBang(autos[j]);
-            autos[j] -> ifBang(autos[i]);
+            if (bangHelper(autos[i], autos[j]))
+            {
+                autos[i] -> ifBang(autos[j]);
+                autos[j] -> ifBang(autos[i]);
+            }
         }
     }
 }
@@ -149,6 +177,7 @@ void Controller::handle()
 
 void Controller::draw()
 {
+    screen.clean();
     int size = users.size();
     for (int i = 0; i < size; i++)
     {

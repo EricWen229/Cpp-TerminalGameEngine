@@ -8,7 +8,11 @@ class U: public UserControlThing
 {
     public:
         U(): UserControlThing(User)
-        {}
+        {
+            look = createArray<char>(3, 3);
+            look[0][0] = 'A';
+            height = width = 3;
+        }
         void ifBang(Thing *thing)
         {
         }
