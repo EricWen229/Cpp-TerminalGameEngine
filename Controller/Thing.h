@@ -5,15 +5,18 @@
 #include "../Screen/Screen.h"
 #include <vector>
 
+class UserControlThing;
+UserControlThing **u;
 void handle(Event e);
 
-enum ObjectType
-{
-    /* for example */
-    User, Auto
-};
+/* 为方便扩展，不使用enum，而是用define的方式 */
+typedef unsigned int ObjectType;
+/* for example */
+/* #define UserType 1 */
+/* #define AutoType 2 */
 
 class Controller;
+class AutoControlThing;
 class Thing
 {
     private:
@@ -30,8 +33,9 @@ class Thing
         Thing(ObjectType o);
         virtual ~Thing();
         
-        virtual void ifBang(Thing &thing) = 0;
-        virtual void ifBound(int h, int w) = 0;
+        virtual void ifBound(bool top, bool bottom, bool left, bool right) = 0;
+        virtual void ifBang(Thing *thing) = 0;
+        virtual AutoControlThing *shoot() = 0;
         virtual bool live() = 0;
 };
 
@@ -54,25 +58,30 @@ class AutoControlThing: public Thing
 class Controller
 {
     public:
-        typedef Thing *(*Producer)();
+        typedef AutoControlThing *(*Producer)();
         
     private:
-        static std::vector<Thing *> things;
+        static std::vector<UserControlThing *> users;
+        static std::vector<AutoControlThing *> autos;
         static std::vector<Producer> producers;
+        
         static int height, width;
-        static bool exit;
         static Screen screen;
         static std::vector<int> ids;
         
-        void bang();
         void bound();
+        void bang();
         void clean();
-        virtual void produce();
+        void produce();
+        void shoot();
         void handle();
         virtual void draw();
         
     public:
-        void init(int h, int w, Interface *i, Producer ps[], int nProducer);
+        virtual void init
+        (int h, int w, Interface *i,
+         UserControlThing *u[], int nUser,
+         Producer ps[], int nProducer);
         void loop();
 };
 
