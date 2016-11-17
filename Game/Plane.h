@@ -4,6 +4,7 @@
 #include "../Controller/Controller.h"
 #include "../Interface/Interface.h"
 #include "../Array/Array.h"
+#include "../Random/Random.h"
 
 #define UserType 0
 #define EnemyType 1
@@ -26,7 +27,7 @@ class Enemy: public AutoControlThing
 {
     public:
         int life;
-        Enemy();
+        Enemy(int locI, int locJ);
         void ifBang(Thing *thing);
         void ifBound(OutBoundType o);
         bool live();

@@ -31,12 +31,15 @@ bool Player::live()
 
 AutoControlThing *Player::shoot()
 {
+    return new Bullet(5, 8, -1, 0);
     /* return new Bullet(i - 1, j + 2, -1, 0); */
-    return null;
+    /* return null; */
 }
 
-Enemy::Enemy(): AutoControlThing(EnemyType), life(2)
+Enemy::Enemy(int locI, int locJ): AutoControlThing(EnemyType), life(2)
 {
+    i = locI;
+    j = locJ;
     look = createArray<char>(1, 3);
     look[0][0] = '-';
     look[0][1] = 'o';

@@ -27,9 +27,9 @@ void handle(Event e)
 AutoControlThing *produce()
 {
     static int count = 0;
-    if (count == 500)
+    if (count == 5000)
     {
-        return new Enemy;
+        return new Enemy(5, 5);
     }
     else
     {

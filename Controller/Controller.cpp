@@ -156,7 +156,11 @@ void Controller::produce()
     int size = producers.size();
     for (int i = 0; i < size; i++)
     {
-        autos.push_back(producers[i]());
+        AutoControlThing *p = producers[i]();
+        if (p != null)
+        {
+            autos.push_back(p);
+        }
     }
 }
 
