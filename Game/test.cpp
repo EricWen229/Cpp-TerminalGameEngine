@@ -45,6 +45,6 @@ int main()
     UserControlThing *uu[] = { new Player };
     u = uu;
     Controller::Producer ps[] = { produce };
-    c.init(20, 80, &n, uu, 1, ps, 0);
+    c.init(20, 80, &n, uu, 1, ps, 1);
     c.loop();
 }

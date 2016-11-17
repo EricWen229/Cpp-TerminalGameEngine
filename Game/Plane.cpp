@@ -67,7 +67,7 @@ void Enemy::handle()
 
 AutoControlThing *Enemy::shoot()
 {
-    return nullptr;
+    return null;
 }
 
 Bullet::Bullet(int posI, int posJ, int speedI, int speedJ):
@@ -105,5 +105,5 @@ void Bullet::handle()
 
 AutoControlThing *Bullet::shoot()
 {
-    return nullptr;
+    return null;
 }
