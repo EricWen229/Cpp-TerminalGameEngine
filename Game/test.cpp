@@ -27,9 +27,11 @@ void handle(Event e)
 AutoControlThing *produce()
 {
     static int count = 0;
+    static Random random(5, 65);
     if (count == 5000)
     {
-        return new Enemy(5, 5);
+        count = 0;
+        return new Enemy(0, random.get());
     }
     else
     {

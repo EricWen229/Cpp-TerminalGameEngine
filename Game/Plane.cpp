@@ -31,8 +31,16 @@ bool Player::live()
 
 AutoControlThing *Player::shoot()
 {
-    return new Bullet(5, 8, -1, 0);
-    /* return new Bullet(i - 1, j + 2, -1, 0); */
+    int bulletI;
+    if (i == 0)
+    {
+        bulletI = i;
+    }
+    else
+    {
+        bulletI = i - 1;
+    }
+    return new Bullet(5, j + 2, -1, 0);
     /* return null; */
 }
 
