@@ -24,7 +24,7 @@ Event EventBuffer::get()
 {
     s -> P();
     mutex -> P();
-    assert(q.size() > 0);
+    /* assert(q.size() > 0); */
     Event tmp = q.front();
     q.pop();
     mutex -> V();

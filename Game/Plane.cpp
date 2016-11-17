@@ -31,17 +31,17 @@ bool Player::live()
 
 AutoControlThing *Player::shoot()
 {
-    int bulletI;
-    if (i == 0)
+    static int count = 0;
+    if (count == 40000)
     {
-        bulletI = i;
+        return new Bullet(i, j + 2, -1, 0);
+        count = 0;
     }
     else
     {
-        bulletI = i - 1;
+        count++;
+        return null;
     }
-    return new Bullet(5, j + 2, -1, 0);
-    /* return null; */
 }
 
 Enemy::Enemy(int locI, int locJ): AutoControlThing(EnemyType), life(2)
@@ -87,7 +87,17 @@ void Enemy::handle()
 
 AutoControlThing *Enemy::shoot()
 {
-    return null;
+    static int count = 0;
+    if (count == 50000)
+    {
+        return new Bullet(i, j + 2, 1, 0);
+        count = 0;
+    }
+    else
+    {
+        count++;
+        return null;
+    }
 }
 
 Bullet::Bullet(int posI, int posJ, int speedI, int speedJ):
