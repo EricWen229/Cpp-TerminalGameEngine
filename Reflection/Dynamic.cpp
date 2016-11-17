@@ -76,7 +76,6 @@ ClassInfo *ClassInfos::getClass(const std::string &className)
 }
 
 ClassInfo Object::classInfo("Object", Object::createObject);
-ClassInfos().reg("Object", &Object::classInfo);
 
 Object::Object() {}
 

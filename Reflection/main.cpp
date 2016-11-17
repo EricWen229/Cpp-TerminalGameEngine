@@ -2,6 +2,7 @@
 
 int main()
 {
+    ClassInfos().regClass("Object", &Object::classInfo);
     Object *object =
         ClassInfos().getClass("Object")
         -> getConstructor()(null, 0);

@@ -47,7 +47,7 @@ class ClassInfos
 
 class Object
 {
-    private:
+    public:
         static ClassInfo classInfo;
         
     public:
