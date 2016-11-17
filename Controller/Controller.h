@@ -90,6 +90,7 @@ class Controller
         void produce();
         void shoot();
         void handle();
+        void draw();
         
     public:
         virtual void init

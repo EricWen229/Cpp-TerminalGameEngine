@@ -73,7 +73,16 @@ bool Enemy::live()
 
 void Enemy::handle()
 {
-    moveAdd(1, 0);
+    static int count;
+    if (count == 100000)
+    {
+        moveAdd(1, 0);
+        count = 0;
+    }
+    else
+    {
+        count++;
+    }
 }
 
 AutoControlThing *Enemy::shoot()

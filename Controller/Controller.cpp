@@ -13,11 +13,14 @@ Thing::~Thing() {}
 
 void Thing::moveTo(int newI, int newJ)
 {
-    for (int a = 0; a < height; a++)
+    if (i != newI || j != newJ)
     {
-        for (int b = 0; b < width; b++)
+        for (int a = 0; a < height; a++)
         {
-            Controller::gameBuffer[i + a][j + b] = ' ';
+            for (int b = 0; b < width; b++)
+            {
+                Controller::gameBuffer[i + a][j + b] = ' ';
+            }
         }
     }
     
@@ -196,6 +199,15 @@ void Controller::handle()
     }
 }
 
+void Controller::draw()
+{
+    int size = users.size();
+    for (int i = 0; i < size; i++)
+    {
+        users[i] -> moveAdd(0, 0);
+    }
+}
+
 void Controller::init
 (int h, int w, Interface *i,
  UserControlThing *u[], int nUser,
@@ -267,6 +279,7 @@ void Controller::loop()
         handle();
         shoot();
         handle();
+        draw();
     }
     screen.end();
     
