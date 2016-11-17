@@ -9,23 +9,25 @@
 class Object;
 class ClassInfo;
 
-typedef Object *(*ObjectConstructorFn)();
 bool Register(ClassInfo *ci);
 
 class ClassInfo
 {
     public:
+        typedef Object *(*ObjectConstructorFn)();
+        typedef void *(Object::*DynamicFn)();
+        
+    private:
         std::string m_className;
         ObjectConstructorFn m_objectConstructor;
+        friend class Object;
         
     public:
         ClassInfo(const std::string className, ObjectConstructorFn ctor);
         virtual ~ClassInfo();
         
         Object *CreateObject() const;
-        bool IsDynamic() const;
-        const std::string GetClassName() const;
-        ObjectConstructorFn GetConstructor() const;
+        std::string GetClassName() const;
 };
 
 #define DECLARE_CLASS(name) \
