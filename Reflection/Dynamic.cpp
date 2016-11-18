@@ -81,7 +81,7 @@ ClassInfo_S *ClassInfos::getClassInfo(const std::string &className)
 
 Implement_Class(Object)
 {
-    Register_Fn(run);
+    Register_Fn(Object, run);
 }
 
 Object::Object() {}
@@ -98,5 +98,6 @@ Object *Object::createObject(void **unusedP, int unusedI)
 void *Object::run(void **unusedP, int unusedI)
 {
     std::cout << "Hello!" << std::endl;
+    std::cout << unusedI << std::endl;
     return null;
 }

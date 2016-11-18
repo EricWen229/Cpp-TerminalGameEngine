@@ -22,10 +22,10 @@
     ClassInfo_N &name::getClassInfo_N() { return classInfo_n; } \
     void name::RegisterInfo_N()
 
-#define Register_Fn(name) \
+#define Register_Fn(className, funcName) \
     classInfo_n.regDynamicFn \
-    (#name,std::bind \
-     (&Object::name, \
+    (#funcName, std::bind \
+     (&className::funcName, \
       this, \
       std::placeholders::_1, \
       std::placeholders::_2));
