@@ -16,9 +16,10 @@ A *A::createObject(void **unusedP, int unusedI)
     return new A;
 }
 
-void *A::sayHello(void **unusedP, int unusedI)
+void *A::sayHello(void *unusedP, int unusedI)
 {
     std::cout << "Hello!" << std::endl;
     std::cout << unusedI << std::endl;
+    std::cout << ((int *)unusedP)[0] << std::endl;
     return null;
 }

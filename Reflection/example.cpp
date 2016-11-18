@@ -11,6 +11,6 @@ int main()
     a -> RegisterInfo_N();
     int b[] = { 2 };
     ClassInfo_N::DynamicFn f = a -> getClassInfo_N().getDynamicFn("sayHello");
-    /* f((void **)&b, 1); */
-    f(null, 1);
+    f((void **)&b, 1);
+    /* f(null, 1); */
 }

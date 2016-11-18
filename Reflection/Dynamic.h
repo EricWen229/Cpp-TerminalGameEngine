@@ -57,7 +57,7 @@ class ClassInfo_S
 class ClassInfo_N
 {
     public:
-        typedef std::function<void *(void **, int)> DynamicFn;
+        typedef std::function<void *(void *, int)> DynamicFn;
         
     private:
         const std::string className;
@@ -97,7 +97,7 @@ class Object
         virtual ~Object();
         
         static Object *createObject(void **unusedP = null, int unusedI = 0);
-        void *run(void **unusedP = null, int unusedI = 0);
+        void *run(void *unusedP = null, int unusedI = 0);
 };
 
 #endif

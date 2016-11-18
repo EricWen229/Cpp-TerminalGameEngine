@@ -13,7 +13,7 @@ class A
         
         static A *createObject(void **unusedP, int unusedI);
         
-        void *sayHello(void **unusedP, int unusedI);
+        void *sayHello(void *unusedP, int unusedI);
 };
 
 #endif
