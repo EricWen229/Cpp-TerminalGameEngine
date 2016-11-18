@@ -1,3 +1,6 @@
+#ifndef Dynamic_H
+#define Dynamic_H
+
 #include <functional>
 #include <string>
 #include <map>
@@ -16,7 +19,7 @@
         virtual ClassInfo_N &getClassInfo_N();
 
 #define Implement_Class(name) \
-    ClassInfo_S name::classInfo_s((#name), name::createObject); \
+    ClassInfo_S name::classInfo_s((#name), (ClassInfo_S::ConFn)name::createObject); \
     void name::RegisterInfo_S() { ClassInfos().regClass(#name, &name::classInfo_s); } \
     ClassInfo_S &name::getClassInfo_S() { return classInfo_s; } \
     ClassInfo_N &name::getClassInfo_N() { return classInfo_n; } \
@@ -36,7 +39,7 @@ class Object;
 class ClassInfo_S
 {
     public:
-        typedef Object *(*ConFn)(void **, int);
+        typedef void *(*ConFn)(void **, int);
         
     private:
         const std::string className;
@@ -85,6 +88,7 @@ class ClassInfos
         ClassInfo_S *getClassInfo(const std::string &className);
 };
 
+/* example */
 class Object
 {
         Declare_Class;
@@ -95,3 +99,5 @@ class Object
         static Object *createObject(void **unusedP = null, int unusedI = 0);
         void *run(void **unusedP = null, int unusedI = 0);
 };
+
+#endif
