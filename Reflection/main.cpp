@@ -2,10 +2,10 @@
 
 int main()
 {
-    ClassInfos().regClass("Object", &Object::classInfo);
+    ClassInfos().regClass("Object", &Object::classInfo_s);
     Object *object =
-        ClassInfos().getClass("Object")
+        ClassInfos().getClassInfo("Object")
         -> getConstructor()(null, 0);
     object -> init();
-    ClassInfos().getClass("Object") -> getDynamicFn("run")(null, 0);
+    object -> getClassInfo_N().getDynamicFn("run")(null, 0);
 }
