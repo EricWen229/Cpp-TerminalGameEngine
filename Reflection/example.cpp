@@ -13,4 +13,10 @@ int main()
     ClassInfo_N::DynamicFn f = a -> getClassInfo_N().getDynamicFn("sayHello");
     f((void **)&b, 1);
     /* f(null, 1); */
+    Son::RegisterInfo_S();
+    A *s =
+        (Son *)ClassInfos().getClassInfo("Son")
+        -> getConstructor()(null, 0);
+    s -> RegisterInfo_N();
+    s -> getClassInfo_N().getDynamicFn("sayHello")((void **)&b, 1);
 }

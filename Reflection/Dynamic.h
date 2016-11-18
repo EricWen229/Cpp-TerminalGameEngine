@@ -14,7 +14,7 @@
         ClassInfo_N classInfo_n; \
     public:  \
         static void RegisterInfo_S(); \
-        void RegisterInfo_N(); \
+        virtual void RegisterInfo_N(); \
         virtual ClassInfo_S &getClassInfo_S(); \
         virtual ClassInfo_N &getClassInfo_N();
 
