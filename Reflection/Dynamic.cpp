@@ -78,26 +78,3 @@ ClassInfo_S *ClassInfos::getClassInfo(const std::string &className)
         return it -> second;
     }
 }
-
-Implement_Class(Object)
-{
-    Register_Fn(Object, run);
-}
-
-Object::Object() {}
-
-Object::~Object()
-{
-}
-
-Object *Object::createObject(void **unusedP, int unusedI)
-{
-    return new Object;
-}
-
-void *Object::run(void *unusedP, int unusedI)
-{
-    std::cout << "Hello!" << std::endl;
-    std::cout << unusedI << std::endl;
-    return null;
-}

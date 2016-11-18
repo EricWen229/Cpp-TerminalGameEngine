@@ -88,16 +88,4 @@ class ClassInfos
         ClassInfo_S *getClassInfo(const std::string &className);
 };
 
-/* example */
-class Object
-{
-        Declare_Class;
-    public:
-        Object();
-        virtual ~Object();
-        
-        static Object *createObject(void **unusedP = null, int unusedI = 0);
-        void *run(void *unusedP = null, int unusedI = 0);
-};
-
 #endif
