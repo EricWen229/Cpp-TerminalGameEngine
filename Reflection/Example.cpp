@@ -1,22 +1,20 @@
-#include "A.h"
+#include "Example.h"
 
-Implement_Class(A)
+Implement_Class(Father)
 {
-    Register_Fn(A, sayHello);
+    Register_Fn(Father, sayHello);
 }
 
-A::A() {}
+Father::Father() {}
 
-A::~A()
+Father::~Father() {}
+
+Father *Father::createObject(void **unusedP, int unusedI)
 {
+    return new Father;
 }
 
-A *A::createObject(void **unusedP, int unusedI)
-{
-    return new A;
-}
-
-void *A::sayHello(void *unusedP, int unusedI)
+void *Father::sayHello(void *unusedP, int unusedI)
 {
     std::cout << "Hello!" << std::endl;
     std::cout << unusedI << std::endl;
@@ -28,6 +26,10 @@ Implement_Class(Son)
 {
     Register_Fn(Son, sayHello);
 }
+
+Son::Son() {}
+
+Son::~Son() {}
 
 Son *Son::createObject(void **unusedP, int unusedI)
 {

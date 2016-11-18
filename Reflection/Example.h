@@ -1,25 +1,28 @@
-#ifndef A_H
-#define A_H
+#ifndef Example_H
+#define Example_H
 
 #include "Dynamic.h"
 
 /* example */
-class A
+class Father
 {
         Declare_Class;
     public:
-        A();
-        ~A();
+        Father();
+        ~Father();
         
-        static A *createObject(void **unusedP, int unusedI);
+        static Father *createObject(void **unusedP, int unusedI);
         
         virtual void *sayHello(void *unusedP, int unusedI);
 };
 
-class Son: public A
+class Son: public Father
 {
         Declare_Class;
     public:
+        Son();
+        ~Son();
+        
         static Son *createObject(void **unusedP, int unusedI);
         void *sayHello(void *unusedP, int unusedI);
 };
