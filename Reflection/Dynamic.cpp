@@ -83,14 +83,17 @@ ClassInfo_S Object::classInfo_s("Object", Object::createObject);
 
 Object::Object() {}
 
-Object::~Object() {}
+Object::~Object()
+{
+    RegisterInfos();
+}
 
 Object *Object::createObject(void **unusedP, int unusedI)
 {
     return new Object;
 }
 
-void Object::init()
+void Object::RegisterInfos()
 {
     classInfo_n.regDynamicFn
     ("run",std::bind
@@ -106,7 +109,12 @@ void *Object::run(void **unusedP, int unusedI)
     return null;
 }
 
-ClassInfo_N Object::getClassInfo_N()
+ClassInfo_S &Object::getClassInfo_S()
+{
+    return classInfo_s;
+}
+
+ClassInfo_N &Object::getClassInfo_N()
 {
     return classInfo_n;
 }

@@ -5,6 +5,30 @@
 
 #define null nullptr
 
+#define Declare_Class \
+    protected: \
+        static ClassInfo_S classInfo_s; \
+        ClassInfo_N classInfo_n; \
+    public:  \
+        virtual ClassInfo_S &getClassInfo_S(); \
+        virtual ClassInfo_N &getClassInfo_N();
+
+#define Implement_Class(name) \
+    ClassInfo_S name::classInfo_s((#name), name::createObject); \
+    ClassInfo_S &name::getClassInfo_S() { return classInfo_s; } \
+    ClassInfo_N &name::getClassInfo_N() { return classInfo_n; }
+
+#define Register_Fn(name) \
+    classInfo_n.regDynamicFn \
+    (#name,std::bind \
+     (&Object::name, \
+      this, \
+      std::placeholders::_1, \
+      std::placeholders::_2));
+
+#define Register_Class(name) \
+    void name::RegisterInfos()
+
 class Object;
 
 /* S represent Static */
@@ -69,9 +93,10 @@ class Object
     public:
         Object();
         virtual ~Object();
+        void RegisterInfos();
         
         static Object *createObject(void **unusedP = null, int unusedI = 0);
         void *run(void **unusedP = null, int unusedI = 0);
-        void init();
-        ClassInfo_N getClassInfo_N();
+        ClassInfo_S &getClassInfo_S();
+        ClassInfo_N &getClassInfo_N();
 };

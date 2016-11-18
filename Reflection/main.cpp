@@ -6,6 +6,6 @@ int main()
     Object *object =
         ClassInfos().getClassInfo("Object")
         -> getConstructor()(null, 0);
-    object -> init();
+    object -> RegisterInfos();
     object -> getClassInfo_N().getDynamicFn("run")(null, 0);
 }
