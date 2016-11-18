@@ -104,14 +104,18 @@ void TestDynamic::testRegDynamicFn()
         (Father *)ClassInfos().getClassInfo("GrandSon")
         -> getConstructor()(null, 0);
         
+    f -> RegisterInfo_N();
+    g -> RegisterInfo_N();
+    s -> RegisterInfo_N();
+    
     CPPUNIT_ASSERT(f -> getClassInfo_N().getDynamicFn("sayHello") != null);
-    CPPUNIT_ASSERT(g -> getClassInfo_N().getDynamicFn("sayHello") != null);
-    CPPUNIT_ASSERT(s -> getClassInfo_N().getDynamicFn("sayHi") != null);
+    CPPUNIT_ASSERT(s -> getClassInfo_N().getDynamicFn("sayHello") != null);
+    CPPUNIT_ASSERT(g -> getClassInfo_N().getDynamicFn("sayHi") != null);
     
     int arr[] = { 1 };
     f -> getClassInfo_N().getDynamicFn("sayHello")((void *)arr, 1);
-    g -> getClassInfo_N().getDynamicFn("sayHello")((void *)arr, 1);
-    s -> getClassInfo_N().getDynamicFn("sayHi")((void *)arr, 1);
+    s -> getClassInfo_N().getDynamicFn("sayHello")((void *)arr, 1);
+    g -> getClassInfo_N().getDynamicFn("sayHi")((void *)arr, 1);
     
     g -> getClassInfo_N().regDynamicFn
     ("Test", [](void *, int)->void * {return null;});
@@ -138,6 +142,10 @@ void TestDynamic::testOutDynamicFn()
         (Father *)ClassInfos().getClassInfo("GrandSon")
         -> getConstructor()(null, 0);
         
+    f -> RegisterInfo_N();
+    g -> RegisterInfo_N();
+    s -> RegisterInfo_N();
+    
     f -> getClassInfo_N().outDynamicFn("sayHello");
     f -> getClassInfo_N().outDynamicFn("sayHi");
     g -> getClassInfo_N().outDynamicFn("sayHello");
