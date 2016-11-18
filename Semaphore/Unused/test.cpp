@@ -2,7 +2,6 @@
 #include <queue>
 #include <iostream>
 #include <unistd.h>
-#include <assert.h>
 
 Semaphore s(0);
 std::queue<int> q;
