@@ -75,6 +75,8 @@ void TestDynamic::testGetContructor_S()
 
 void TestDynamic::testRegClass()
 {
+    ClassInfos().outClass("Father");
+    CPPUNIT_ASSERT(ClassInfos().getClassInfo("Father") == null);
     Father::RegisterInfo_S();
     CPPUNIT_ASSERT(ClassInfos().getClassInfo("Father") != null);
 }

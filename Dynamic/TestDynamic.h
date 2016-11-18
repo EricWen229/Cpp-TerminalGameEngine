@@ -29,8 +29,8 @@ class TestDynamic: public CppUnit::TestFixture
         CPPUNIT_TEST(testGetContructor_S);
         CPPUNIT_TEST(testRegClass);
         CPPUNIT_TEST(testOutClass);
-        CPPUNIT_TEST(testRegClass);
-        CPPUNIT_TEST(testOutClass);
+        CPPUNIT_TEST(testRegDynamicFn);
+        CPPUNIT_TEST(testOutDynamicFn);
         CPPUNIT_TEST_SUITE_END();
         
     public:
