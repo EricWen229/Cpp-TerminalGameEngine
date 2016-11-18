@@ -10,13 +10,17 @@
         static ClassInfo_S classInfo_s; \
         ClassInfo_N classInfo_n; \
     public:  \
+        static void RegisterInfo_S(); \
+        void RegisterInfo_N(); \
         virtual ClassInfo_S &getClassInfo_S(); \
         virtual ClassInfo_N &getClassInfo_N();
 
 #define Implement_Class(name) \
     ClassInfo_S name::classInfo_s((#name), name::createObject); \
+    void name::RegisterInfo_S() { ClassInfos().regClass(#name, &name::classInfo_s); } \
     ClassInfo_S &name::getClassInfo_S() { return classInfo_s; } \
-    ClassInfo_N &name::getClassInfo_N() { return classInfo_n; }
+    ClassInfo_N &name::getClassInfo_N() { return classInfo_n; } \
+    void name::RegisterInfo_N()
 
 #define Register_Fn(name) \
     classInfo_n.regDynamicFn \
@@ -25,9 +29,6 @@
       this, \
       std::placeholders::_1, \
       std::placeholders::_2));
-
-#define Register_Class(name) \
-    void name::RegisterInfos()
 
 class Object;
 
@@ -86,17 +87,11 @@ class ClassInfos
 
 class Object
 {
-    public:
-        static ClassInfo_S classInfo_s;
-        ClassInfo_N classInfo_n;
-        
+        Declare_Class;
     public:
         Object();
         virtual ~Object();
-        void RegisterInfos();
         
         static Object *createObject(void **unusedP = null, int unusedI = 0);
         void *run(void **unusedP = null, int unusedI = 0);
-        ClassInfo_S &getClassInfo_S();
-        ClassInfo_N &getClassInfo_N();
 };
