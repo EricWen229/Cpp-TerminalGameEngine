@@ -1,25 +1,24 @@
-#include "Dynamic.h"
-#include "Example.h"
-#include <iostream>
+#include <cppunit/ui/text/TestRunner.h>
+#include <cppunit/TestResult.h>
+#include <cppunit/TestResultCollector.h>
+#include <cppunit/BriefTestProgressListener.h>
+#include <cppunit/CompilerOutputter.h>
+#include "TestDynamic.cpp"
 
 int main()
 {
-    int b[] = { 2 };
+    CPPUNIT_NS::TestResult tr;
+    CPPUNIT_NS::TestResultCollector trc;
+    tr.addListener(&trc);
     
-    Father::RegisterInfo_S();
-    Father *f =
-        (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null, 0);
-    f -> RegisterInfo_N();
-    f -> getClassInfo_N().getDynamicFn("sayHello")((void **)&b, 1);
+    CPPUNIT_NS::BriefTestProgressListener progress;
+    tr.addListener(&progress);
     
-    Son::RegisterInfo_S();
-    Father *s =
-        (Son *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null, 0);
-    s -> RegisterInfo_N();
-    s -> getClassInfo_N().getDynamicFn("sayHello")((void **)&b, 1);
+    CPPUNIT_NS::TestRunner runner;
+    CPPUNIT_NS::TestFactoryRegistry &reg = CppUnit::TestFactoryRegistry::getRegistry("TestDynamic");
+    runner.addTest(reg.makeTest());
+    runner.run(tr);
     
-    delete f;
-    delete s;
+    CPPUNIT_NS::CompilerOutputter outputter(&trc, CPPUNIT_NS::stdCOut());
+    outputter.write();
 }

@@ -23,7 +23,7 @@ class Son: public Father
         Declare_Class;
     public:
         Son();
-        ~Son();
+        virtual ~Son();
         
         static Son *createObject(void **unusedP, int unusedI);
         void *sayHello(void *unusedP, int unusedI);
