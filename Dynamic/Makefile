@@ -1,7 +1,4 @@
-objects = /CPP/lib/libcppunit.a main.cpp Dynamic.cpp
-
-main.o :
-	g++ -ggdb -std=c++11 -L $(objects) -lcppunit -lpthread -ldl -o main.o
+objects = /CPP/lib/libcppunit.a main.cpp Dynamic.cpp Example.cpp
 
 run : clean exMain.o
 	valgrind --tool=memcheck --leak-check=full ./exMain.o

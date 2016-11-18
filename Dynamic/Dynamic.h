@@ -73,6 +73,7 @@ class ClassInfo_N
         DynamicFn getDynamicFn(const std::string &funcName);
 };
 
+/* singleton */
 class ClassInfos
 {
     private:
