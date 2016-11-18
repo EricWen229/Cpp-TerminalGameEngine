@@ -1,6 +1,12 @@
 #ifndef EventBuffer_H
 #define EventBuffer_H
 
+#ifndef NDEBUG
+    #include <assert.h>
+#else
+    #define assert ;
+#endif
+
 #include "../Semaphore/Semaphore.h"
 #include <queue>
 
@@ -12,8 +18,8 @@ enum Event
 class EventBuffer
 {
     private:
-        Semaphore *s;
-        Semaphore *mutex;
+        Semaphore s;
+        Semaphore mutex;
         std::queue<Event> q;
         
     public:

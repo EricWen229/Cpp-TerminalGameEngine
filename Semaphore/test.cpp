@@ -69,7 +69,7 @@ int main()
     sleep(1);
     pthread_t id = createPthread(customer);
     sleep(1);
-    std::cout << "Judge" << (s.get() == 0) << std::endl;
+    std::cout << "Judge" << (s.get() == -1) << std::endl;
     waitPthread(createPthread(producer2));
     waitPthread(id);
     std::cout << "Judge" << (s.get() == 2) << std::endl;

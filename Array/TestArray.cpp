@@ -20,11 +20,6 @@ void TestArray::testPart()
     arr[0] = &s[2][2];
     arr[1] = &s[3][2];
     arr[2] = &s[4][2];
-    /* { */
-    /*     &s[2][2], */
-    /*     &s[3][2], */
-    /*     &s[4][2] */
-    /* }; */
     SmartArray<int> p = createArray<int>(3, 3, arr);
     CPPUNIT_ASSERT(p[0][0] == 9);
     CPPUNIT_ASSERT(p[0][2] == 15);

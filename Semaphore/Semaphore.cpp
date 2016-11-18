@@ -7,18 +7,21 @@ Semaphore::~Semaphore() {}
 void Semaphore::P()
 {
     std::unique_lock<std::mutex> lock(mutex);
-    while (count == 0)
+    count--;
+    if (count < 0)
     {
         cv.wait(lock);
     }
-    count--;
 }
 
 void Semaphore::V()
 {
     std::unique_lock<std::mutex> lock(mutex);
     count++;
-    cv.notify_one();
+    if (count <= 0)
+    {
+        cv.notify_one();
+    }
 }
 
 int Semaphore::get()
