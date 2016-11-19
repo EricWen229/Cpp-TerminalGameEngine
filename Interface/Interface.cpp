@@ -1,5 +1,7 @@
 #include "Interface.h"
 
+Interface::~Interface() {}
+
 EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
 Ncurses::HandleFunc Ncurses::hf;

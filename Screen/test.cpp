@@ -25,7 +25,7 @@ int main()
 {
     Screen screen;
     Ncurses in;
-    screen.init(12, 20, &in, handler);
+    screen.init(12, 20, handler);
     
     int id1 = screen.alloc(0, 0, 1, 20);
     int id2 = screen.alloc(11, 0, 1, 20);

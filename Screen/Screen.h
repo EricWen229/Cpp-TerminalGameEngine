@@ -3,7 +3,7 @@
 
 #include "../Array/Array.h"
 #include "../Interface/Interface.h"
-#include  "../Semaphore/Semaphore.h"
+#include "../Semaphore/Semaphore.h"
 #include <vector>
 
 #define null nullptr
@@ -36,7 +36,6 @@ class Screen
     public:
         void init(
             int h, int w,
-            Interface *in,
             Interface::HandleFunc hf);
         void begin();
         void end();

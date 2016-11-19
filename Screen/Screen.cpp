@@ -1,6 +1,6 @@
 #include "Screen.h"
 
-Interface *Screen::interface;
+Interface *Screen::interface = new Ncurses;
 SmartArray<char> Screen::buffer;
 int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
@@ -17,14 +17,12 @@ void *Screen::runHelper(void *unused)
 
 void Screen::init(
     int h, int w,
-    Interface *in,
     Interface::HandleFunc hf)
 {
     height = h;
     width = w;
     buffer = createArray<char>(height, width + 1);
     clean();
-    interface = in;
     handleFunc = hf;
 }
 
@@ -36,6 +34,7 @@ void Screen::begin()
 void Screen::end()
 {
     waitPthread(pid);
+    delete interface;
 }
 
 Id Screen::alloc(int top, int left, int height, int width)
