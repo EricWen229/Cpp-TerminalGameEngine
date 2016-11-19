@@ -1,12 +1,16 @@
 #include "Controller.h"
 
-std::vector<UserControlThing *> Controller::users;
+UserControlThing *Controller::users;
 std::vector<AutoControlThing *> Controller::autos;
 std::vector<Controller::Producer> Controller::producers;
 int Controller::height, Controller::width;
 Screen Controller::screen;
 std::vector<int> Controller::ids;
 SmartArray<char> Controller::gameBuffer;
+
+UserControlThing::~UserControlThing() {}
+
+AutoControlThing::~AutoControlThing() {}
 
 Thing::Thing(ObjectType o): objectType(o) {}
 Thing::~Thing() {}
@@ -44,10 +48,10 @@ void Thing::moveAdd(int deltaI, int deltaJ)
 
 UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
-std::function<void (Event)> UserControlThing::pHandler()
-{
-    return std::bind(&UserControlThing::handle, this, std::placeholders::_1);
-}
+/* std::function<void (Event)> UserControlThing::pHandler() */
+/* { */
+/*     return std::bind(&UserControlThing::handle, this, std::placeholders::_1); */
+/* } */
 
 AutoControlThing::AutoControlThing(ObjectType o): Thing(o) {}
 
@@ -102,25 +106,13 @@ bool Controller::bangHelper(Thing *a, Thing *b)
 
 void Controller::bang()
 {
-    int sizeU = users.size();
     int sizeA = autos.size();
-    for (int i = 0; i < sizeU; i++)
+    for (int i = 0; i < sizeA; i++)
     {
-        for (int j = i + 1; j < sizeU; j++)
+        if (bangHelper(users, autos[i]))
         {
-            if (bangHelper(users[i], users[j]))
-            {
-                users[i] -> ifBang(users[j]);
-                users[j] -> ifBang(users[i]);
-            }
-        }
-        for (int k = 0; k < sizeA; k++)
-        {
-            if (bangHelper(users[i], autos[k]))
-            {
-                users[i] -> ifBang(autos[k]);
-                autos[k] -> ifBang(users[i]);
-            }
+            users -> ifBang(autos[i]);
+            autos[i] -> ifBang(users);
         }
     }
     for (int i = 0; i < sizeA; i++)
@@ -138,17 +130,10 @@ void Controller::bang()
 
 void Controller::clean()
 {
-    int size = users.size();
-    for (int i = 0; i < size; i++)
+    if (!users -> live())
     {
-        if (!users[i] -> live())
-        {
-            delete users[i];
-            users.erase(users.begin() + i);
-        }
     }
-    
-    size = autos.size();
+    int size = autos.size();
     for (int i = 0; i < size; i++)
     {
         if (!autos[i] -> live())
@@ -174,17 +159,13 @@ void Controller::produce()
 
 void Controller::shoot()
 {
-    int size = users.size();
-    for (int i = 0; i < size; i++)
+    AutoControlThing *bullet = users -> shoot();
+    if (bullet != null)
     {
-        AutoControlThing *bullet = users[i] -> shoot();
-        if (bullet != null)
-        {
-            autos.push_back(bullet);
-        }
+        autos.push_back(bullet);
     }
     
-    size = autos.size();
+    int size = autos.size();
     for (int i = 0; i < size; i++)
     {
         AutoControlThing *bullet = autos[i] -> shoot();
@@ -206,16 +187,12 @@ void Controller::handle()
 
 void Controller::draw()
 {
-    int size = users.size();
-    for (int i = 0; i < size; i++)
-    {
-        users[i] -> moveAdd(0, 0);
-    }
+    users -> moveAdd(0, 0);
 }
 
 void Controller::init
-(int h, int w, Interface *i,
- UserControlThing *u[], int nUser,
+(int h, int w,
+ UserControlThing *u,
  Producer ps[], int nProducer)
 {
     height = h;
@@ -224,12 +201,9 @@ void Controller::init
     {
         producers.push_back(ps[i]);
     }
-    screen.init(h, w, users[0] -> pHandler());
+    screen.init(h, w, ::handle);
     
-    for (int i = 0; i < nUser; i++)
-    {
-        users.push_back(u[i]);
-    }
+    users = u;
     
     int id1 = screen.alloc(0, 0, 1, width);
     int id2 = screen.alloc(height - 1, 0, 1, width);
@@ -270,7 +244,7 @@ void Controller::init
         se[i][0] = '|';
     }
     
-    users[0] -> moveTo(0, 0);
+    users -> moveTo(0, 0);
 }
 
 void Controller::loop()
@@ -288,12 +262,8 @@ void Controller::loop()
     }
     screen.end();
     
-    int size = users.size();
-    for (int i = 0; i < size; i++)
-    {
-        delete users[i];
-    }
-    size = autos.size();
+    delete users;
+    int size = autos.size();
     for (int i = 0; i < size; i++)
     {
         delete autos[i];

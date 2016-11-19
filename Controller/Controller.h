@@ -51,13 +51,14 @@ class UserControlThing: public Thing
 {
     private:
         friend class Controller;
-        std::function<void (Event)> pHandler();
+        friend void handle(Event e);
         
     public:
         virtual ~UserControlThing();
         UserControlThing(ObjectType o);
-        virtual void handle(Event e) = 0;
 };
+
+void handle(Event e);
 
 class AutoControlThing: public Thing
 {

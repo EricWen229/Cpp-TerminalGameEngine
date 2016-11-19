@@ -39,23 +39,23 @@ class U: public UserControlThing
         {}
 };
 
-U **u;
+U *u;
 
 void handle(Event e)
 {
     switch (e)
     {
         case Up:
-            u[0] -> moveAdd(-1, 0);
+            u -> moveAdd(-1, 0);
             break;
         case Down:
-            u[0] -> moveAdd(1, 0);
+            u -> moveAdd(1, 0);
             break;
         case Left:
-            u[0] -> moveAdd(0, -1);
+            u -> moveAdd(0, -1);
             break;
         case Right:
-            u[0] -> moveAdd(0, 1);
+            u -> moveAdd(0, 1);
             break;
     }
 }
@@ -93,10 +93,8 @@ class A: public AutoControlThing
 
 int main()
 {
-    Ncurses n;
     Controller c;
-    U *uu[] = { new U };
-    u = uu;
-    c.init(20, 80, &n, (UserControlThing **)uu, 1, null, 0);
+    u = new U;
+    c.init(20, 80, u, null, 0);
     c.loop();
 }
