@@ -91,3 +91,143 @@ void TestEventBuffer::testD()
         waitPthread(p[i]);
     }
 }
+
+void TestEventBuffer::testE()
+{
+    pthread_t p[] =
+    {
+        createPthread(put),
+        createPthread(get),
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
+
+void TestEventBuffer::testF()
+{
+    pthread_t p[] =
+    {
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
+
+void TestEventBuffer::testG()
+{
+    pthread_t p[] =
+    {
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
+
+void TestEventBuffer::testH()
+{
+    pthread_t p[] =
+    {
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(put),
+        createPthread(get),
+        createPthread(get)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
+
+void TestEventBuffer::testI()
+{
+    pthread_t p[] =
+    {
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(put),
+        createPthread(get)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
+
+void TestEventBuffer::testJ()
+{
+    pthread_t p[] =
+    {
+        createPthread(put),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(put)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
+
+void TestEventBuffer::testK()
+{
+    pthread_t p[] =
+    {
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(get),
+        createPthread(put),
+        createPthread(put)
+    };
+    
+    for (int i = 0; i < 8; i++)
+    {
+        waitPthread(p[i]);
+    }
+}
