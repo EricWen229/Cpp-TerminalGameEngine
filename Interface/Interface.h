@@ -3,12 +3,8 @@
 
 #include "../Array/Array.h"
 #include "../EventBuffer/EventBuffer.h"
+#include <functional>
 #include <ncurses.h>
-#include <stdio.h>
-
-#define MOVETO(x,y) printf("\033[%d;%dH", (x), (y))
-#define HIDE_CURSOR() printf("\033[?25l")
-#define SHOW_CURSOR() printf("\033[?25h")
 
 /* user interface */
 /* interact with user */
@@ -24,11 +20,9 @@ class Interface
 };
 
 /* singleton */
-/* 类成员函数不能作为线程创建的函数 */
 class Ncurses: public Interface
 {
     private:
-        static WINDOW *win;
         static EventBuffer eb;
         static SmartArray<char> buffer;
         static HandleFunc hf;

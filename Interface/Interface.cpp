@@ -1,6 +1,5 @@
 #include "Interface.h"
 
-WINDOW *Ncurses::win;
 EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
 Ncurses::HandleFunc Ncurses::hf;
@@ -51,9 +50,9 @@ void *Ncurses::show(void *unused)
     {
         for (int i = 0; i < buffer -> height; i++)
         {
-            mvwprintw(win, i, 0, buffer[i]);
+            mvprintw(i, 0, buffer[i]);
         }
-        wrefresh(win);
+        refresh();
     }
     return null;
 }
@@ -72,10 +71,11 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
     keypad(stdscr, true);
     /* Don't echo() while we do getch */
     noecho();
+    curs_set(0);
     /* Control the screen size, so we don't use \n. */
     /* 减少刷新缓冲区的次数，提高IO效率 */
     /* 需要为\0字符留出空位，所以width-1 */
-    Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0);
+    /* Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0); */
     
     exit = false;
 }
@@ -96,7 +96,6 @@ void Ncurses::end()
     exit = true;
     waitPthread(pid[2]);
     
-    delwin(win);
     endwin();
 }
 
