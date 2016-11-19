@@ -3,23 +3,23 @@
 #include "../Array/Array.h"
 #include "Plane.h"
 
-UserControlThing **u;
+UserControlThing *u;
 
 void handle(Event e)
 {
     switch (e)
     {
         case Up:
-            u[0] -> moveAdd(-1, 0);
+            u -> moveAdd(-1, 0);
             break;
         case Down:
-            u[0] -> moveAdd(1, 0);
+            u -> moveAdd(1, 0);
             break;
         case Left:
-            u[0] -> moveAdd(0, -1);
+            u -> moveAdd(0, -1);
             break;
         case Right:
-            u[0] -> moveAdd(0, 1);
+            u -> moveAdd(0, 1);
             break;
     }
 }
@@ -42,11 +42,23 @@ AutoControlThing *produce()
 
 int main()
 {
-    Ncurses n;
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if (i == j)
+            {
+                AttackTable[i][j] = 0;
+            }
+            else
+            {
+                AttackTable[i][j] = 2;
+            }
+        }
+    }
     Controller c;
-    UserControlThing *uu[] = { new Player };
-    u = uu;
+    u = new Player;
     Controller::Producer ps[] = { produce };
-    c.init(20, 80, &n, uu, 1, ps, 1);
+    c.init(20, 80, u, ps, 1);
     c.loop();
 }

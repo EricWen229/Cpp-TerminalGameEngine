@@ -1,6 +1,6 @@
 #include "Plane.h"
 
-int AttackTable[3][3];
+int AttackTable[4][4];
 
 Player::Player(): UserControlThing(UserType), life(10)
 {
@@ -34,7 +34,7 @@ AutoControlThing *Player::shoot()
     static int count = 0;
     if (count == 40000)
     {
-        return new Bullet(i, j + 2, -1, 0);
+        return new Bullet(i, j + 2, -1, 0, PlayerBullet);
         count = 0;
     }
     else
@@ -90,7 +90,7 @@ AutoControlThing *Enemy::shoot()
     static int count = 0;
     if (count == 50000)
     {
-        return new Bullet(i, j + 2, 1, 0);
+        return new Bullet(i, j + 2, 1, 0, EnemyBullet);
         count = 0;
     }
     else
@@ -100,8 +100,8 @@ AutoControlThing *Enemy::shoot()
     }
 }
 
-Bullet::Bullet(int posI, int posJ, int speedI, int speedJ):
-    AutoControlThing(BulletType), life(2)
+Bullet::Bullet(int posI, int posJ, int speedI, int speedJ, int t):
+    AutoControlThing(t), life(2)
 {
     i = posI;
     j = posJ;

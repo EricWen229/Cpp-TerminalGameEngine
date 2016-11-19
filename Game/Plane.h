@@ -8,9 +8,10 @@
 
 #define UserType 0
 #define EnemyType 1
-#define BulletType 2
+#define PlayerBullet 2
+#define EnemyBullet 3
 
-extern int AttackTable[3][3];
+extern int AttackTable[4][4];
 
 class Player: public UserControlThing
 {
@@ -42,7 +43,7 @@ class Bullet: public AutoControlThing
         
     public:
         int life;
-        Bullet(int posI, int posJ, int speedI, int speedJ);
+        Bullet(int posI, int posJ, int speedI, int speedJ, int t);
         void ifBang(Thing *thing);
         void ifBound(OutBoundType o);
         bool live();
