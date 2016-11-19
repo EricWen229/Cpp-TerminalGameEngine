@@ -4,10 +4,7 @@
 #include "../Array/Array.h"
 #include "../Screen/Screen.h"
 #include <vector>
-
-/* class UserControlThing; */
-/* UserControlThing **u; */
-void handle(Event e);
+#include <functional>
 
 /* 为方便扩展，不使用enum，而是用define的方式 */
 typedef unsigned int ObjectType;
@@ -52,15 +49,20 @@ class Thing
 
 class UserControlThing: public Thing
 {
+    private:
+        friend class Controller;
+        std::function<void (Event)> pHandler();
+        
     public:
+        virtual ~UserControlThing();
         UserControlThing(ObjectType o);
-        /* user defined this function by himself */
-        friend void handle(Event e);
+        virtual void handle(Event e) = 0;
 };
 
 class AutoControlThing: public Thing
 {
     public:
+        virtual ~AutoControlThing();
         AutoControlThing(ObjectType o);
         virtual void handle() = 0;
 };
@@ -74,7 +76,7 @@ class Controller
     private:
         friend class Thing;
         
-        static std::vector<UserControlThing *> users;
+        static UserControlThing *users;
         static std::vector<AutoControlThing *> autos;
         static std::vector<Producer> producers;
         static SmartArray<char> gameBuffer;
@@ -94,8 +96,8 @@ class Controller
         
     public:
         virtual void init
-        (int h, int w, Interface *i,
-         UserControlThing *u[], int nUser,
+        (int h, int w,
+         UserControlThing *u,
          Producer ps[], int nProducer);
         void loop();
 };

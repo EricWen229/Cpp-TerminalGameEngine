@@ -5,6 +5,7 @@
 #include "../Interface/Interface.h"
 #include "../Semaphore/Semaphore.h"
 #include <vector>
+#include <functional>
 
 #define null nullptr
 

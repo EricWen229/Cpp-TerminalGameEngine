@@ -12,7 +12,8 @@ class Interface
 {
     public:
         virtual ~Interface();
-        typedef void (*HandleFunc)(Event e);
+        /* typedef void (*HandleFunc)(Event e); */
+        typedef std::function<void (Event)> HandleFunc;
         virtual void init(SmartArray<char> b, HandleFunc h) = 0;
         virtual void loop() = 0;
         virtual void end() = 0;

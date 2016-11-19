@@ -44,6 +44,11 @@ void Thing::moveAdd(int deltaI, int deltaJ)
 
 UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
+std::function<void (Event)> UserControlThing::pHandler()
+{
+    return std::bind(&UserControlThing::handle, this, std::placeholders::_1);
+}
+
 AutoControlThing::AutoControlThing(ObjectType o): Thing(o) {}
 
 void Controller::boundHelper(Thing *thing)
@@ -219,7 +224,7 @@ void Controller::init
     {
         producers.push_back(ps[i]);
     }
-    screen.init(h, w, i, ::handle);
+    screen.init(h, w, users[0] -> pHandler());
     
     for (int i = 0; i < nUser; i++)
     {
