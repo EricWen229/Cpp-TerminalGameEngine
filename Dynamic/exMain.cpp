@@ -25,8 +25,10 @@ int main()
     auto p = ObjectInfos().getObjectInfo(1);
     p -> getDynamicFn("sayHello")((void *)&b);
     
-    auto q = ObjectInfos().getObjectInfo(2);
-    /* q -> getDynamicFn("sayHello")(b); */
+    auto q = ObjectInfos().getObjectInfo(3);
+    q -> getDynamicFn("sayHello")(b);
+    std::cout << GetObjectId()() << std::endl;
+    std::cout << GetObjectId()() << std::endl;
     
     delete f;
     delete s;
