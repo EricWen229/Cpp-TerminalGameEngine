@@ -112,7 +112,9 @@ void TestDynamic::testRegDynamicFn()
     CPPUNIT_ASSERT(s -> getObjectInfo().getDynamicFn("sayHello") != null);
     CPPUNIT_ASSERT(g -> getObjectInfo().getDynamicFn("sayHi") != null);
     
-    int arr[] = { 1 };
+    int a = 1;
+    char b = 'z';
+    void *arr[] = { (void *) &a, (void *) &b };
     f -> getObjectInfo().getDynamicFn("sayHello")((void *)arr);
     s -> getObjectInfo().getDynamicFn("sayHello")((void *)arr);
     g -> getObjectInfo().getDynamicFn("sayHi")((void *)arr);
