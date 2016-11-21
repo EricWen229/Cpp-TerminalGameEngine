@@ -8,11 +8,15 @@
 
 #define null nullptr
 
+typedef int ObjectId;
+
 #define Declare_Class \
     protected: \
         static ClassInfo_S classInfo_s; \
         ClassInfo_N classInfo_n; \
     public:  \
+        ObjectId objectId; \
+    public: \
         static void RegisterInfo_S(); \
         virtual void RegisterInfo_N(); \
         virtual ClassInfo_S &getClassInfo_S(); \
@@ -32,6 +36,9 @@
       this, \
       std::placeholders::_1, \
       std::placeholders::_2));
+
+#define Register_Object(className) \
+    ObjectInfos().regObject(objectId, &classInfo_n);
 
 class Object;
 
@@ -60,7 +67,6 @@ class ClassInfo_N
         typedef std::function<void *(void *, int)> DynamicFn;
         
     private:
-        const std::string className;
         typedef std::map<std::string, DynamicFn> FunsMap;
         FunsMap funsMap;
         
@@ -87,6 +93,22 @@ class ClassInfos
         void regClass(const std::string &className, ClassInfo_S *ci);
         void outClass(const std::string &className);
         ClassInfo_S *getClassInfo(const std::string &className);
+};
+
+/* singleton */
+class ObjectInfos
+{
+    private:
+        typedef std::map<ObjectId, ClassInfo_N *> InfosMap;
+        static InfosMap infosMap;
+        
+    public:
+        ObjectInfos();
+        ~ObjectInfos();
+        
+        void regObject(ObjectId id, ClassInfo_N *ci);
+        void outObject(ObjectId id);
+        ClassInfo_N *getObjectInfo(ObjectId id);
 };
 
 #endif

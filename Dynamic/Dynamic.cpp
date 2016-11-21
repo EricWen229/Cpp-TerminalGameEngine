@@ -78,3 +78,36 @@ ClassInfo_S *ClassInfos::getClassInfo(const std::string &className)
         return it -> second;
     }
 }
+
+std::map<ObjectId, ClassInfo_N *> ObjectInfos::infosMap;
+
+ObjectInfos::ObjectInfos() {}
+
+ObjectInfos::~ObjectInfos() {}
+
+void ObjectInfos::regObject(ObjectId id, ClassInfo_N *ci)
+{
+    infosMap.insert(InfosMap::value_type(id, ci));
+}
+
+void ObjectInfos::outObject(ObjectId id)
+{
+    InfosMap::const_iterator it = infosMap.find(id);
+    if (it != infosMap.end())
+    {
+        infosMap.erase(it);
+    }
+}
+
+ClassInfo_N *ObjectInfos::getObjectInfo(ObjectId id)
+{
+    InfosMap::const_iterator it = infosMap.find(id);
+    if (it == infosMap.end())
+    {
+        return null;
+    }
+    else
+    {
+        return it -> second;
+    }
+}
