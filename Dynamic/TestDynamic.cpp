@@ -5,7 +5,7 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestDynamic, "TestDynamic");
 TestDynamic::TestDynamic() {}
 TestDynamic::~TestDynamic() {}
 
-void TestDynamic::testGetName_S()
+void TestDynamic::testGetClassName()
 {
     Father::RegisterClassInfo();
     Son::RegisterClassInfo();
@@ -30,7 +30,7 @@ void TestDynamic::testGetName_S()
     delete g;
 }
 
-void TestDynamic::testGetContructor_S()
+void TestDynamic::testGetClassConstructor()
 {
     Father::RegisterClassInfo();
     Son::RegisterClassInfo();
@@ -169,6 +169,43 @@ void TestDynamic::testGetObjectId()
     ObjectId id1 = GetObjectId()();
     ObjectId id2 = GetObjectId()();
     CPPUNIT_ASSERT(id1 == id2 - 1);
+}
+
+void TestDynamic::testRegObjectAndOutObject()
+{
+    Father::RegisterClassInfo();
+    Son::RegisterClassInfo();
+    GrandSon::RegisterClassInfo();
+    
+    Father *f =
+        (Father *)ClassInfos().getClassInfo("Father")
+        -> getConstructor()(null);
+    Father *s =
+        (Father *)ClassInfos().getClassInfo("Son")
+        -> getConstructor()(null);
+    Father *g =
+        (Father *)ClassInfos().getClassInfo("GrandSon")
+        -> getConstructor()(null);
+        
+    f -> RegisterObjectInfo();
+    s -> RegisterObjectInfo();
+    g -> RegisterObjectInfo();
+    
+    ObjectId fid = f -> objectId;
+    ObjectId sid = s -> objectId;
+    ObjectId gid = g -> objectId;
+    
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(fid) != null);
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(sid) != null);
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(gid) != null);
+    
+    delete f;
+    delete s;
+    delete g;
+    
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(fid) == null);
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(sid) == null);
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(gid) == null);
 }
 
 void TestDynamic::testGetDynamicFnByIdAndStr()
