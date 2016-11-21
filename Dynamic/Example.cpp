@@ -6,7 +6,7 @@ Implement_Class(Father)
     Register_Fn(Father, sayHello);
 }
 
-Father::Father(): objectId(GetObjectId()()) {}
+Father::Father(): RootObject() {}
 
 Father::~Father()
 {
@@ -31,7 +31,7 @@ Implement_Class(Son)
     Register_Fn(Son, sayHello);
 }
 
-Son::Son(): objectId(GetObjectId()()) {}
+Son::Son(): Father() {}
 
 Son::~Son()
 {

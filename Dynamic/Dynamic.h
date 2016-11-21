@@ -19,12 +19,18 @@ class GetObjectId
         ObjectId operator()();
 };
 
+class RootObject
+{
+    public:
+        const ObjectId objectId;
+        RootObject();
+        virtual ~RootObject();
+};
+
 #define Declare_Class \
     protected: \
         static ClassInfo classInfo; \
         ObjectInfo objectInfo; \
-    public:  \
-        const ObjectId objectId; \
     public: \
         static void RegisterClassInfo(); \
         virtual void RegisterObjectInfo(); \

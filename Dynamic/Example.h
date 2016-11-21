@@ -4,7 +4,7 @@
 #include "Dynamic.h"
 
 /* example */
-class Father
+class Father: public RootObject
 {
         Declare_Class;
     public:

@@ -195,4 +195,8 @@ void TestDynamic::testGetDynamicFnByIdAndStr()
     auto p = ObjectInfos().getObjectInfo(s -> objectId);
     ObjectInfos().getObjectInfo(s -> objectId) -> getDynamicFn("sayHello")(null);
     ObjectInfos().getObjectInfo(g -> objectId) -> getDynamicFn("sayHi")(null);
+    
+    delete f;
+    delete s;
+    delete g;
 }

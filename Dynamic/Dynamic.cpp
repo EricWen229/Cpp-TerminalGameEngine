@@ -8,6 +8,10 @@ ObjectId GetObjectId::operator()()
     return num;
 }
 
+RootObject::RootObject(): objectId(GetObjectId()()) {}
+
+RootObject::~RootObject() {}
+
 ClassInfo::ClassInfo(std::string cn, ConFn cfn):
     className(cn), constructorFn(cfn) {}
 
