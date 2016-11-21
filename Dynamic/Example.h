@@ -13,9 +13,9 @@ class Father
         /* 可能是std:bind中类似于智能指针导致的问题 */
         virtual ~Father();
         
-        static Father *createObject(void **unusedP, int unusedI);
+        static Father *createObject(void *unusedP);
         
-        virtual void *sayHello(void *unusedP, int unusedI);
+        virtual void *sayHello(void *unusedP);
 };
 
 class Son: public Father
@@ -25,8 +25,8 @@ class Son: public Father
         Son();
         virtual ~Son();
         
-        static Son *createObject(void **unusedP, int unusedI);
-        void *sayHello(void *unusedP, int unusedI);
+        static Son *createObject(void *unusedP);
+        void *sayHello(void *unusedP);
 };
 
 #endif

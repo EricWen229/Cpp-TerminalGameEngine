@@ -43,8 +43,7 @@ class GetObjectId
     (#funcName, std::bind \
      (&className::funcName, \
       this, \
-      std::placeholders::_1, \
-      std::placeholders::_2));
+      std::placeholders::_1));
 
 #define Register_Object(className) \
     ObjectInfos().regObject(objectId, &objectInfo);
@@ -58,7 +57,7 @@ class Object;
 class ClassInfo
 {
     public:
-        typedef void *(*ConFn)(void **, int);
+        typedef void *(*ConFn)(void *);
         
     private:
         const std::string className;
@@ -76,7 +75,7 @@ class ClassInfo
 class ObjectInfo
 {
     public:
-        typedef std::function<void *(void *, int)> DynamicFn;
+        typedef std::function<void *(void *)> DynamicFn;
         
     private:
         typedef std::map<std::string, DynamicFn> FunsMap;

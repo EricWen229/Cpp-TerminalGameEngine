@@ -7,11 +7,11 @@ class GrandSon: public Son
         Declare_Class;
     public:
         GrandSon(): objectId(GetObjectId()()) {}
-        static void *createObject(void *, int)
+        static void *createObject(void *)
         {
             return new GrandSon;
         }
-        void *sayHi(void *p, int n)
+        void *sayHi(void *p)
         {
             return null;
         }

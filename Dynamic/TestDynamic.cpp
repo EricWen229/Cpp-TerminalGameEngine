@@ -13,13 +13,13 @@ void TestDynamic::testGetName_S()
     
     Father *f =
         (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *s =
         (Father *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *g =
         (Father *)ClassInfos().getClassInfo("GrandSon")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
         
     CPPUNIT_ASSERT(f -> getClassInfo().getName() == "Father");
     CPPUNIT_ASSERT(s -> getClassInfo().getName() == "Son");
@@ -38,13 +38,13 @@ void TestDynamic::testGetContructor_S()
     
     Father *f =
         (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *s =
         (Father *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *g =
         (Father *)ClassInfos().getClassInfo("GrandSon")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
         
     CPPUNIT_ASSERT
     (f -> getClassInfo().getConstructor()
@@ -56,9 +56,9 @@ void TestDynamic::testGetContructor_S()
     (g -> getClassInfo().getConstructor()
      == (ClassInfo::ConFn)GrandSon::createObject);
      
-    Father *ff = (Father *)f -> getClassInfo().getConstructor()(null, 0);
-    Father *ss = (Father *)s -> getClassInfo().getConstructor()(null, 0);
-    Father *gg = (Father *)g -> getClassInfo().getConstructor()(null, 0);
+    Father *ff = (Father *)f -> getClassInfo().getConstructor()(null);
+    Father *ss = (Father *)s -> getClassInfo().getConstructor()(null);
+    Father *gg = (Father *)g -> getClassInfo().getConstructor()(null);
     
     CPPUNIT_ASSERT(ff -> getClassInfo().getName() == "Father");
     CPPUNIT_ASSERT(ss -> getClassInfo().getName() == "Son");
@@ -96,13 +96,13 @@ void TestDynamic::testRegDynamicFn()
     
     Father *f =
         (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *s =
         (Father *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *g =
         (Father *)ClassInfos().getClassInfo("GrandSon")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
         
     f -> RegisterObjectInfo();
     g -> RegisterObjectInfo();
@@ -113,13 +113,13 @@ void TestDynamic::testRegDynamicFn()
     CPPUNIT_ASSERT(g -> getObjectInfo().getDynamicFn("sayHi") != null);
     
     int arr[] = { 1 };
-    f -> getObjectInfo().getDynamicFn("sayHello")((void *)arr, 1);
-    s -> getObjectInfo().getDynamicFn("sayHello")((void *)arr, 1);
-    g -> getObjectInfo().getDynamicFn("sayHi")((void *)arr, 1);
+    f -> getObjectInfo().getDynamicFn("sayHello")((void *)arr);
+    s -> getObjectInfo().getDynamicFn("sayHello")((void *)arr);
+    g -> getObjectInfo().getDynamicFn("sayHi")((void *)arr);
     
     g -> getObjectInfo().regDynamicFn
-    ("Test", [](void *, int)->void * {return null;});
-    g -> getObjectInfo().getDynamicFn("Test")(null, 0);
+    ("Test", [](void *)->void * {return null;});
+    g -> getObjectInfo().getDynamicFn("Test")(null);
     
     delete f;
     delete s;
@@ -134,13 +134,13 @@ void TestDynamic::testOutDynamicFn()
     
     Father *f =
         (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *s =
         (Father *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     Father *g =
         (Father *)ClassInfos().getClassInfo("GrandSon")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
         
     f -> RegisterObjectInfo();
     g -> RegisterObjectInfo();

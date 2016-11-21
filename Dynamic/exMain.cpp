@@ -9,19 +9,19 @@ int main()
     Father::RegisterClassInfo();
     Father *f =
         (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     f -> RegisterObjectInfo();
-    f -> getObjectInfo().getDynamicFn("sayHello")((void **)&b, 1);
+    f -> getObjectInfo().getDynamicFn("sayHello")((void *)&b);
     
     Son::RegisterClassInfo();
     Father *s =
         (Son *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null, 0);
+        -> getConstructor()(null);
     s -> RegisterObjectInfo();
-    s -> getObjectInfo().getDynamicFn("sayHello")((void **)&b, 1);
+    s -> getObjectInfo().getDynamicFn("sayHello")((void *)&b);
     
     auto p = ObjectInfos().getObjectInfo(1);
-    p -> getDynamicFn("sayHello")((void **)&b, 1);
+    p -> getDynamicFn("sayHello")((void *)&b);
     
     delete f;
     delete s;
