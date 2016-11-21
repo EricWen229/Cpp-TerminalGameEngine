@@ -21,7 +21,7 @@ Father *Father::createObject(void *unusedP)
 void *Father::sayHello(void *unusedP)
 {
     std::cout << "Hello!" << std::endl;
-    std::cout << ((int *)unusedP)[0] << std::endl;
+    /* std::cout << ((int *)unusedP)[0] << std::endl; */
     return null;
 }
 
@@ -45,6 +45,16 @@ Son *Son::createObject(void *unusedP)
 
 void *Son::sayHello(void *unusedP)
 {
-    std::cout << "Hi!" << std::endl;
+    if (unusedP == null)
+    {
+        std::cout << "Hi!" << std::endl;
+    }
+    else
+    {
+        void **p = (void **)unusedP;
+        int a = *((int *)p[0]);
+        char b = *((char *)p[1]);
+        std::cout << a << " " << b << std::endl;
+    }
     return null;
 }

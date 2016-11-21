@@ -4,7 +4,9 @@
 
 int main()
 {
-    int b[] = { 2 };
+    int x = 1;
+    int c = 'c';
+    void *b[] = {(void *) &x, (void *) &c};
     
     Father::RegisterClassInfo();
     Father *f =
@@ -22,6 +24,9 @@ int main()
     
     auto p = ObjectInfos().getObjectInfo(1);
     p -> getDynamicFn("sayHello")((void *)&b);
+    
+    auto q = ObjectInfos().getObjectInfo(2);
+    /* q -> getDynamicFn("sayHello")(b); */
     
     delete f;
     delete s;
