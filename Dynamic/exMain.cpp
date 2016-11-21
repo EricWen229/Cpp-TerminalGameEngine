@@ -20,6 +20,8 @@ int main()
     s -> RegisterObjectInfo();
     s -> getObjectInfo().getDynamicFn("sayHello")((void **)&b, 1);
     
+    ObjectInfos().getObjectInfo(1) -> getDynamicFn("sayHello")(null, 0);
+    
     delete f;
     delete s;
 }
