@@ -6,6 +6,8 @@
 #include <queue>
 #include <functional>
 
+#define Exit -1
+
 typedef std::string Msg;
 
 class Message
@@ -28,13 +30,16 @@ class MailBox
         static Semaphore mutex;
         
     private:
-        void *loopHelper(void *unused);
+        static pthread_t pid;
+        static void *loopHelper(void *unused);
         
     public:
         MailBox();
         ~MailBox();
+        
         void put(Message m);
         void loop();
+        void end();
 };
 
 #endif
