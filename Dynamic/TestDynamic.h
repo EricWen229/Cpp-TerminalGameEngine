@@ -19,6 +19,7 @@ class GrandSon: public Son
 
 Implement_Class(GrandSon)
 {
+    Register_Object(GrandSon);
     Register_Fn(GrandSon, sayHi);
 }
 
@@ -32,6 +33,8 @@ class TestDynamic: public CppUnit::TestFixture
         CPPUNIT_TEST(testOutClass);
         CPPUNIT_TEST(testRegDynamicFn);
         CPPUNIT_TEST(testOutDynamicFn);
+        CPPUNIT_TEST(testGetObjectId);
+        CPPUNIT_TEST(testGetDynamicFnByIdAndStr);
         CPPUNIT_TEST_SUITE_END();
         
     public:
@@ -48,4 +51,6 @@ class TestDynamic: public CppUnit::TestFixture
         void testOutDynamicFn();
         /* have been tested in other test functions */
         /* void testGetDynamicFn(); */
+        void testGetObjectId();
+        void testGetDynamicFnByIdAndStr();
 };

@@ -163,3 +163,36 @@ void TestDynamic::testOutDynamicFn()
     delete s;
     delete g;
 }
+
+void TestDynamic::testGetObjectId()
+{
+    ObjectId id1 = GetObjectId()();
+    ObjectId id2 = GetObjectId()();
+    CPPUNIT_ASSERT(id1 == id2 - 1);
+}
+
+void TestDynamic::testGetDynamicFnByIdAndStr()
+{
+    Father::RegisterClassInfo();
+    Son::RegisterClassInfo();
+    GrandSon::RegisterClassInfo();
+    
+    Father *f =
+        (Father *)ClassInfos().getClassInfo("Father")
+        -> getConstructor()(null);
+    Father *s =
+        (Father *)ClassInfos().getClassInfo("Son")
+        -> getConstructor()(null);
+    Father *g =
+        (Father *)ClassInfos().getClassInfo("GrandSon")
+        -> getConstructor()(null);
+        
+    f -> RegisterObjectInfo();
+    s -> RegisterObjectInfo();
+    g -> RegisterObjectInfo();
+    
+    ObjectInfos().getObjectInfo(f -> objectId) -> getDynamicFn("sayHello")(null);
+    auto p = ObjectInfos().getObjectInfo(s -> objectId);
+    ObjectInfos().getObjectInfo(s -> objectId) -> getDynamicFn("sayHello")(null);
+    ObjectInfos().getObjectInfo(g -> objectId) -> getDynamicFn("sayHi")(null);
+}
