@@ -27,6 +27,7 @@ class TestDynamic: public CppUnit::TestFixture
 {
     private:
         CPPUNIT_TEST_SUITE(TestDynamic);
+        CPPUNIT_TEST(testGetDynamicFnByIdAndStr);
         CPPUNIT_TEST(testGetName_S);
         CPPUNIT_TEST(testGetContructor_S);
         CPPUNIT_TEST(testRegClass);
@@ -34,7 +35,6 @@ class TestDynamic: public CppUnit::TestFixture
         CPPUNIT_TEST(testRegDynamicFn);
         CPPUNIT_TEST(testOutDynamicFn);
         CPPUNIT_TEST(testGetObjectId);
-        CPPUNIT_TEST(testGetDynamicFnByIdAndStr);
         CPPUNIT_TEST_SUITE_END();
         
     public:
