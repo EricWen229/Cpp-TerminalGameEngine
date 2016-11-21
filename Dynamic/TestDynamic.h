@@ -6,6 +6,7 @@ class GrandSon: public Son
 {
         Declare_Class;
     public:
+        GrandSon(): objectId(GetObjectId()()) {}
         static void *createObject(void *, int)
         {
             return new GrandSon;

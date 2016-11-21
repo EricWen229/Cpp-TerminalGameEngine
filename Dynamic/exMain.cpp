@@ -6,19 +6,19 @@ int main()
 {
     int b[] = { 2 };
     
-    Father::RegisterInfo_S();
+    Father::RegisterClassInfo();
     Father *f =
         (Father *)ClassInfos().getClassInfo("Father")
         -> getConstructor()(null, 0);
-    f -> RegisterInfo_N();
-    f -> getClassInfo_N().getDynamicFn("sayHello")((void **)&b, 1);
+    f -> RegisterObjectInfo();
+    f -> getObjectInfo().getDynamicFn("sayHello")((void **)&b, 1);
     
-    Son::RegisterInfo_S();
+    Son::RegisterClassInfo();
     Father *s =
         (Son *)ClassInfos().getClassInfo("Son")
         -> getConstructor()(null, 0);
-    s -> RegisterInfo_N();
-    s -> getClassInfo_N().getDynamicFn("sayHello")((void **)&b, 1);
+    s -> RegisterObjectInfo();
+    s -> getObjectInfo().getDynamicFn("sayHello")((void **)&b, 1);
     
     delete f;
     delete s;

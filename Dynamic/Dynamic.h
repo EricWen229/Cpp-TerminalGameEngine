@@ -10,27 +10,36 @@
 
 typedef int ObjectId;
 
+class GetObjectId
+{
+    private:
+        static ObjectId num;
+        
+    public:
+        ObjectId operator()();
+};
+
 #define Declare_Class \
     protected: \
-        static ClassInfo_S classInfo_s; \
-        ClassInfo_N classInfo_n; \
+        static ClassInfo classInfo; \
+        ObjectInfo objectInfo; \
     public:  \
-        ObjectId objectId; \
+        const ObjectId objectId; \
     public: \
-        static void RegisterInfo_S(); \
-        virtual void RegisterInfo_N(); \
-        virtual ClassInfo_S &getClassInfo_S(); \
-        virtual ClassInfo_N &getClassInfo_N();
+        static void RegisterClassInfo(); \
+        virtual void RegisterObjectInfo(); \
+        virtual ClassInfo &getClassInfo(); \
+        virtual ObjectInfo &getObjectInfo();
 
 #define Implement_Class(name) \
-    ClassInfo_S name::classInfo_s((#name), (ClassInfo_S::ConFn)name::createObject); \
-    void name::RegisterInfo_S() { ClassInfos().regClass(#name, &name::classInfo_s); } \
-    ClassInfo_S &name::getClassInfo_S() { return classInfo_s; } \
-    ClassInfo_N &name::getClassInfo_N() { return classInfo_n; } \
-    void name::RegisterInfo_N()
+    ClassInfo name::classInfo((#name), (ClassInfo::ConFn)name::createObject); \
+    void name::RegisterClassInfo() { ClassInfos().regClass(#name, &name::classInfo); } \
+    ClassInfo &name::getClassInfo() { return classInfo; } \
+    ObjectInfo &name::getObjectInfo() { return objectInfo; } \
+    void name::RegisterObjectInfo()
 
 #define Register_Fn(className, funcName) \
-    classInfo_n.regDynamicFn \
+    objectInfo.regDynamicFn \
     (#funcName, std::bind \
      (&className::funcName, \
       this, \
@@ -38,12 +47,15 @@ typedef int ObjectId;
       std::placeholders::_2));
 
 #define Register_Object(className) \
-    ObjectInfos().regObject(objectId, &classInfo_n);
+    ObjectInfos().regObject(objectId, &objectInfo);
+
+#define Out_Object(className) \
+    ObjectInfos().outObject(objectId);
 
 class Object;
 
 /* S represent Static */
-class ClassInfo_S
+class ClassInfo
 {
     public:
         typedef void *(*ConFn)(void **, int);
@@ -53,15 +65,15 @@ class ClassInfo_S
         const ConFn constructorFn;
         
     public:
-        ClassInfo_S(std::string cn, ConFn cfn);
-        ~ClassInfo_S();
+        ClassInfo(std::string cn, ConFn cfn);
+        ~ClassInfo();
         
         const std::string &getName();
         ConFn getConstructor();
 };
 
 /* N represent Non-Static */
-class ClassInfo_N
+class ObjectInfo
 {
     public:
         typedef std::function<void *(void *, int)> DynamicFn;
@@ -71,8 +83,8 @@ class ClassInfo_N
         FunsMap funsMap;
         
     public:
-        ClassInfo_N();
-        ~ClassInfo_N();
+        ObjectInfo();
+        ~ObjectInfo();
         
         void regDynamicFn(const std::string &funcName, DynamicFn fn);
         void outDynamicFn(const std::string &funcName);
@@ -83,32 +95,32 @@ class ClassInfo_N
 class ClassInfos
 {
     private:
-        typedef std::map<std::string, ClassInfo_S *> InfosMap;
+        typedef std::map<std::string, ClassInfo *> InfosMap;
         static InfosMap infosMap;
         
     public:
         ClassInfos();
         ~ClassInfos();
         
-        void regClass(const std::string &className, ClassInfo_S *ci);
+        void regClass(const std::string &className, ClassInfo *ci);
         void outClass(const std::string &className);
-        ClassInfo_S *getClassInfo(const std::string &className);
+        ClassInfo *getClassInfo(const std::string &className);
 };
 
 /* singleton */
 class ObjectInfos
 {
     private:
-        typedef std::map<ObjectId, ClassInfo_N *> InfosMap;
+        typedef std::map<ObjectId, ObjectInfo *> InfosMap;
         static InfosMap infosMap;
         
     public:
         ObjectInfos();
         ~ObjectInfos();
         
-        void regObject(ObjectId id, ClassInfo_N *ci);
+        void regObject(ObjectId id, ObjectInfo *ci);
         void outObject(ObjectId id);
-        ClassInfo_N *getObjectInfo(ObjectId id);
+        ObjectInfo *getObjectInfo(ObjectId id);
 };
 
 #endif

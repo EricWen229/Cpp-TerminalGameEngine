@@ -2,12 +2,16 @@
 
 Implement_Class(Father)
 {
+    Register_Object(Father);
     Register_Fn(Father, sayHello);
 }
 
-Father::Father() {}
+Father::Father(): objectId(GetObjectId()()) {}
 
-Father::~Father() {}
+Father::~Father()
+{
+    Out_Object(Father);
+}
 
 Father *Father::createObject(void **unusedP, int unusedI)
 {
@@ -24,12 +28,16 @@ void *Father::sayHello(void *unusedP, int unusedI)
 
 Implement_Class(Son)
 {
+    Register_Object(Son);
     Register_Fn(Son, sayHello);
 }
 
-Son::Son() {}
+Son::Son(): objectId(GetObjectId()()) {}
 
-Son::~Son() {}
+Son::~Son()
+{
+    Out_Object(Son);
+}
 
 Son *Son::createObject(void **unusedP, int unusedI)
 {
