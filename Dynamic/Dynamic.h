@@ -19,6 +19,8 @@ class GetObjectId
         ObjectId operator()();
 };
 
+/* 如果要使用根据id和成员函数名调用成员函数，继承体系上必须有它作为父类 */
+/* 且不要多次继承 */
 class RootObject
 {
     public:
