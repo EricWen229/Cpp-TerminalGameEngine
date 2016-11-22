@@ -24,9 +24,22 @@ void *MailBox::loopHelper(void *unused)
         {
             break;
         }
+        auto object = ObjectInfos().getObjectInfo(m.to);
+        if (object == null)
+        {
+            msgs.pop();
+            mutex.V();
+            continue;
+        }
         std::function<void *(void *)> handle =
-            ObjectInfos().getObjectInfo(m.to) ->
+            object ->
             getDynamicFn(std::string("handleMessage") + m.type);
+        if (handle == null)
+        {
+            msgs.pop();
+            mutex.V();
+            continue;
+        }
 #ifdef AsyncCallback
         locker.P();
         void *paras[2] =
@@ -34,15 +47,9 @@ void *MailBox::loopHelper(void *unused)
             (void *) &locker,
             (void *) &m
         };
-        if (handle != null)
-        {
-            std::thread(handle, (void *)paras).detach();
-        }
+        std::thread(handle, (void *)paras).detach();
 #else
-        if (handle != null)
-        {
-            handle((void *)&m);
-        }
+        handle((void *)&m);
 #endif
         msgs.pop();
         mutex.V();
