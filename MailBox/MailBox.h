@@ -6,13 +6,15 @@
 #include <queue>
 #include <functional>
 
+#define AsyncCallback
+
 #ifdef AsyncCallback
-    #include <thread>
-#endif
+#include <thread>
 #define TopHalf(para, locker, message) \
     void **avoidConflictWithUser = (void **)para; \
     Semaphore &locker = *((Semaphore *)avoidConflictWithUser[0]); \
     Message &message = *((Message *)avoidConflictWithUser[1]);
+#endif
 
 #define Exit -1
 
