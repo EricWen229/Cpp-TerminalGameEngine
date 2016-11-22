@@ -30,7 +30,7 @@ class Screen
         static Interface::HandleFunc handleFunc;
         
         static std::vector<ManBook> books;
-        static pthread_t pid;
+        static Thread pid;
         
         static void *runHelper(void *unused);
         

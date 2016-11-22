@@ -5,7 +5,7 @@ SmartArray<char> Screen::buffer;
 int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
 Interface::HandleFunc Screen::handleFunc;
-pthread_t Screen::pid;
+Thread Screen::pid;
 
 void *Screen::runHelper(void *unused)
 {

@@ -11,7 +11,7 @@ Semaphore MailBox::mutex(1);
 #ifdef AsyncCallback
     Semaphore MailBox::locker(1);
 #endif
-pthread_t MailBox::pid;
+Thread MailBox::pid;
 
 void *MailBox::loopHelper(void *unused)
 {

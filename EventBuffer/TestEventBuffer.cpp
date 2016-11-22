@@ -26,7 +26,7 @@ void *put(void *unused)
 
 void TestEventBuffer::testA()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(get),
         createPthread(get),
@@ -42,7 +42,7 @@ void TestEventBuffer::testA()
 
 void TestEventBuffer::testB()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(get),
         createPthread(get),
@@ -58,7 +58,7 @@ void TestEventBuffer::testB()
 
 void TestEventBuffer::testC()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -74,7 +74,7 @@ void TestEventBuffer::testC()
 
 void TestEventBuffer::testD()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(put),
@@ -94,7 +94,7 @@ void TestEventBuffer::testD()
 
 void TestEventBuffer::testE()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -114,7 +114,7 @@ void TestEventBuffer::testE()
 
 void TestEventBuffer::testF()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -134,7 +134,7 @@ void TestEventBuffer::testF()
 
 void TestEventBuffer::testG()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -154,7 +154,7 @@ void TestEventBuffer::testG()
 
 void TestEventBuffer::testH()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -174,7 +174,7 @@ void TestEventBuffer::testH()
 
 void TestEventBuffer::testI()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -194,7 +194,7 @@ void TestEventBuffer::testI()
 
 void TestEventBuffer::testJ()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(put),
         createPthread(get),
@@ -214,7 +214,7 @@ void TestEventBuffer::testJ()
 
 void TestEventBuffer::testK()
 {
-    pthread_t p[] =
+    Thread p[] =
     {
         createPthread(get),
         createPthread(get),

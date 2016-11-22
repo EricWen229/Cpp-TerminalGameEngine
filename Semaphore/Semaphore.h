@@ -12,7 +12,7 @@
     typedef std::thread Thread;
 #else
     #include <pthread.h>
-    typedef pthread_t Thread;
+    typedef Thread Thread;
 #endif
 
 #define null nullptr

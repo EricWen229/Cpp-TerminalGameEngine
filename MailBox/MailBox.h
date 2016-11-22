@@ -43,7 +43,7 @@ class MailBox
 #endif
         
     private:
-        static pthread_t pid;
+        static Thread pid;
         static void *loopHelper(void *unused);
         
     public:

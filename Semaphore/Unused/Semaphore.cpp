@@ -65,14 +65,14 @@ int Semaphore::get()
     return semctl(sem_id, 0, GETVAL, 0);
 }
 
-pthread_t createPthread(void *func(void *unused))
+Thread createPthread(void *func(void *unused))
 {
-    pthread_t thread_id;
+    Thread thread_id;
     pthread_create (&thread_id, NULL, func, NULL);
     return thread_id;
 }
 
-void waitPthread(pthread_t thread_id)
+void waitPthread(Thread thread_id)
 {
     pthread_join(thread_id, NULL);
 }

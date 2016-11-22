@@ -34,7 +34,7 @@ class Semaphore
         int get();
 };
 
-pthread_t createPthread(void *func(void *unused));
-void waitPthread(pthread_t thread_id);
+Thread createPthread(void *func(void *unused));
+void waitPthread(Thread thread_id);
 
 #endif

@@ -5,7 +5,7 @@ Interface::~Interface() {}
 EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
 Ncurses::HandleFunc Ncurses::hf;
-pthread_t Ncurses::pid[3];
+Thread Ncurses::pid[3];
 bool Ncurses::exit;
 
 void *Ncurses::input(void *)

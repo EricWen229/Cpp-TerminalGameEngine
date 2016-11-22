@@ -27,7 +27,7 @@ class Ncurses: public Interface
         static EventBuffer eb;
         static SmartArray<char> buffer;
         static HandleFunc hf;
-        static pthread_t pid[3];
+        static Thread pid[3];
         static bool exit;
         
         static void *input(void *unused);
