@@ -6,7 +6,7 @@
 #include <queue>
 #include <functional>
 
-#define AsyncCallback
+/* #define AsyncCallback */
 
 #ifdef AsyncCallback
 #include <thread>
