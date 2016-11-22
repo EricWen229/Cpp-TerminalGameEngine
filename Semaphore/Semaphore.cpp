@@ -29,14 +29,24 @@ int Semaphore::get()
     return count;
 }
 
-pthread_t createPthread(void *func(void *unused))
+#ifdef UseCppThread
+Thread createPthread(std::function<void *(void *)> func)
 {
-    pthread_t thread_id;
+    return std::thread(func, null);
+}
+void waitPthread(Thread &thread_id)
+{
+    thread_id.join();
+}
+#else
+Thread createPthread(void *func(void *unused))
+{
+    Thread thread_id;
     pthread_create (&thread_id, NULL, func, NULL);
     return thread_id;
 }
-
-void waitPthread(pthread_t thread_id)
+void waitPthread(Thread thread_id)
 {
     pthread_join(thread_id, NULL);
 }
+#endif

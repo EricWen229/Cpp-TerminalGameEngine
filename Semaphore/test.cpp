@@ -46,7 +46,7 @@ void *customer(void *unused)
 int main()
 {
     std::cout << "Judge" << (s2.get() != s.get()) << std::endl;
-    pthread_t p[] =
+    Thread p[] =
     {
         /* three customer should wait for 1, 2, 3 seconds */
         createPthread(customer),
@@ -67,10 +67,12 @@ int main()
     
     /* if you add the next line, the program should block. */
     sleep(1);
-    pthread_t id = createPthread(customer);
+    Thread id = createPthread(customer);
     sleep(1);
     std::cout << "Judge" << (s.get() == -1) << std::endl;
-    waitPthread(createPthread(producer2));
+    Thread at = createPthread(producer2);
+    waitPthread(at);
+    /* waitPthread(createPthread(producer2)); */
     waitPthread(id);
     std::cout << "Judge" << (s.get() == 2) << std::endl;
 }

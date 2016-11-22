@@ -3,7 +3,17 @@
 
 #include <mutex>
 #include <condition_variable>
-#include <pthread.h>
+
+#define UseCppThread
+
+#ifdef UseCppThread
+    #include <thread>
+    #include <functional>
+    typedef std::thread Thread;
+#else
+    #include <pthread.h>
+    typedef pthread_t Thread;
+#endif
 
 #define null nullptr
 
@@ -23,7 +33,12 @@ class Semaphore
         int get();
 };
 
-pthread_t createPthread(void *func(void *unused));
-void waitPthread(pthread_t thread_id);
+#ifdef UseCppThread
+    Thread createPthread(std::function<void *(void *)> func);
+    void waitPthread(Thread &thread_id);
+#else
+    Thread createPthread(void *func(void *unused));
+    void waitPthread(Thread thread_id);
+#endif
 
 #endif
