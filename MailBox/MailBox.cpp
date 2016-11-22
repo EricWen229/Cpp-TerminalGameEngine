@@ -1,7 +1,7 @@
 #include "MailBox.h"
 
-Message::Message(ObjectId f, ObjectId t, Msg m):
-    from(f), to(t), msg(m) {}
+Message::Message(ObjectId f, ObjectId t, Type ty, Description d):
+    from(f), to(t), type(ty), description(d) {}
 
 Message::~Message() {}
 
@@ -20,13 +20,13 @@ void *MailBox::loopHelper(void *unused)
         s.P();
         mutex.P();
         Message m = msgs.front();
-        if (m.from == Exit && m.to == Exit && m.msg == "")
+        if (m.type == "Exit")
         {
             break;
         }
         std::function<void *(void *)> handle =
             ObjectInfos().getObjectInfo(m.to) ->
-            getDynamicFn("handleMessage");
+            getDynamicFn(std::string("handleMessage") + m.type);
 #ifdef AsyncCallback
         locker.P();
         void *paras[2] =
@@ -69,6 +69,6 @@ void MailBox::loop()
 
 void MailBox::end()
 {
-    put(Message(Exit, Exit, ""));
+    put(Message(0, 0, "Exit", ""));
     waitPthread(pid);
 }

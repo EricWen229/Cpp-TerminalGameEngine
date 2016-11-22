@@ -18,17 +18,19 @@
 
 #define Exit -1
 
-typedef std::string Msg;
+typedef std::string Type;
+typedef std::string Description;
 
 class Message
 {
     public:
         const ObjectId from;
         const ObjectId to;
-        const Msg msg;
+        const Type type;
+        const Description description;
         
     public:
-        Message(ObjectId f, ObjectId t, Msg m);
+        Message(ObjectId f, ObjectId t, Type ty, Description d);
         ~Message();
 };
 

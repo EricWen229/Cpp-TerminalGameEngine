@@ -11,14 +11,14 @@ class Test: public RootObject
         {
             Out_Object(Test);
         }
-        void *handleMessage(void *pointer)
+        void *handleMessageInterval(void *pointer)
         {
 #ifdef AsyncCallback
             TopHalf(pointer, locker, msg);
             std::cout << msg.msg << std::endl;
             locker.V();
 #else
-            std::cout << ((Message *)pointer) -> msg << std::endl;
+            std::cout << ((Message *)pointer) -> description << std::endl;
 #endif
             return null;
         }
@@ -31,7 +31,7 @@ class Test: public RootObject
 Implement_Class(Test)
 {
     Register_Object(Test);
-    Register_Fn(Test, handleMessage);
+    Register_Fn(Test, handleMessageInterval);
 }
 
 int main()
@@ -40,8 +40,8 @@ int main()
     Test t1, t2;
     t1.RegisterObjectInfo();
     t2.RegisterObjectInfo();
-    MailBox().put(Message(t1.objectId, t2.objectId, "I love u"));
-    MailBox().put(Message(t2.objectId, t1.objectId, "I love u, too!"));
+    MailBox().put(Message(t1.objectId, t2.objectId, "Interval", "I love u"));
+    MailBox().put(Message(t2.objectId, t1.objectId, "Interval", "I love u, too!"));
     MailBox().end();
     
     /* wait */
