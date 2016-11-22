@@ -6,6 +6,14 @@
 #include <queue>
 #include <functional>
 
+#ifdef AsyncCallback
+    #include <thread>
+#endif
+#define TopHalf(para, locker, message) \
+    void **avoidConflictWithUser = (void **)para; \
+    Semaphore &locker = *((Semaphore *)avoidConflictWithUser[0]); \
+    Message &message = *((Message *)avoidConflictWithUser[1]);
+
 #define Exit -1
 
 typedef std::string Msg;
@@ -28,6 +36,9 @@ class MailBox
         static std::queue<Message> msgs;
         static Semaphore s;
         static Semaphore mutex;
+#ifdef AsyncCallback
+        static Semaphore locker;
+#endif
         
     private:
         static pthread_t pid;

@@ -1,6 +1,7 @@
 #include "MailBox.h"
 #include "../Dynamic/Dynamic.h"
 #include <iostream>
+#define AsyncCallback
 
 class Test: public RootObject
 {
@@ -13,7 +14,13 @@ class Test: public RootObject
         }
         void *handleMessage(void *pointer)
         {
+#ifndef AsyncCallback
             std::cout << ((Message *)pointer) -> msg << std::endl;
+#else
+            TopHalf(pointer, locker, msg);
+            std::cout << msg.msg << std::endl;
+            locker.V();
+#endif
             return null;
         }
         static void *createObject(void *)
