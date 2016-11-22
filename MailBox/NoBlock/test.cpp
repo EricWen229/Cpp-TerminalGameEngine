@@ -13,11 +13,9 @@ class Test: public RootObject
         }
         void *handleMessage(void *pointer)
         {
-            /* void **p = (void **)pointer; */
-            /* ((Semaphore *)p[0]) -> V(); */
-            /* std::cout << ((Message *)p[1]) -> msg << std::endl; */
-            FirstAction(pointer, p);
-            std::cout << ((Message *)p[0]) -> msg << std::endl;
+            TopHalf(pointer, locker, msg);
+            std::cout << msg.msg << std::endl;
+            locker.V();
             return null;
         }
         static void *createObject(void *)

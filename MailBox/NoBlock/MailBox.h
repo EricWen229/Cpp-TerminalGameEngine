@@ -7,10 +7,10 @@
 #include <functional>
 #include <thread>
 
-#define FirstAction(p1, p2) \
-    void **p2 = (void **)p1; \
-    ((Semaphore*)p2[0]) -> V(); \
-    p2 = &p2[1];
+#define TopHalf(para, locker, message) \
+    void **avoidConflictWithUser = (void **)para; \
+    Semaphore &locker = *((Semaphore *)avoidConflictWithUser[0]); \
+    Message &message = *((Message*)avoidConflictWithUser[1]);
 
 #define Exit -1
 
