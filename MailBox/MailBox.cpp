@@ -22,6 +22,8 @@ void *MailBox::loopHelper(void *unused)
         Message m = msgs.front();
         if (m.type == "Exit")
         {
+            msgs.pop();
+            mutex.V();
             break;
         }
         auto object = ObjectInfos().getObjectInfo(m.to);

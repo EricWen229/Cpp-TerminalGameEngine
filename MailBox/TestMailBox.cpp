@@ -29,6 +29,7 @@ void TestMailBox::testToObjectDisappear()
     Test t1, t2;
     t1.RegisterObjectInfo();
     MailBox().put(Message(t1.objectId, t2.objectId, "Interval", "I love u"));
+    sleep(1);
     CPPUNIT_ASSERT(0 == judgeHelper);
     MailBox().end();
 }
@@ -66,13 +67,13 @@ void TestMailBox::testToFuncDisappearButReg()
     Test t1, t2;
     t1.RegisterObjectInfo();
     t2.RegisterObjectInfo();
-    MailBox().put(Message(t1.objectId, t2.objectId, "In", "I love u"));
     t2.getObjectInfo().regDynamicFn("handleMessageIn", [&](void *p)
     {
         judgeHelper = 200;
         std::cout << ((Message *)p) -> description;
         return null;
     });
+    MailBox().put(Message(t1.objectId, t2.objectId, "In", "I love u"));
     sleep(1);
     CPPUNIT_ASSERT(200 == judgeHelper);
     MailBox().end();

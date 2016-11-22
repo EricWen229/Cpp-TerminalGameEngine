@@ -41,11 +41,11 @@ class TestMailBox: public CppUnit::TestFixture
 {
     private:
         CPPUNIT_TEST_SUITE(TestMailBox);
-        /* CPPUNIT_TEST(testNormal); */
+        CPPUNIT_TEST(testNormal);
         CPPUNIT_TEST(testToObjectDisappear);
-        /* CPPUNIT_TEST(testFromObjectDisappear); */
-        /* CPPUNIT_TEST(testToFuncDisappear); */
-        /* CPPUNIT_TEST(testToFuncDisappearButReg); */
+        CPPUNIT_TEST(testFromObjectDisappear);
+        CPPUNIT_TEST(testToFuncDisappear);
+        CPPUNIT_TEST(testToFuncDisappearButReg);
         CPPUNIT_TEST_SUITE_END();
         
     public:
