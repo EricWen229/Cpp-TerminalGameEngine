@@ -43,4 +43,7 @@ int main()
     MailBox().put(Message(t1.objectId, t2.objectId, "I love u"));
     MailBox().put(Message(t2.objectId, t1.objectId, "I love u, too!"));
     MailBox().end();
+    
+    /* wait */
+    for (int i = 0; i < 100000; i++);
 }
