@@ -21,6 +21,12 @@
 typedef std::string Type;
 typedef std::string Description;
 
+/* 发送消息的对象用from指代 */
+/* 接收消息的对象用to指代 */
+/* 要发送消息和接收消息的对象请继承一次RootObject（只继承一次，父亲类继承过则子类不需要也不应该继承） */
+/* 信息类型是type */
+/* 则相应的对象要实现handleMessagetype函数 */
+/* 框架的使用者只需要定义相应的handleMessagetype函数就可以使用该消息 */
 class Message
 {
     public:
