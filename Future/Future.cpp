@@ -12,6 +12,7 @@ void Future::begin()
 {
     std::function<void *(void *)> loop = [&](void *unused)
     {
+        /* 需要临界区 */
         fnResourse.P();
         AsyncFnType fn;
         ParasType paras;
@@ -59,6 +60,28 @@ bool Future::putParas(Id id, void *paras)
 bool Future::isReady(Id id)
 {
     return std::get<4>(container[id]);
+}
+
+void Future::wait(Id id)
+{
+    mutex.P();
+    for (std::list<Id>::const_iterator it = active.begin();
+            it != active.end(); it++)
+    {
+        if (*it == id)
+        {
+            active.erase(it);
+            break;
+        }
+    }
+    mutex.V();
+    fnResourse.P();
+    AsyncFnType fn;
+    ParasType paras;
+    std::tie(fn, paras, std::ignore, std::ignore, std::ignore) =
+        container[active.front()];
+    std::get<2>(container[id]) = fn(paras);
+    std::get<4>(container[id]) = true;
 }
 
 void *Future::getResult(Id id)

@@ -45,6 +45,7 @@ class Future
         ContainerType container;
         std::list<Id> active;
         /* std::list<Id> inactive; */
+        Semaphore mutex;
         Semaphore fnResourse;
         Thread thread;
         bool isExit;
@@ -57,6 +58,7 @@ class Future
         Id putAsyncFn(AsyncFnType);
         bool putParas(Id id, ParasType paras);
         bool isReady(Id id);
+        void wait(Id id);
         ResultType getResult(Id id);
 };
 
