@@ -1,7 +1,9 @@
 #ifndef Future_H
 #define Future_H
 
+#include "../Semaphore/Semaphore.h"
 #include <map>
+#include <list>
 #include <functional>
 #include <tuple>
 
@@ -41,6 +43,15 @@ class Future
         
     private:
         ContainerType container;
+        std::list<Id> active;
+        /* std::list<Id> inactive; */
+        Semaphore fnResourse;
+        Thread thread;
+        bool isExit;
+        
+    public:
+        void begin();
+        void end();
         
     public:
         Id putAsyncFn(AsyncFnType);
