@@ -1,5 +1,7 @@
 #include "Future.h"
+#include <assert.h>
 #include <iostream>
+#include <unistd.h>
 
 int main()
 {
@@ -11,6 +13,16 @@ int main()
         return nullptr;
     });
     future.putParas(id, nullptr);
+    Id wait = future.putAsyncFn([](void *unused)
+    {
+        sleep(2);
+        std::cout << "This is a sync function." << std::endl;
+        return nullptr;
+    });
+    future.putParas(wait, nullptr);
+    std::cout << "You can see the main thread wait for 2 seconds." << std::endl;
+    future.wait(wait);
+    assert(future.isReady(wait) == true);
     while (!future.isReady(id)) ;
     std::cout << "The async function is ready!" << std::endl;
     future.end();
