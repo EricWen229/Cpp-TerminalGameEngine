@@ -8,19 +8,29 @@ Id getId::operator()()
     return id;
 }
 
+Future::Future(): mutex(1) {}
+
 void Future::begin()
 {
     std::function<void *(void *)> loop = [&](void *unused)
     {
-        /* 需要临界区 */
-        fnResourse.P();
-        AsyncFnType fn;
-        ParasType paras;
-        std::tie(fn, paras, std::ignore, std::ignore, std::ignore) =
-            container[active.front()];
-        std::get<2>(container[active.front()]) = fn(paras);
-        std::get<4>(container[active.front()]) = true;
-        active.pop_front();
+        while (!isExit)
+        {
+            fnResourse.P();
+            mutex.P();
+            assert(active.size() > 0);
+            std::set<Id>::const_iterator it = active.begin();
+            Id id = *it;
+            active.erase(it);
+            mutex.V();
+            AsyncFnType fn;
+            ParasType paras;
+            assert(container.find(id) != container.end());
+            std::tie(fn, paras, std::ignore, std::ignore, std::ignore) =
+                container[id];
+            std::get<2>(container[id]) = fn(paras);
+            std::get<4>(container[id]) = true;
+        }
         return nullptr;
     };
     thread = createPthread(loop);
@@ -28,13 +38,17 @@ void Future::begin()
 
 void Future::end()
 {
+    isExit = true;
+    putParas(putAsyncFn([](void *unused)
+    {
+        return nullptr;
+    }), nullptr);
     waitPthread(thread);
 }
 
 Id Future::putAsyncFn(AsyncFnType fn)
 {
     Id id = getId()();
-    /* inactive.push_back(id); */
     container.insert
     (ContainerType::value_type
      (id, EleType(fn, nullptr, nullptr, false, false)));
@@ -43,6 +57,7 @@ Id Future::putAsyncFn(AsyncFnType fn)
 
 bool Future::putParas(Id id, void *paras)
 {
+    assert(container.find(id) != container.end());
     if (std::get<3>(container[id]) == true)
     {
         return false;
@@ -51,7 +66,9 @@ bool Future::putParas(Id id, void *paras)
     {
         std::get<1>(container[id]) = paras;
         std::get<3>(container[id]) = true;
-        active.push_back(id);
+        assert(active.find(id) == active.end());
+        active.insert(id);
+        assert(active.find(id) != active.end());
         fnResourse.V();
         return true;
     }
@@ -65,21 +82,15 @@ bool Future::isReady(Id id)
 void Future::wait(Id id)
 {
     mutex.P();
-    for (std::list<Id>::const_iterator it = active.begin();
-            it != active.end(); it++)
-    {
-        if (*it == id)
-        {
-            active.erase(it);
-            break;
-        }
-    }
+    std::set<Id>::const_iterator it = active.find(id);
+    assert(it != active.end());
+    active.erase(it);
     mutex.V();
     fnResourse.P();
     AsyncFnType fn;
     ParasType paras;
     std::tie(fn, paras, std::ignore, std::ignore, std::ignore) =
-        container[active.front()];
+        container[id];
     std::get<2>(container[id]) = fn(paras);
     std::get<4>(container[id]) = true;
 }

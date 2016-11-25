@@ -3,9 +3,10 @@
 
 #include "../Semaphore/Semaphore.h"
 #include <map>
-#include <list>
+#include <set>
 #include <functional>
 #include <tuple>
+#include <assert.h>
 
 #define RegisterType1(Type1) \
     typedef Type1 ParaType1
@@ -43,14 +44,14 @@ class Future
         
     private:
         ContainerType container;
-        std::list<Id> active;
-        /* std::list<Id> inactive; */
+        std::set<Id> active;
         Semaphore mutex;
         Semaphore fnResourse;
         Thread thread;
         bool isExit;
         
     public:
+        Future();
         void begin();
         void end();
         
