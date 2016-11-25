@@ -83,7 +83,12 @@ void Future::wait(Id id)
 {
     mutex.P();
     std::set<Id>::const_iterator it = active.find(id);
-    assert(it != active.end());
+    if (it == active.end() || active.size() <= 1)
+    {
+        mutex.V();
+        while (!isReady(id)) ;
+        return;
+    }
     active.erase(it);
     mutex.V();
     fnResourse.P();
