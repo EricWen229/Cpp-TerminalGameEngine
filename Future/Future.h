@@ -8,15 +8,6 @@
 #include <tuple>
 #include <assert.h>
 
-#define RegisterType1(Type1) \
-    typedef Type1 ParaType1
-#define RegisterType2(Type1, Type2) \
-    typedef Type1 ParaType1 \
-    typedef Type2 ParaType2
-
-#define TranParas1(value1) \
-    (void*)&value1
-
 typedef unsigned int Id;
 
 class getId
