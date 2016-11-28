@@ -44,6 +44,7 @@ class Test: public RootObject
 Implement_Class(Test)
 {
     Register_Object(Test);
+    Register_Fn(Test, handleMessageKeyDown);
 }
 
 int main()
@@ -58,7 +59,7 @@ int main()
     {
         for (int j = 0; j < test.s -> width; j++)
         {
-            test.s[i][j]='f';
+            test.s[i][j] = 'f';
         }
         test.s[i][test.s -> width - 1] = '\0';
     }
