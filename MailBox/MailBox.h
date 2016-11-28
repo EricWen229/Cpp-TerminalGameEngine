@@ -45,7 +45,7 @@ class MailBox
     private:
         static std::queue<Message> msgs;
         static Semaphore s;
-        static Semaphore mutex;
+        /* static Semaphore mutex; */
 #ifdef AsyncCallback
         static Semaphore locker;
 #endif

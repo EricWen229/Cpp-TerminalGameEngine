@@ -7,7 +7,7 @@ Message::~Message() {}
 
 std::queue<Message> MailBox::msgs;
 Semaphore MailBox::s;
-Semaphore MailBox::mutex(1);
+/* Semaphore MailBox::mutex(1); */
 #ifdef AsyncCallback
     Semaphore MailBox::locker(1);
 #endif
@@ -18,19 +18,19 @@ void *MailBox::loopHelper(void *unused)
     while (true)
     {
         s.P();
-        mutex.P();
+        /* mutex.P(); */
         Message m = msgs.front();
         if (m.type == "Exit")
         {
             msgs.pop();
-            mutex.V();
+            /* mutex.V(); */
             break;
         }
         auto object = ObjectInfos().getObjectInfo(m.to);
         if (object == null)
         {
             msgs.pop();
-            mutex.V();
+            /* mutex.V(); */
             continue;
         }
         std::function<void *(void *)> handle =
@@ -39,7 +39,7 @@ void *MailBox::loopHelper(void *unused)
         if (handle == null)
         {
             msgs.pop();
-            mutex.V();
+            /* mutex.V(); */
             continue;
         }
 #ifdef AsyncCallback
@@ -54,7 +54,7 @@ void *MailBox::loopHelper(void *unused)
         handle((void *)&m);
 #endif
         msgs.pop();
-        mutex.V();
+        /* mutex.V(); */
     }
     return null;
 }
