@@ -65,9 +65,9 @@ MailBox::~MailBox() {}
 
 void MailBox::put(Message m)
 {
-    mutex.P();
+    /* mutex.P(); */
     msgs.push(m);
-    mutex.V();
+    /* mutex.V(); */
     s.V();
 }
 
