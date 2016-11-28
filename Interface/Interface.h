@@ -30,7 +30,7 @@ class Ncurses: public Interface
         static bool exit;
         
         void *input(void *unused);
-        void *show(void *unused);
+        void *handleMessageUpdate(void *unused);
         
     public:
         Ncurses();

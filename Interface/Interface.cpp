@@ -11,6 +11,7 @@ bool Ncurses::exit;
 Implement_Class(Ncurses)
 {
     Register_Object(Ncurses);
+    Register_Fn(Ncurses, handleMessageUpdate);
 }
 
 Ncurses::Ncurses() {}
@@ -31,21 +32,18 @@ void *Ncurses::input(void *)
     while ((key = getchar()) != 'q')
     {
         MailBox().put(Message(objectId, sendTo, "KeyDown", std::string(1, key)));
-        /* std::cout << key << std::endl; */
+        std::cout << key << std::endl;
     }
     return null;
 }
 
-void *Ncurses::show(void *unused)
+void *Ncurses::handleMessageUpdate(void *unused)
 {
-    while (!exit)
+    for (int i = 0; i < buffer -> height; i++)
     {
-        for (int i = 0; i < buffer -> height; i++)
-        {
-            mvprintw(i, 0, buffer[i]);
-        }
-        refresh();
+        mvprintw(i, 0, buffer[i]);
     }
+    refresh();
     return null;
 }
 
@@ -69,19 +67,20 @@ void Ncurses::init(SmartArray<char>b, ObjectId st)
     /* 减少刷新缓冲区的次数，提高IO效率 */
     /* 需要为\0字符留出空位，所以width-1 */
     /* Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0); */
+    handleMessageUpdate(null);
 }
 
 void Ncurses::loop()
 {
     pid[0] = createPthread(std::bind(&Ncurses::input, this, std::placeholders::_1));
-    pid[1] = createPthread(std::bind(&Ncurses::show, this, std::placeholders::_1));
+    /* pid[1] = createPthread(std::bind(&Ncurses::show, this, std::placeholders::_1)); */
 }
 
 void Ncurses::end()
 {
     waitPthread(pid[0]);
-    exit = true;
-    waitPthread(pid[1]);
+    /* exit = true; */
+    /* waitPthread(pid[1]); */
     
     endwin();
 }

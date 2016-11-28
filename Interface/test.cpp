@@ -26,10 +26,12 @@ class Test: public RootObject
             {
                 case 'w':
                     s[0][0]++;
+                    MailBox().put(Message(objectId, -1, "Update", ""));
                     /* std::cout << s[0][0] << std::endl; */
                     break;
                 case 's':
                     s[0][0]--;
+                    /* MailBox().put(Message(objectId, -1, "Update", "")); */
                     /* std::cout << s[0][0] << std::endl; */
                     break;
                 case 'a':
@@ -67,4 +69,5 @@ int main()
     ns.init(test.s, test.objectId);
     ns.loop();
     ns.end();
+    MailBox().end();
 }
