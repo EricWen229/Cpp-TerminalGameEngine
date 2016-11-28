@@ -58,3 +58,26 @@ void *Son::sayHello(void *unusedP)
     }
     return null;
 }
+
+ObjectId Singleton::objectId = -1;
+
+Implement_Class(Singleton)
+{
+    Register_Object(Singleton);
+    Register_Fn(Singleton, sayHello);
+}
+
+Singleton::Singleton() {}
+
+Singleton::~Singleton() {}
+
+Singleton *Singleton::createObject(void *unusedP)
+{
+    return new Singleton;
+}
+
+void *Singleton::sayHello(void *unusedP)
+{
+    std::cout << "I'm Singleton!!!" << std::endl;
+    return null;
+}

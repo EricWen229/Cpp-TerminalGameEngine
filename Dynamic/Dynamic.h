@@ -29,6 +29,12 @@ class RootObject
         virtual ~RootObject();
 };
 
+/* 如果是单例类，且需要一个静态的Id */
+/* 需要保证继承体系下不会出现多个ObjectId */
+/* 则可以不用继承RootObject而改为手动声明 */
+/* 也可以自己从负数中任意选取一个Id号 */
+/* 方便标识 */
+
 #define Declare_Class \
     protected: \
         static ClassInfo classInfo; \

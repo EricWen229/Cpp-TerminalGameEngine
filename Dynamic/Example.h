@@ -29,4 +29,18 @@ class Son: public Father
         void *sayHello(void *unusedP);
 };
 
+class Singleton
+{
+        Declare_Class;
+    private:
+        static ObjectId objectId;
+        
+    public:
+        Singleton();
+        virtual ~Singleton();
+        static Singleton *createObject(void *unusedP);
+        
+        void *sayHello(void *unusedP);
+};
+
 #endif

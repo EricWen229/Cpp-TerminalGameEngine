@@ -22,6 +22,14 @@ int main()
     s -> RegisterObjectInfo();
     s -> getObjectInfo().getDynamicFn("sayHello")((void *)&b);
     
+    Singleton::RegisterClassInfo();
+    Singleton *sin =
+        (Singleton *)ClassInfos().getClassInfo("Singleton")
+        -> getConstructor()(null);
+    sin -> RegisterObjectInfo();
+    sin -> getObjectInfo().getDynamicFn("sayHello")(null);
+    ObjectInfos().getObjectInfo(-1) -> getDynamicFn("sayHello")(null);
+    
     auto p = ObjectInfos().getObjectInfo(1);
     p -> getDynamicFn("sayHello")((void *)&b);
     
@@ -32,4 +40,5 @@ int main()
     
     delete f;
     delete s;
+    delete sin;
 }
