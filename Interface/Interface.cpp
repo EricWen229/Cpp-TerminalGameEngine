@@ -2,6 +2,7 @@
 
 Interface::~Interface() {}
 
+ObjectId Ncurses::objectId = -1;
 SmartArray<char> Ncurses::buffer;
 Thread Ncurses::pid[2];
 ObjectId Ncurses::sendTo;
@@ -12,7 +13,7 @@ Implement_Class(Ncurses)
     Register_Object(Ncurses);
 }
 
-Ncurses::Ncurses(): RootObject() {}
+Ncurses::Ncurses() {}
 
 Ncurses::~Ncurses()
 {

@@ -21,16 +21,16 @@ class Test: public RootObject
         
         void *handleMessageKeyDown(void *pointer)
         {
-            std::cout << ((Message *)pointer) -> description << std::endl;
+            /* std::cout << ((Message *)pointer) -> description << std::endl; */
             switch (((Message *)pointer) -> description.c_str()[0])
             {
                 case 'w':
                     s[0][0]++;
-                    std::cout << s[0][0] << std::endl;
+                    /* std::cout << s[0][0] << std::endl; */
                     break;
                 case 's':
                     s[0][0]--;
-                    std::cout << s[0][0] << std::endl;
+                    /* std::cout << s[0][0] << std::endl; */
                     break;
                 case 'a':
                     break;
@@ -49,6 +49,7 @@ Implement_Class(Test)
 
 int main()
 {
+    MailBox().loop();
     Ncurses ns;
     Ncurses::RegisterClassInfo();
     ns.RegisterObjectInfo();

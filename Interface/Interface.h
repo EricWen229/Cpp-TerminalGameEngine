@@ -19,10 +19,11 @@ class Interface
 };
 
 /* singleton */
-class Ncurses: public Interface, RootObject
+class Ncurses: public Interface
 {
         Declare_Class;
     private:
+        static ObjectId objectId;
         static SmartArray<char> buffer;
         static Thread pid[2];
         static ObjectId sendTo;
