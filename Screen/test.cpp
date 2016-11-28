@@ -1,31 +1,56 @@
 #include "Screen.h"
 #include "../Array/Array.h"
-#include "../Interface/Interface.h"
 
-SmartArray<char> s;
-
-void handler(Event e)
+class Test: public RootObject
 {
-    switch (e)
-    {
-        case Up:
-            s[0][0] += 1;
-            break;
-        case Down:
-            s[0][0] -= 1;
-            break;
-        case Left:
-            break;
-        case Right:
-            break;
-    }
+        Declare_Class;
+    public:
+        SmartArray<char> s;
+        
+    public:
+        Test() {}
+        virtual ~Test() {}
+        static Test *createObject(void *unusedP)
+        {
+            return new Test;
+        }
+        
+        void *handleMessageKeyDown(void *pointer)
+        {
+            /* std::cout << ((Message *)pointer) -> description << std::endl; */
+            switch (((Message *)pointer) -> description.c_str()[0])
+            {
+                case 'w':
+                    s[0][0]++;
+                    MailBox().put(Message(objectId, -2, "Update", ""));
+                    std::cout << s[0][0] << std::endl;
+                    break;
+                case 's':
+                    s[0][0]--;
+                    MailBox().put(Message(objectId, -2, "Update", ""));
+                    /* std::cout << s[0][0] << std::endl; */
+                    break;
+                case 'a':
+                    break;
+                case 'd':
+                    break;
+            }
+            return null;
+        }
+};
+
+Implement_Class(Test)
+{
+    Register_Object(Test);
+    Register_Fn(Test, handleMessageKeyDown);
 }
 
 int main()
 {
     Screen screen;
-    Ncurses in;
-    screen.init(12, 20, handler);
+    Test test;
+    test.RegisterObjectInfo();
+    screen.init(12, 20, test.objectId);
     
     int id1 = screen.alloc(0, 0, 1, 20);
     int id2 = screen.alloc(11, 0, 1, 20);
@@ -69,8 +94,7 @@ int main()
             sf[i][j] = 'f';
         }
     }
-    s = sf;
+    test.s = sf;
     
-    screen.begin();
     screen.end();
 }

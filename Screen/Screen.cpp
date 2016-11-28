@@ -1,40 +1,56 @@
 #include "Screen.h"
 
-Interface *Screen::interface = new Ncurses;
+ObjectId Screen::objectId = -2;
+Interface &Screen::interface = *(new Ncurses);
 SmartArray<char> Screen::buffer;
 int Screen::width, Screen::height;
 std::vector<ManBook> Screen::books;
-Interface::HandleFunc Screen::handleFunc;
-Thread Screen::pid;
+ObjectId Screen::sendTo;
 
-void *Screen::runHelper(void *unused)
+Implement_Class(Screen)
 {
-    interface -> init(buffer, handleFunc);
-    interface -> loop();
-    interface -> end();
-    return null;
+    Register_Object(Screen);
+    Register_Fn(Screen, handleMessageUpdate);
+    Register_Fn(Screen, handleMessageKeyDown);
 }
 
-void Screen::init(
-    int h, int w,
-    Interface::HandleFunc hf)
+Screen::Screen() {}
+Screen::~Screen() {}
+
+Screen *Screen::createObject(void *unusedP)
+{
+    return new Screen;
+}
+
+void Screen::init(int h, int w, ObjectId st)
 {
     height = h;
     width = w;
     buffer = createArray<char>(height, width + 1);
-    clean();
-    handleFunc = hf;
-}
-
-void Screen::begin()
-{
-    pid = createPthread(runHelper);
+    sendTo = st;
+    interface.init(buffer, sendTo);
+    interface.loop();
 }
 
 void Screen::end()
 {
-    waitPthread(pid);
-    delete interface;
+    interface.end();
+}
+
+void *Screen::handleMessageUpdate(void *pointer)
+{
+    Message tmp = *((Message *)pointer);
+    Message msg(tmp.from, -1, tmp.type, tmp.description);
+    MailBox().put(msg);
+    return null;
+}
+
+void *Screen::handleMessageKeyDown(void *pointer)
+{
+    Message tmp = *((Message *)pointer);
+    Message msg(objectId, sendTo, tmp.type, tmp.description);
+    MailBox().put(msg);
+    return null;
 }
 
 Id Screen::alloc(int top, int left, int height, int width)
@@ -74,22 +90,5 @@ void Screen::free(Id id)
     else
     {
         books.erase(books.begin() + id);
-    }
-}
-
-bool Screen::isExit()
-{
-    return interface -> isExit();
-}
-
-void Screen::clean()
-{
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            buffer[i][j] = ' ';
-        }
-        buffer[i][width] = '\0';
     }
 }
