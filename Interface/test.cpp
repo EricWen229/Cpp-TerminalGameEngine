@@ -31,7 +31,7 @@ class Test: public RootObject
                     break;
                 case 's':
                     s[0][0]--;
-                    /* MailBox().put(Message(objectId, -1, "Update", "")); */
+                    MailBox().put(Message(objectId, -1, "Update", ""));
                     /* std::cout << s[0][0] << std::endl; */
                     break;
                 case 'a':

@@ -32,7 +32,7 @@ void *Ncurses::input(void *)
     while ((key = getchar()) != 'q')
     {
         MailBox().put(Message(objectId, sendTo, "KeyDown", std::string(1, key)));
-        std::cout << key << std::endl;
+        /* std::cout << key << std::endl; */
     }
     return null;
 }
