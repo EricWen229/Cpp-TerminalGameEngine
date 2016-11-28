@@ -1,41 +1,68 @@
 #include "Interface.h"
-#include "../Semaphore/Semaphore.h"
 #include "../Array/Array.h"
 #include <iostream>
 
-SmartArray<char> s = createArray<char>(10, 10);
-
-void handler(Event e)
+class Test: public RootObject
 {
-    switch (e)
-    {
-        case Up:
-            /* std::cout << s[0][0] << std::endl; */
-            s[0][0] += 1;
-            break;
-        case Down:
-            /* std::cout << 'd' << std::endl; */
-            s[0][0] -= 1;
-            break;
-        case Left:
-            break;
-        case Right:
-            break;
-    }
+        Declare_Class;
+    public:
+        SmartArray<char> s;
+        
+    public:
+        Test()
+        {
+            s = createArray<char>(10, 10);
+        }
+        virtual ~Test() {}
+        static Test *createObject(void *unusedP)
+        {
+            return new Test;
+        }
+        
+        void *handleMessageKeyDown(void *pointer)
+        {
+            std::cout << ((Message *)pointer) -> description << std::endl;
+            switch (((Message *)pointer) -> description.c_str()[0])
+            {
+                case 'w':
+                    s[0][0]++;
+                    std::cout << s[0][0] << std::endl;
+                    break;
+                case 's':
+                    s[0][0]--;
+                    std::cout << s[0][0] << std::endl;
+                    break;
+                case 'a':
+                    break;
+                case 'd':
+                    break;
+            }
+            return null;
+        }
+};
+
+Implement_Class(Test)
+{
+    Register_Object(Test);
 }
 
 int main()
 {
     Ncurses ns;
-    for (int i = 0; i < s -> height; i++)
+    Ncurses::RegisterClassInfo();
+    ns.RegisterObjectInfo();
+    Test test;
+    Test::RegisterClassInfo();
+    test.RegisterObjectInfo();
+    for (int i = 0; i < test.s -> height; i++)
     {
-        for (int j = 0; j < s -> width; j++)
+        for (int j = 0; j < test.s -> width; j++)
         {
-            s[i][j]='f';
+            test.s[i][j]='f';
         }
-        s[i][s -> width - 1] = '\0';
+        test.s[i][test.s -> width - 1] = '\0';
     }
-    ns.init(s, handler);
+    ns.init(test.s, test.objectId);
     ns.loop();
     ns.end();
 }

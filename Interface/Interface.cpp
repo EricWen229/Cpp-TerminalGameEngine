@@ -2,46 +2,35 @@
 
 Interface::~Interface() {}
 
-EventBuffer Ncurses::eb;
 SmartArray<char> Ncurses::buffer;
-Ncurses::HandleFunc Ncurses::hf;
-Thread Ncurses::pid[3];
+Thread Ncurses::pid[2];
+ObjectId Ncurses::sendTo;
 bool Ncurses::exit;
+
+Implement_Class(Ncurses)
+{
+    Register_Object(Ncurses);
+}
+
+Ncurses::Ncurses(): RootObject() {}
+
+Ncurses::~Ncurses()
+{
+    Out_Object(Ncurses);
+}
+
+Ncurses *Ncurses::createObject(void *unusedP)
+{
+    return new Ncurses;
+}
 
 void *Ncurses::input(void *)
 {
     char key;
     while ((key = getchar()) != 'q')
     {
-        switch (key)
-        {
-            case 'w':
-                eb.put(Up);
-                break;
-            case 's':
-                eb.put(Down);
-                break;
-            case 'a':
-                eb.put(Left);
-                break;
-            case 'd':
-                eb.put(Right);
-                break;
-        }
-    }
-    return null;
-}
-
-void *Ncurses::handler(void *unused)
-{
-    while (!exit)
-    {
-        Event e = eb.get();
-        if (e == Exit)
-        {
-            break;
-        }
-        hf(e);
+        MailBox().put(Message(objectId, sendTo, "KeyDown", std::string(1, key)));
+        /* std::cout << key << std::endl; */
     }
     return null;
 }
@@ -59,10 +48,11 @@ void *Ncurses::show(void *unused)
     return null;
 }
 
-void Ncurses::init(SmartArray<char>b, HandleFunc h)
+void Ncurses::init(SmartArray<char>b, ObjectId st)
 {
     Ncurses::buffer = b;
-    Ncurses::hf = h;
+    sendTo = st;
+    exit = false;
     
     initscr();
     /* Line bufering disabled */
@@ -78,30 +68,19 @@ void Ncurses::init(SmartArray<char>b, HandleFunc h)
     /* 减少刷新缓冲区的次数，提高IO效率 */
     /* 需要为\0字符留出空位，所以width-1 */
     /* Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0); */
-    
-    exit = false;
 }
 
 void Ncurses::loop()
 {
-    pid[0] = createPthread(input);
-    pid[1] = createPthread(handler);
-    pid[2] = createPthread(show);
+    pid[0] = createPthread(std::bind(&Ncurses::input, this, std::placeholders::_1));
+    pid[1] = createPthread(std::bind(&Ncurses::show, this, std::placeholders::_1));
 }
 
 void Ncurses::end()
 {
     waitPthread(pid[0]);
-    /* 线程2有沉睡风险，所以用退出消息处理 */
-    eb.put(Exit);
-    waitPthread(pid[1]);
     exit = true;
-    waitPthread(pid[2]);
+    waitPthread(pid[1]);
     
     endwin();
-}
-
-bool Ncurses::isExit()
-{
-    return exit;
 }

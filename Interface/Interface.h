@@ -2,7 +2,8 @@
 #define Interface_H
 
 #include "../Array/Array.h"
-#include "../EventBuffer/EventBuffer.h"
+#include "../Dynamic/Dynamic.h"
+#include "../MailBox/MailBox.h"
 #include <functional>
 #include <ncurses.h>
 
@@ -12,33 +13,32 @@ class Interface
 {
     public:
         virtual ~Interface();
-        /* typedef void (*HandleFunc)(Event e); */
-        typedef std::function<void (Event)> HandleFunc;
-        virtual void init(SmartArray<char> b, HandleFunc h) = 0;
+        virtual void init(SmartArray<char> b, ObjectId sendTo) = 0;
         virtual void loop() = 0;
         virtual void end() = 0;
-        virtual bool isExit() = 0;
 };
 
 /* singleton */
-class Ncurses: public Interface
+class Ncurses: public Interface, RootObject
 {
+        Declare_Class;
     private:
-        static EventBuffer eb;
         static SmartArray<char> buffer;
-        static HandleFunc hf;
-        static Thread pid[3];
+        static Thread pid[2];
+        static ObjectId sendTo;
         static bool exit;
         
-        static void *input(void *unused);
-        static void *handler(void *unused);
-        static void *show(void *unused);
+        void *input(void *unused);
+        void *show(void *unused);
         
     public:
-        void init(SmartArray<char>b, HandleFunc h);
+        Ncurses();
+        virtual ~Ncurses();
+        static Ncurses *createObject(void *unusedP);
+        
+        void init(SmartArray<char>b, ObjectId st);
         void loop();
         void end();
-        bool isExit();
 };
 
 #endif
