@@ -31,6 +31,7 @@ void *MailBox::loopHelper(void *unused)
         {
             msgs.pop();
             /* mutex.V(); */
+            std::cout << "can't find object" << std::endl;
             continue;
         }
         std::function<void *(void *)> handle =
@@ -40,6 +41,7 @@ void *MailBox::loopHelper(void *unused)
         {
             msgs.pop();
             /* mutex.V(); */
+            std::cout << "can't find function" << std::endl;
             continue;
         }
 #ifdef AsyncCallback
