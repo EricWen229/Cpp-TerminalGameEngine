@@ -24,7 +24,7 @@ class Test: public RootObject
                 case 'w':
                     s[0][0]++;
                     MailBox().put(Message(objectId, -2, "Update", ""));
-                    std::cout << s[0][0] << std::endl;
+                    /* std::cout << s[0][0] << std::endl; */
                     break;
                 case 's':
                     s[0][0]--;
@@ -98,6 +98,8 @@ int main()
         }
     }
     test.s = sf;
+    
+    MailBox().put(Message(-2, -1, "Update", ""));
     
     screen.end();
 }
