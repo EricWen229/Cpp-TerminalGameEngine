@@ -4,6 +4,7 @@ run : clean test.o
 clean :
 	- rm *.o
 	- rm res
+	- rm logFile
 
 test.o : test.cpp Screen.cpp ../Interface/Interface.cpp ../MailBox/MailBox.cpp ../Semaphore/Semaphore.cpp ../Dynamic/Dynamic.cpp
 	g++ -std=c++11 -ggdb test.cpp Screen.cpp ../Interface/Interface.cpp ../MailBox/MailBox.cpp ../Dynamic/Dynamic.cpp ../Semaphore/Semaphore.cpp -lpthread -lncurses -o test.o

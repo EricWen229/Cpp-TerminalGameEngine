@@ -12,7 +12,7 @@
     }
 #else
 #define Log(info, addition) \
-    {}
+    ;
 #endif
 
 #ifdef AssertMode
@@ -21,7 +21,15 @@
     assert(a);
 #else
 #define Assert(a) \
-    {}
+    ;
+#endif
+
+#ifdef DebugMode
+#define Run(r) \
+    r;
+#else
+#define Run(r) \
+    ;
 #endif
 
 #endif

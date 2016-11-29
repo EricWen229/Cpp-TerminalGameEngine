@@ -1,6 +1,9 @@
 #include "Screen.h"
 #include "../MailBox/MailBox.h"
 #include "../Array/Array.h"
+#define DebugMode
+#define LogMode
+#include "../DiagHelper.h"
 
 class Test: public RootObject
 {
@@ -59,7 +62,7 @@ int main()
     int id2 = screen.alloc(11, 0, 1, 20);
     int id3 = screen.alloc(1, 0, 10, 1);
     int id4 = screen.alloc(1, 12, 10, 1);
-    int id5 = screen.alloc(1, 19, 10, 1);
+    int id5 = screen.alloc(1, 12, 10, 1);
     int id6 = screen.alloc(1, 1, 10, 11);
     
     SmartArray<char> sa = screen.get(id1);
@@ -81,27 +84,38 @@ int main()
     {
         sc[i][0] = '|';
     }
+    Log(Screen::buffer[1], "85");
+    Log(sc[0][0], "86");
     /* MailBox().put(Message(-2, -1, "Update", "")); */
-    SmartArray<char> sd = screen.get(id4);
-    for (int i = 0; i < 10; i++)
-    {
-        sd[i][0] = '|';
-    }
+    /* SmartArray<char> sd = screen.get(id4); */
+    /* for (int i = 0; i < 10; i++) */
+    /* { */
+    /*     sd[i][0] = '|'; */
+    /* } */
+    /* Log(Screen::buffer[1], "93"); */
+    /* Log(sd[0][0], "94"); */
     /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> se = screen.get(id5);
     for (int i = 0; i < 10; i++)
     {
         se[i][0] = '|';
     }
+    Log(Screen::buffer[1], "101");
+    Log(se[0][0], "102");
     /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sf = screen.get(id6);
-    /* for (int i = 0; i < 10; i++) */
-    /* { */
-    /*     for (int j = 0; j < 11; j++) */
-    /*     { */
-    /*         sf[i][j] = 'f'; */
-    /*     } */
-    /* } */
+    Run(for (int i = 0; i < 12; i++) Log(Screen::buffer[i], ""););
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 11; j++)
+        {
+            sf[i][j] = 'f';
+        }
+    }
+    for (int i = 0; i < 12; i++)
+    {
+        Log(Screen::buffer[i], "");
+    }
     test.s = sf;
     
     MailBox().put(Message(-2, -1, "Update", ""));

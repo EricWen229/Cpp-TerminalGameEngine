@@ -26,7 +26,7 @@ struct ManBook
 class Screen
 {
         Declare_Class;
-    private:
+    public:
         static ObjectId objectId;
         static int height, width;
         static SmartArray<char> buffer;
