@@ -1,4 +1,5 @@
 #include "Screen.h"
+#include "../MailBox/MailBox.h"
 #include "../Array/Array.h"
 
 class Test: public RootObject
@@ -47,7 +48,9 @@ Implement_Class(Test)
 
 int main()
 {
+    MailBox().loop();
     Screen screen;
+    screen.RegisterObjectInfo();
     Test test;
     test.RegisterObjectInfo();
     screen.init(12, 20, test.objectId);

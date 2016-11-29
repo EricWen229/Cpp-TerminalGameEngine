@@ -10,7 +10,7 @@ ObjectId Screen::sendTo;
 Implement_Class(Screen)
 {
     Register_Object(Screen);
-    Register_Fn(Screen, handleMessageUpdate);
+    /* Register_Fn(Screen, handleMessageUpdate); */
     Register_Fn(Screen, handleMessageKeyDown);
 }
 
@@ -28,7 +28,7 @@ void Screen::init(int h, int w, ObjectId st)
     width = w;
     buffer = createArray<char>(height, width + 1);
     sendTo = st;
-    interface.init(buffer, sendTo);
+    interface.init(buffer, objectId);
     interface.loop();
 }
 
@@ -49,6 +49,7 @@ void *Screen::handleMessageKeyDown(void *pointer)
 {
     Message tmp = *((Message *)pointer);
     Message msg(objectId, sendTo, tmp.type, tmp.description);
+    std::cout << tmp.description << std::endl;
     MailBox().put(msg);
     return null;
 }
