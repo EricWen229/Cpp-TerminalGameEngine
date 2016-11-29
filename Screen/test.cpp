@@ -68,35 +68,40 @@ int main()
         sa[0][i] = '-';
     }
     sa[0][0] = sa[0][12] = sa[0][19] = '+';
+    /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sb = screen.get(id2);
     for (int i = 1; i < 19; i++)
     {
         sb[0][i] = '-';
     }
     sb[0][0] = sb[0][12] = sb[0][19] = '+';
+    /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sc = screen.get(id3);
     for (int i = 0; i < 10; i++)
     {
         sc[i][0] = '|';
     }
+    /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sd = screen.get(id4);
     for (int i = 0; i < 10; i++)
     {
         sd[i][0] = '|';
     }
+    /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> se = screen.get(id5);
     for (int i = 0; i < 10; i++)
     {
         se[i][0] = '|';
     }
+    /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sf = screen.get(id6);
-    for (int i = 0; i < 10; i++)
-    {
-        for (int j = 0; j < 11; j++)
-        {
-            sf[i][j] = 'f';
-        }
-    }
+    /* for (int i = 0; i < 10; i++) */
+    /* { */
+    /*     for (int j = 0; j < 11; j++) */
+    /*     { */
+    /*         sf[i][j] = 'f'; */
+    /*     } */
+    /* } */
     test.s = sf;
     
     MailBox().put(Message(-2, -1, "Update", ""));
