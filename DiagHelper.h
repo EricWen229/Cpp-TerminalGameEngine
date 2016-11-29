@@ -4,11 +4,15 @@
 #ifdef LogMode
 #include <iostream>
 #include <fstream>
+#include <mutex>
+std::mutex logFileMutex;
 #define Log(info, addition) \
     { \
+    logFileMutex.lock(); \
     std::ofstream logFile("./logFile", std::ios::app); \
     logFile << info << "\t" << addition << std::endl; \
     logFile.close(); \
+    logFileMutex.unlock(); \
     }
 #else
 #define Log(info, addition) \
