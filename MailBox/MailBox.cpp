@@ -31,7 +31,7 @@ void *MailBox::loopHelper(void *unused)
         {
             msgs.pop();
             /* mutex.V(); */
-            std::cout << "can't find object" << std::endl;
+            /* std::cout << "can't find object" << std::endl; */
             continue;
         }
         std::function<void *(void *)> handle =
@@ -41,7 +41,7 @@ void *MailBox::loopHelper(void *unused)
         {
             msgs.pop();
             /* mutex.V(); */
-            std::cout << "can't find function" << std::endl;
+            /* std::cout << "can't find function" << std::endl; */
             continue;
         }
 #ifdef AsyncCallback
@@ -54,6 +54,7 @@ void *MailBox::loopHelper(void *unused)
         std::thread(handle, (void *)paras).detach();
 #else
         handle((void *)&m);
+        /* std::cout << "find the function" << std::endl; */
 #endif
         msgs.pop();
         /* mutex.V(); */
