@@ -18,44 +18,42 @@ enum OutBoundType
 };
 
 class Controller;
-class AutoControlThing;
-class Thing
+class AutoControlSprite;
+class Sprite
 {
     private:
         friend class Controller;
         
     protected:
         int height, width;
-        int i, j;
         SmartArray<char> look;
+        int i, j;
         
     public:
-        virtual ~Thing();
+        Sprite();
+        virtual ~Sprite();
         
         void moveTo(int newI, int newJ);
         void moveAdd(int deltaI, int deltaJ);
         
-        virtual void ifBound(OutBoundType o) = 0;
-        virtual void ifBang(Thing *thing) = 0;
-        virtual AutoControlThing *shoot() = 0;
+        virtual void ifBound(OutBoundType ot) = 0;
+        virtual void ifBang(Sprite *thing) = 0;
         virtual bool live() = 0;
 };
 
-class UserControlThing: public Thing
+class UserControlSprite: public Sprite
 {
-    private:
-        friend class Controller;
-        
     public:
-        virtual ~UserControlThing();
-        UserControlThing();
+        UserControlSprite();
+        virtual ~UserControlSprite();
+        void *handleMessageKeyDown(void *pointer);
 };
 
-class AutoControlThing: public Thing
+class AutoControlSprite: public Sprite
 {
     public:
-        virtual ~AutoControlThing();
-        AutoControlThing(ObjectType o);
+        virtual ~AutoControlSprite();
+        AutoControlSprite();
         virtual void handle() = 0;
 };
 
@@ -63,22 +61,18 @@ class AutoControlThing: public Thing
 class Controller
 {
     public:
-        typedef AutoControlThing *(*Producer)();
+        typedef AutoControlSprite *(*Producer)();
         
     private:
-        friend class Thing;
-        
-        static UserControlThing *users;
-        static std::vector<AutoControlThing *> autos;
-        static std::vector<Producer> producers;
+        static UserControlSprite *users;
         static SmartArray<char> gameBuffer;
         
         static int height, width;
         static Screen screen;
         static std::vector<int> ids;
         
-        static void boundHelper(Thing *a);
-        bool bangHelper(Thing *a, Thing *b);
+        static void boundHelper(Sprite *a);
+        bool bangHelper(Sprite *a, Sprite *b);
         void bang();
         void clean();
         void produce();
@@ -89,7 +83,7 @@ class Controller
     public:
         virtual void init
         (int h, int w,
-         UserControlThing *u,
+         UserControlSprite *u,
          Producer ps[], int nProducer);
         void loop();
 };
