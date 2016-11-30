@@ -63,7 +63,7 @@ int main()
     int id2 = screen.alloc(11, 0, 1, 20);
     int id3 = screen.alloc(1, 0, 10, 1);
     int id4 = screen.alloc(1, 12, 10, 1);
-    int id5 = screen.alloc(1, 12, 10, 1);
+    int id5 = screen.alloc(1, 19, 10, 1);
     int id6 = screen.alloc(1, 1, 10, 11);
     
     SmartArray<char> sa = screen.get(id1);
@@ -88,14 +88,14 @@ int main()
     Log(Screen::buffer[1] << "Line 85");
     Log(sc[0][0] << "Line 86");
     /* MailBox().put(Message(-2, -1, "Update", "")); */
-    /* SmartArray<char> sd = screen.get(id4); */
-    /* for (int i = 0; i < 10; i++) */
-    /* { */
-    /*     sd[i][0] = '|'; */
-    /* } */
+    SmartArray<char> sd = screen.get(id4);
+    for (int i = 0; i < 10; i++)
+    {
+        sd[i][0] = '|';
+    }
     /* Log(Screen::buffer[1], "93"); */
     /* Log(sd[0][0], "94"); */
-    /* MailBox().put(Message(-2, -1, "Update", "")); */
+    MailBox().put(Message(-2, -1, "Update", ""));
     SmartArray<char> se = screen.get(id5);
     for (int i = 0; i < 10; i++)
     {
