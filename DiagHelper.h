@@ -6,16 +6,16 @@
 #include <fstream>
 #include <mutex>
 std::mutex logFileMutex;
-#define Log(info, addition) \
+#define Log(info) \
     { \
     logFileMutex.lock(); \
     std::ofstream logFile("./logFile", std::ios::app); \
-    logFile << info << "\t" << addition << std::endl; \
+    logFile << info << std::endl; \
     logFile.close(); \
     logFileMutex.unlock(); \
     }
 #else
-#define Log(info, addition) \
+#define Log(info) \
     ;
 #endif
 

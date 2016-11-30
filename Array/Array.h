@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include "../Semaphore/Semaphore.h"
+#include "../DiagHelper.h"
 
 #define null nullptr
 
