@@ -1,3 +1,7 @@
+RUN : clean
+	g++ -std=c++11 testAlloc.cpp Screen.cpp ../MailBox/MailBox.cpp ../Interface/Interface.cpp ../Dynamic/Dynamic.cpp ../Semaphore/Semaphore.cpp -lncurses -lpthread -o test.o
+	./test.o
+
 run : clean test.o
 	valgrind --show-leak-kinds=all --leak-check=full --tool=memcheck --log-file=res ./test.o
 

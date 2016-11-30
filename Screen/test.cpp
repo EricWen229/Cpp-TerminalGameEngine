@@ -4,7 +4,6 @@
 #include "Screen.h"
 #include "../MailBox/MailBox.h"
 #include "../Array/Array.h"
-/* #define DebugMode */
 #include "../DiagHelper.h"
 
 class Test: public RootObject
