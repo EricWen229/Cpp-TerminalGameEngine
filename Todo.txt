@@ -1,2 +1,3 @@
 Screen的Update消息处理，初步想要用一个优先级队列做记录
-调试Screen的错误
+Interface具体实现切到EasyX上
+想办法对于测试开放类的私有属性
