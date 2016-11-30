@@ -38,6 +38,10 @@ int main()
     std::cout << GetObjectId()() << std::endl;
     std::cout << GetObjectId()() << std::endl;
     
+    std::cout << f -> getClassInfo().getName() << std::endl;
+    std::cout << s -> getClassInfo().getName() << std::endl;
+    std::cout << sin -> getClassInfo().getName() << std::endl;
+    
     delete f;
     delete s;
     delete sin;

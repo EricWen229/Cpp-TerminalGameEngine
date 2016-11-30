@@ -6,11 +6,8 @@
 #include <vector>
 #include <functional>
 
-/* 为方便扩展，不使用enum，而是用define的方式 */
-typedef unsigned int ObjectType;
-/* for example */
-/* #define UserType 1 */
-/* #define AutoType 2 */
+/* 用反射代替ObjectType的判断 */
+/* object.getClasInfo().getName() */
 
 enum OutBoundType
 {
@@ -33,9 +30,6 @@ class Thing
         SmartArray<char> look;
         
     public:
-        /* 给用户自由去决定碰到什么样的物体作什么样的反应 */
-        const ObjectType objectType;
-        Thing(ObjectType o);
         virtual ~Thing();
         
         void moveTo(int newI, int newJ);
@@ -51,14 +45,11 @@ class UserControlThing: public Thing
 {
     private:
         friend class Controller;
-        friend void handle(Event e);
         
     public:
         virtual ~UserControlThing();
-        UserControlThing(ObjectType o);
+        UserControlThing();
 };
-
-void handle(Event e);
 
 class AutoControlThing: public Thing
 {
