@@ -22,7 +22,7 @@ std::mutex logFileMutex;
 #ifdef ExtraRunMode
 #define ExtraRun(r) \
     { \
-    r \
+    r; \
     }
 #else
 #define ExtraRun(r) \
