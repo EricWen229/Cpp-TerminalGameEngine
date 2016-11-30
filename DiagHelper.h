@@ -19,20 +19,22 @@ std::mutex logFileMutex;
     ;
 #endif
 
+#ifdef ExtraRunMode
+#define ExtraRun(r) \
+    { \
+    r \
+    }
+#else
+#define ExtraRun(r) \
+    ;
+#endif
+
 #ifdef AssertMode
 #include <assert.h>
 #define Assert(a) \
     assert(a);
 #else
 #define Assert(a) \
-    ;
-#endif
-
-#ifdef DebugMode
-#define Run(r) \
-    r;
-#else
-#define Run(r) \
     ;
 #endif
 

@@ -1,8 +1,10 @@
+#define LogMode
+#define ExtraRunMode
+
 #include "Screen.h"
 #include "../MailBox/MailBox.h"
 #include "../Array/Array.h"
 /* #define DebugMode */
-#define LogMode
 #include "../DiagHelper.h"
 
 class Test: public RootObject
@@ -102,7 +104,7 @@ int main()
     }
     /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sf = screen.get(id6);
-    Run(for (int i = 0; i < 12; i++) Log(Screen::buffer[i], ""););
+    ExtraRun(for (int i = 0; i < 12; i++) Log(Screen::buffer[i]););
     for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 11; j++)
