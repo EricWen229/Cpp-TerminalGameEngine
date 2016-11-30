@@ -1,5 +1,5 @@
 RUN : clean
-	g++ -std=c++11 testAlloc.cpp Screen.cpp ../MailBox/MailBox.cpp ../Interface/Interface.cpp ../Dynamic/Dynamic.cpp ../Semaphore/Semaphore.cpp -lncurses -lpthread -o test.o
+	g++ -ggdb -std=c++11 testAlloc.cpp ../MailBox/MailBox.cpp ../Interface/Interface.cpp ../Dynamic/Dynamic.cpp ../Semaphore/Semaphore.cpp -lncurses -lpthread -o test.o
 	./test.o
 
 run : clean test.o
