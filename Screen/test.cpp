@@ -1,7 +1,7 @@
 #include "Screen.h"
 #include "../MailBox/MailBox.h"
 #include "../Array/Array.h"
-#define DebugMode
+/* #define DebugMode */
 #define LogMode
 #include "../DiagHelper.h"
 
@@ -84,8 +84,8 @@ int main()
     {
         sc[i][0] = '|';
     }
-    Log(Screen::buffer[1], "85");
-    Log(sc[0][0], "86");
+    Log(Screen::buffer[1] << "Line 85");
+    Log(sc[0][0] << "Line 86");
     /* MailBox().put(Message(-2, -1, "Update", "")); */
     /* SmartArray<char> sd = screen.get(id4); */
     /* for (int i = 0; i < 10; i++) */
@@ -100,8 +100,6 @@ int main()
     {
         se[i][0] = '|';
     }
-    Log(Screen::buffer[1], "101");
-    Log(se[0][0], "102");
     /* MailBox().put(Message(-2, -1, "Update", "")); */
     SmartArray<char> sf = screen.get(id6);
     Run(for (int i = 0; i < 12; i++) Log(Screen::buffer[i], ""););
@@ -114,7 +112,7 @@ int main()
     }
     for (int i = 0; i < 12; i++)
     {
-        Log(Screen::buffer[i], "");
+        Log(Screen::buffer[i]);
     }
     test.s = sf;
     
