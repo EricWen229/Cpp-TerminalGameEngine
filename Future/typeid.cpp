@@ -8,9 +8,13 @@ template <class T>
 class Future;
 
 template <class T>
+class PromisePointer;
+
+template <class T>
 class Promise
 {
     private:
+        static int referenceCount;
         std::function<T()> fn;
         bool isValid;
         T value;
@@ -18,11 +22,96 @@ class Promise
         template <class S>
         friend class Future;
         
+        template <class S>
+        friend class PromisePointer;
+        
     public:
         Promise(std::function<T()> f);
         bool valid();
         T get();
 };
+
+template <class T>
+int Promise<T>::referenceCount = 0;
+
+template <class T>
+class PromisePointer
+{
+    private:
+        Promise<T> *pointer;
+        
+    public:
+        PromisePointer();
+        PromisePointer(Promise<T> *p);
+        PromisePointer(const PromisePointer &p);
+        PromisePointer &operator=(const PromisePointer &p);
+        ~PromisePointer();
+        
+        Promise<T> *operator->();
+        bool isNull() const;
+};
+
+template <class T>
+PromisePointer<T>::PromisePointer(): pointer(nullptr) {}
+
+template <class T>
+PromisePointer<T>::PromisePointer(Promise<T> *p): pointer(p) {}
+
+template <class T>
+PromisePointer<T>::PromisePointer(const PromisePointer &p): pointer(p.pointer)
+{
+    if (!isNull())
+    {
+        pointer -> referenceCount++;
+    }
+}
+
+template <class T>
+PromisePointer<T> &PromisePointer<T>::operator=(const PromisePointer &p)
+{
+    if (&p == this)
+    {
+        return *this;
+    }
+    if (!isNull())
+    {
+        pointer -> referenceCount--;
+        if (pointer -> referenceCount == 0)
+        {
+            delete pointer;
+        }
+    }
+    if (!p.isNull())
+    {
+        p.pointer -> referenceCount++;
+    }
+    pointer = p.pointer;
+}
+
+template <class T>
+PromisePointer<T>::~PromisePointer()
+{
+    if (!isNull())
+    {
+        pointer -> referenceCount--;
+        if (pointer -> referenceCount == 0)
+        {
+            delete pointer;
+        }
+    }
+}
+
+template <class T>
+Promise<T> *PromisePointer<T>::operator->()
+{
+    return pointer;
+}
+
+template <class T>
+bool PromisePointer<T>::isNull() const
+{
+    return pointer == nullptr;
+}
 
 template <class T>
 Promise<T>::Promise(std::function<T()> f): fn(f) {}
@@ -43,35 +132,49 @@ template <class T>
 class Future
 {
     private:
+        bool exit;
         Semaphore s;
-        std::vector<std::shared_ptr<Promise<T> > > promises;
+        std::thread thread;
+        std::vector<PromisePointer<T> > promises;
         
     public:
         Future();
-        std::shared_ptr<Promise<T> > put(std::function<T()> fn);
+        ~Future();
+        PromisePointer<T> put(std::function<T()> fn);
 };
 
 template <class T>
-std::shared_ptr<Promise<T> > Future<T>::put(std::function<T()> fn)
+PromisePointer<T> Future<T>::put(std::function<T()> fn)
 {
-    Promise<T> *p = new Promise<T>(fn);
-    promises.push_back(std::shared_ptr<Promise <T> >(p));
+    PromisePointer<T> p = PromisePointer<T>(new Promise<T>(fn));
+    promises.push_back(p);
     s.V();
-    return std::shared_ptr<Promise<T> >(p);
+    return p;
 }
 
 template <class T>
-Future<T>::Future()
+Future<T>::Future(): exit(false)
 {
     std::function<void()> loop =
         [&]()
     {
-        s.P();
-        std::shared_ptr<Promise<T> > promise = promises.front();
-        promise -> value = promise -> fn();
-        promises.erase(promises.begin());
+        while (!exit)
+        {
+            s.P();
+            PromisePointer<T> promise = promises.front();
+            promise -> value = promise -> fn();
+            promise -> isValid = true;
+            promises.erase(promises.begin());
+        }
     };
-    std::thread t(loop);
+    thread = std::thread(loop);
+}
+
+template <class T>
+Future<T>::~Future()
+{
+    exit = true;
+    thread.detach();
 }
 
 int main()
@@ -81,6 +184,7 @@ int main()
     {
         return 1;
     });
+    std::cout << "Hello" << std::endl;
     while (!p -> valid()) ;
     std::cout << p -> get() << std::endl;
 }
