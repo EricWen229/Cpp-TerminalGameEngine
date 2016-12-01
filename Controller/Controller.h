@@ -18,7 +18,6 @@ enum OutBoundType
 };
 
 class Controller;
-class AutoControlSprite;
 class Sprite
 {
     private:
@@ -41,50 +40,41 @@ class Sprite
         virtual bool live() = 0;
 };
 
-class UserControlSprite: public Sprite
+class UserSprite: public Sprite
 {
     public:
-        UserControlSprite();
-        virtual ~UserControlSprite();
+        UserSprite();
+        virtual ~UserSprite();
         void *handleMessageKeyDown(void *pointer);
 };
 
-class AutoControlSprite: public Sprite
+class AutoSprite: public Sprite
 {
     public:
-        virtual ~AutoControlSprite();
-        AutoControlSprite();
+        virtual ~AutoSprite();
+        AutoSprite();
         virtual void handle() = 0;
 };
 
 /* singleton */
 class Controller
 {
-    public:
-        typedef AutoControlSprite *(*Producer)();
-        
     private:
-        static UserControlSprite *users;
+        static UserSprite *user;
         static SmartArray<char> gameBuffer;
         
         static int height, width;
         static Screen screen;
         static std::vector<int> ids;
         
-        static void boundHelper(Sprite *a);
+    public:
+        void bound(Sprite *a);
         bool bangHelper(Sprite *a, Sprite *b);
         void bang();
         void clean();
-        void produce();
-        void shoot();
-        void handle();
-        void draw();
         
     public:
-        virtual void init
-        (int h, int w,
-         UserControlSprite *u,
-         Producer ps[], int nProducer);
+        void init(int h, int w);
         void loop();
 };
 

@@ -1,21 +1,19 @@
 #include "Controller.h"
 
-UserControlThing *Controller::users;
-std::vector<AutoControlThing *> Controller::autos;
-std::vector<Controller::Producer> Controller::producers;
+UserControlSprite *Controller::users;
 int Controller::height, Controller::width;
 Screen Controller::screen;
 std::vector<int> Controller::ids;
 SmartArray<char> Controller::gameBuffer;
 
-UserControlThing::~UserControlThing() {}
+UserControlSprite::~UserControlSprite() {}
 
-AutoControlThing::~AutoControlThing() {}
+AutoControlSprite::~AutoControlSprite() {}
 
-Thing::Thing(ObjectType o): objectType(o) {}
-Thing::~Thing() {}
+Sprite::Sprite() {}
+Sprite::~Sprite() {}
 
-void Thing::moveTo(int newI, int newJ)
+void Sprite::moveTo(int newI, int newJ)
 {
     if (i != newI || j != newJ)
     {
@@ -30,7 +28,7 @@ void Thing::moveTo(int newI, int newJ)
     
     i = newI;
     j = newJ;
-    Controller::boundHelper(this);
+    Controller().bound(this);
     
     for (int a = 0; a < height; a++)
     {
@@ -41,21 +39,13 @@ void Thing::moveTo(int newI, int newJ)
     }
 }
 
-void Thing::moveAdd(int deltaI, int deltaJ)
+void Sprite::moveAdd(int deltaI, int deltaJ)
 {
     moveTo(i + deltaI, j + deltaJ);
 }
 
-UserControlThing::UserControlThing(ObjectType o): Thing(o) {}
 
-/* std::function<void (Event)> UserControlThing::pHandler() */
-/* { */
-/*     return std::bind(&UserControlThing::handle, this, std::placeholders::_1); */
-/* } */
-
-AutoControlThing::AutoControlThing(ObjectType o): Thing(o) {}
-
-void Controller::boundHelper(Thing *thing)
+void Controller::bound(Sprite *thing)
 {
     int height = screen.get(ids[0]) -> height,
         width = screen.get(ids[0]) -> width;
@@ -83,7 +73,7 @@ void Controller::boundHelper(Thing *thing)
     }
 }
 
-bool Controller::bangHelper(Thing *a, Thing *b)
+bool Controller::bangHelper(Sprite *a, Sprite *b)
 {
     if (a -> i >= b -> i && a -> i >= b -> i + b -> height)
     {
@@ -106,104 +96,17 @@ bool Controller::bangHelper(Thing *a, Thing *b)
 
 void Controller::bang()
 {
-    int sizeA = autos.size();
-    for (int i = 0; i < sizeA; i++)
-    {
-        if (bangHelper(users, autos[i]))
-        {
-            users -> ifBang(autos[i]);
-            autos[i] -> ifBang(users);
-        }
-    }
-    for (int i = 0; i < sizeA; i++)
-    {
-        for (int j = i + 1; j < sizeA; j++)
-        {
-            if (bangHelper(autos[i], autos[j]))
-            {
-                autos[i] -> ifBang(autos[j]);
-                autos[j] -> ifBang(autos[i]);
-            }
-        }
-    }
 }
 
 void Controller::clean()
 {
-    if (!users -> live())
-    {
-    }
-    int size = autos.size();
-    for (int i = 0; i < size; i++)
-    {
-        if (!autos[i] -> live())
-        {
-            delete autos[i];
-            autos.erase(autos.begin() + i);
-        }
-    }
 }
 
-void Controller::produce()
-{
-    int size = producers.size();
-    for (int i = 0; i < size; i++)
-    {
-        AutoControlThing *p = producers[i]();
-        if (p != null)
-        {
-            autos.push_back(p);
-        }
-    }
-}
-
-void Controller::shoot()
-{
-    AutoControlThing *bullet = users -> shoot();
-    if (bullet != null)
-    {
-        autos.push_back(bullet);
-    }
-    
-    int size = autos.size();
-    for (int i = 0; i < size; i++)
-    {
-        AutoControlThing *bullet = autos[i] -> shoot();
-        if (bullet != null)
-        {
-            autos.push_back(bullet);
-        }
-    }
-}
-
-void Controller::handle()
-{
-    int size = autos.size();
-    for (int i = 1; i < size; i++)
-    {
-        autos[i] -> handle();
-    }
-}
-
-void Controller::draw()
-{
-    users -> moveAdd(0, 0);
-}
-
-void Controller::init
-(int h, int w,
- UserControlThing *u,
- Producer ps[], int nProducer)
+void Controller::init(int h, int w)
 {
     height = h;
     width = w;
-    for (int i = 0; i < nProducer; i++)
-    {
-        producers.push_back(ps[i]);
-    }
-    screen.init(h, w, ::handle);
-    
-    users = u;
+    screen.init(h, w, user -> objectId);
     
     int id1 = screen.alloc(0, 0, 1, width);
     int id2 = screen.alloc(height - 1, 0, 1, width);
@@ -244,28 +147,17 @@ void Controller::init
         se[i][0] = '|';
     }
     
-    users -> moveTo(0, 0);
+    user -> moveTo(0, 0);
 }
 
 void Controller::loop()
 {
+    Mailbox().begin();
     screen.begin();
     while (!screen.isExit())
     {
         bang();
         clean();
-        produce();
-        handle();
-        shoot();
-        handle();
-        draw();
     }
     screen.end();
-    
-    delete users;
-    int size = autos.size();
-    for (int i = 0; i < size; i++)
-    {
-        delete autos[i];
-    }
 }
