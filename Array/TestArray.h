@@ -6,11 +6,13 @@
  * 经过赋值构造函数之后能不能指向同一块内存 */
 /* 3.非空智能指针在复制构造函数和赋值构造函数作用后
  * 原指针离开作用域被销毁，新指针能不能继续发挥作用 */
-/* 4.createArray(height, width)
+/* 4.非空智能指针被重新赋值，验证会不会导致内存泄漏
+ * 重新赋值为空智能指针和非空智能指针都需要验证 */
+/* 5.createArray(height, width)
  * 能否应对int,char等数据类型
  * 能否应对自定义的数据类型
  * 能否应对tuple，function等C++11的新数据类型 */
-/* 5.createArray(top, ...)分配空间是否保证内存的一一对应性
+/* 6.createArray(top, ...)分配空间是否保证内存的一一对应性
  * 需要验证一次局部分配，两次局部分配，三次局部分配的情况
  * 要验证通过上一级指针的修改能不能反映在下一级指针上
  * 要验证通过下一级指针的修改能不能反映在上一级指针上
@@ -20,8 +22,9 @@
 /* 2.testNoNull */
 /* 3.testCopy
  * testAssign */
-/* 4.testCreateArrayGlobal */
-/* 5.testCreateArrayLocal */
+/* 4.testReAssign */
+/* 5.testCreateArrayGlobal */
+/* 6.testCreateArrayLocal */
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "Array.h"
