@@ -1,7 +1,7 @@
 #ifndef Array_H
 #define Array_H
 
-#include <assert.h>
+#include "../DiagHelper.h"
 #include "../Semaphore/Semaphore.h"
 #include "../DiagHelper.h"
 
@@ -53,28 +53,64 @@ class SmartArray
 template <class T>
 SmartArray<T> createArray(int height, int width)
 {
+    Assert(height > 0 && width > 0);
+    
     Array<T> *a = new Array<T>(height, width);
     SmartArray<T> sa(a);
+    
+    Assert(sa -> height == height);
+    Assert(sa -> width == width);
+    Assert(sa.isNull() == false);
+    ExtraRun
+    (
+        for (int i = 0; i < height; i++)
+        Assert(&sa[0][0] != nullptr);
+    );
     return sa;
 }
 
 template <class T>
 SmartArray<T> createArray(int height, int width, T **a)
 {
+    Assert(height > 0 && width > 0);
+    ExtraRun
+    (
+        for (int i = 0; i < height; i++)
+        Assert(a[i] != nullptr);
+    );
+    
     Array<T> *b = new Array<T>(height, width, a);
     SmartArray<T> sa(b);
+    
+    Assert(sa -> height == height && sa -> width == width);
+    ExtraRun
+    (for (int i = 0; i < height; i++)
+     for (int j = 0; j < width; j++) Assert(&sa[i][j] == &a[i][j]););
     return sa;
 }
 
 template <class T>
 SmartArray<T> createArray(int top, int left, int height, int width, SmartArray<T> sa)
 {
+    Assert(height > 0 && width > 0);
+    Assert(top >= 0 && left >= 0);
+    Assert(top + height <= sa -> height && left + width <= sa -> width);
+    Assert(sa.isNull() == false);
+    
     T **arr = new T*[height];
     for (int i = 0; i < height; i++)
     {
         arr[i] = &sa[top + i][left];
     }
     SmartArray<T> sb = createArray(height, width, arr);
+    
+    ExtraRun
+    (
+        for (int i = 0; i < height; i++)
+        Assert(&sb[i][0] == &sa[top + i][left]);
+    );
+    Assert(sb -> height == height);
+    Assert(sb -> width == width);
     return sb;
 }
 
@@ -97,7 +133,7 @@ Array<T>::Array(int h, int w, T **a):
 template <class T>
 Array<T>::~Array()
 {
-    assert(count == 0);
+    Assert(count == 0);
     if (!part)
     {
         for (int i = 0; i < height; i++)
@@ -111,12 +147,13 @@ Array<T>::~Array()
 template <class T>
 SmartArray<T>::SmartArray(): array(null)
 {
+    Assert(isNull() == true);
 }
 
 template <class T>
 SmartArray<T>::SmartArray(Array<T> *a): array(a)
 {
-    assert(!isNull());
+    Assert(!isNull());
     array -> count++;
 }
 
@@ -167,15 +204,15 @@ SmartArray<T>::~SmartArray()
 template <class T>
 Array<T> *SmartArray<T>::operator->()
 {
-    assert(!isNull());
+    Assert(!isNull());
     return array;
 }
 
 template <class T>
 T *SmartArray<T>::operator[](int i)
 {
-    assert(!isNull());
-    assert(i >= 0 && i < array -> height);
+    Assert(!isNull());
+    Assert(i >= 0 && i < array -> height);
     return array -> array[i];
 }
 

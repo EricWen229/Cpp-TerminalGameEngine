@@ -27,12 +27,16 @@ class Promise
         
     public:
         Promise(std::function<T()> f);
+        ~Promise();
         bool valid();
         T get();
 };
 
 template <class T>
 int Promise<T>::referenceCount = 0;
+
+template <class T>
+Promise<T>::~Promise() {}
 
 template <class T>
 class PromisePointer
@@ -158,9 +162,17 @@ Future<T>::Future(): exit(false)
     std::function<void()> loop =
         [&]()
     {
-        while (!exit)
+        while (true)
         {
             s.P();
+            if (exit)
+            {
+                while (promises.begin() != promises.end())
+                {
+                    promises.erase(promises.begin());
+                }
+                break;
+            }
             PromisePointer<T> promise = promises.front();
             promise -> value = promise -> fn();
             promise -> isValid = true;
@@ -174,7 +186,8 @@ template <class T>
 Future<T>::~Future()
 {
     exit = true;
-    thread.detach();
+    s.V();
+    thread.join();
 }
 
 int main()
@@ -182,7 +195,7 @@ int main()
     Future<int> future;
     auto p = future.put([]()
     {
-        return 1;
+        return 10;
     });
     std::cout << "Hello" << std::endl;
     while (!p -> valid()) ;

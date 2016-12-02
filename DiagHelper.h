@@ -1,6 +1,10 @@
 #ifndef DiagHelper_H
 #define DiagHelper_H
 
+#define LogMode
+#define ExtraRunMode
+#define AssertMode
+
 #ifdef LogMode
 #include <iostream>
 #include <fstream>
