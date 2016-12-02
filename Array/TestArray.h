@@ -2,6 +2,7 @@
  * 经过复制构造函数之后还是不是null
  * 经过赋值构造函数之后还是不是null */
 /* 2.非空智能指针的构造函数，复制构造函数，赋值构造函数
+ * 通过真实的赋值操作确定确实分配了相应的内存
  * 经过复制构造函数之后能不能指向同一块内存
  * 经过赋值构造函数之后能不能指向同一块内存 */
 /* 3.非空智能指针在复制构造函数和赋值构造函数作用后
@@ -17,36 +18,42 @@
  * 要验证通过上一级指针的修改能不能反映在下一级指针上
  * 要验证通过下一级指针的修改能不能反映在上一级指针上
  * 特别关注在边界上的值 */
+/* 7.查看智能指针对于静态变量的反应是否正确，主要确认不会有内存泄漏 */
 
 /* 1.testNull */
 /* 2.testNoNull */
-/* 3.testCopy
- * testAssign */
+/* 3.testCopy */
 /* 4.testReAssign */
 /* 5.testCreateArrayGlobal */
 /* 6.testCreateArrayLocal */
+/* 7.testStatic */
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "Array.h"
+#include <tuple>
+#include <functional>
 
 class TestArray: public CppUnit::TestFixture
 {
     private:
         CPPUNIT_TEST_SUITE(TestArray);
-        CPPUNIT_TEST(testPart);
-        CPPUNIT_TEST(testShare);
         CPPUNIT_TEST(testNull);
-        CPPUNIT_TEST(testReassign);
+        CPPUNIT_TEST(testNoNull);
+        CPPUNIT_TEST(testCopy);
+        CPPUNIT_TEST(testReAssign);
+        CPPUNIT_TEST(testCreateArrayGlobal);
+        CPPUNIT_TEST(testCreateArrayLocal);
         CPPUNIT_TEST(testStatic);
         CPPUNIT_TEST_SUITE_END();
         
     public:
         TestArray();
         ~TestArray();
-        void testPart();
-        void testShare();
         void testNull();
-        /* 看一看对同一个变量重新赋值会不会导致内存泄漏 */
-        void testReassign();
+        void testNoNull();
+        void testCopy();
+        void testReAssign();
+        void testCreateArrayGlobal();
+        void testCreateArrayLocal();
         void testStatic();
 };
