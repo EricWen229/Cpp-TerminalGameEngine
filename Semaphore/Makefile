@@ -1,9 +1,14 @@
-run : clean test.o
-	valgrind --tool=helgrind --log-file="res" ./test.o
+run : clean UnitTest.o
+	valgrind --tool=memcheck --log-file="MemRes" ./UnitTest.o
+	valgrind --tool=helgrind --log-file="HelRes" ./UnitTest.o
 
-test.o: test.cpp Semaphore.cpp
-	g++ test.cpp Semaphore.cpp -std=c++11 -ggdb -lpthread -o test.o
-
-clean:
+clean :
 	- rm *.o
-	- rm res
+	- rm HelRes
+	- rm MemRes
+
+UnitTest.o :
+	g++ -ggdb -std=c++11 -L /CPP/lib/libcppunit.a \
+		UnitTest.cpp \
+		Semaphore.cpp \
+		-lcppunit -ldl -lpthread -o UnitTest.o
