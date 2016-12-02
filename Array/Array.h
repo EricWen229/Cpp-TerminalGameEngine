@@ -134,6 +134,7 @@ template <class T>
 Array<T>::~Array()
 {
     Assert(count == 0);
+    
     if (!part)
     {
         for (int i = 0; i < height; i++)
@@ -154,21 +155,44 @@ template <class T>
 SmartArray<T>::SmartArray(Array<T> *a): array(a)
 {
     Assert(!isNull());
+    
     array -> count++;
+    
+    ExtraRun
+    (
+        for (int i = 0; i < array -> height; i++)
+        Assert((*this)[i] == a -> array[i]);
+    );
+    Assert((*this) -> height == a -> height);
+    Assert((*this) -> width == a -> width);
 }
 
 template <class T>
 SmartArray<T>::SmartArray(const SmartArray<T> &sa): array(sa.array)
 {
+    /* no pre-condition */
+    
     if (!isNull())
     {
         array -> count++;
+        
+        /* 因为传入的是一个const引用，所以不能调用->方法 */
+        ExtraRun
+        (
+            for (int i = 0; i < (*this) -> height; i++)
+            Assert((*this)[i] == sa.array -> array[i]);
+        );
+        Assert((*this) -> height == sa.array -> height);
+        Assert((*this) -> width == sa.array -> width);
     }
+    Assert(isNull() == sa.isNull());
 }
 
 template <class T>
 SmartArray<T> &SmartArray<T>::operator=(const SmartArray<T> &sa)
 {
+    /* no pre-condition */
+    
     if (this == &sa)
     {
         return *this;
@@ -186,25 +210,34 @@ SmartArray<T> &SmartArray<T>::operator=(const SmartArray<T> &sa)
         sa.array -> count++;
     }
     array = sa.array;
+    
+    /* hard to write a post-condition */
 }
 
 template <class T>
 SmartArray<T>::~SmartArray()
 {
+    /* no pre-conditon */
+    
     if (!isNull())
     {
         array -> count--;
         if (array -> count == 0)
         {
             delete array;
+            array = nullptr;
         }
     }
+    
+    /* hard to write a post-condition */
 }
 
 template <class T>
 Array<T> *SmartArray<T>::operator->()
 {
     Assert(!isNull());
+    
+    Assert(array != nullptr);
     return array;
 }
 
@@ -213,6 +246,8 @@ T *SmartArray<T>::operator[](int i)
 {
     Assert(!isNull());
     Assert(i >= 0 && i < array -> height);
+    
+    Assert(array -> array[i] != nullptr);
     return array -> array[i];
 }
 
