@@ -15,6 +15,8 @@ Interface具体实现切到EasyX上
 
 Makefile
 1.生成.o文件的项目请写在最后，并且只负责生成.o项目
+生成.o文件的项不要写依赖文件
+冒号举例目标名称有一个空格
 2.若有多个.o需要生成，请采取unitTest，myTest，debug，Example的顺序编写
 3.测试命令采用unitTest，memUnitTest，helUnitTes等形式编写
 4.把所有的测试命令写到run里面，保证顺序不变
