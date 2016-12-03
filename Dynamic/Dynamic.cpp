@@ -44,13 +44,13 @@ ObjectInfo::DynamicFn ObjectInfo::getDynamicFn(const std::string &funcName)
     }
 }
 
-std::map<const std::string, ClassInfo *> ClassInfos::infosMap;
+std::map<const std::string, ClassInfo *const> ClassInfos::infosMap;
 
 ClassInfos::ClassInfos() {}
 
 ClassInfos::~ClassInfos() {}
 
-void ClassInfos::regClass(const std::string &className, ClassInfo *ci)
+void ClassInfos::regClass(const std::string &className, ClassInfo *const ci)
 {
     infosMap.insert(InfosMap::value_type(className, ci));
 }
@@ -64,7 +64,7 @@ void ClassInfos::outClass(const std::string &className)
     }
 }
 
-ClassInfo *ClassInfos::getClassInfo(const std::string &className)
+ClassInfo *const ClassInfos::getClassInfo(const std::string &className)
 {
     InfosMap::const_iterator it = infosMap.find(className);
     if (it == infosMap.end())
@@ -77,13 +77,13 @@ ClassInfo *ClassInfos::getClassInfo(const std::string &className)
     }
 }
 
-std::map<const ObjectId, ObjectInfo *> ObjectInfos::infosMap;
+std::map<const ObjectId, ObjectInfo *const> ObjectInfos::infosMap;
 
 ObjectInfos::ObjectInfos() {}
 
 ObjectInfos::~ObjectInfos() {}
 
-void ObjectInfos::regObject(const ObjectId &id, ObjectInfo *ci)
+void ObjectInfos::regObject(const ObjectId &id, ObjectInfo *const ci)
 {
     infosMap.insert(InfosMap::value_type(id, ci));
 }
@@ -97,7 +97,7 @@ void ObjectInfos::outObject(const ObjectId &id)
     }
 }
 
-ObjectInfo *ObjectInfos::getObjectInfo(const ObjectId &id)
+ObjectInfo *const ObjectInfos::getObjectInfo(const ObjectId &id)
 {
     InfosMap::const_iterator it = infosMap.find(id);
     if (it == infosMap.end())

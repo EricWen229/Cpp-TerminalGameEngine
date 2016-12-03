@@ -1,63 +1,92 @@
+/* 1.类信息的注册、注销、查询 */
+/* 2.对象信息的注册（由构造函数完成）、注销、查询 */
+/* 3.类信息、对象信息的查询是否具有多态性 */
+/* 4.直接构造的对象能否通过查询得到函数 */
+/* 5.通过查询构造的对象能否通过查询得到函数 */
+/* 6.能否对某对象动态添加删除成员函数 */
+/* 7.dynamic_cast能否成功 */
+/* 8.验证对于模板类是否具有多态性 */
+
+/* 1.testClassInfo */
+/* 2.testObjectInfo */
+/* 3.testSearchPoly */
+/* 4.testGetDirectObjectFn */
+/* 5.testGetSearchObjectFn */
+/* 6.testDynamicFn */
+/* 7.testDynamicCast */
+
 #include <cppunit/extensions/HelperMacros.h>
 #include "Dynamic.h"
-#include "Example.h"
 
-class GrandSon: public Son
+class Base: virtual public DynamicRootObject
 {
         Declare_Class;
+        Declare_Object;
     public:
-        GrandSon(): Son() {}
-        virtual ~GrandSon()
+        Base() {}
+        virtual ~Base() {}
+        static Base *createObject(void *unused)
         {
-            Out_Object(GrandSon);
+            return new Base;
         }
-        static void *createObject(void *)
+        void *get(void *unused)
         {
-            return new GrandSon;
-        }
-        void *sayHi(void *p)
-        {
-            return null;
+            return (void *)1;
         }
 };
 
-Implement_Class(GrandSon)
+Implement_Class(Base);
+
+Implement_Object(Base)
 {
-    Register_Object(GrandSon);
-    Register_Fn(GrandSon, sayHi);
+    Register_Object(Base);
+    Register_Fn(Base, get);
+}
+
+class Derived: public Base
+{
+        Declare_Class;
+        Declare_Object;
+    public:
+        Derived() {}
+        virtual ~Derived() {}
+        static Derived *createObject(void *unused);
+        void *get(void *unused)
+        {
+            return (void *)2;
+        }
+};
+
+Implement_Class(Derived);
+
+Implement_Object(Derived)
+{
+    Register_Object(Derived);
+    Register_Fn(Derived, get);
 }
 
 class TestDynamic: public CppUnit::TestFixture
 {
     private:
         CPPUNIT_TEST_SUITE(TestDynamic);
-        CPPUNIT_TEST(testGetClassName);
-        CPPUNIT_TEST(testGetClassConstructor);
-        CPPUNIT_TEST(testRegClass);
-        CPPUNIT_TEST(testOutClass);
-        CPPUNIT_TEST(testRegDynamicFn);
-        CPPUNIT_TEST(testOutDynamicFn);
-        CPPUNIT_TEST(testGetObjectId);
-        CPPUNIT_TEST(testRegObjectAndOutObject);
-        CPPUNIT_TEST(testGetDynamicFnByIdAndStr);
+        CPPUNIT_TEST(testClassInfo);
+        CPPUNIT_TEST(testObjectInfo);
+        CPPUNIT_TEST(testSearchPoly);
+        CPPUNIT_TEST(testGetDirectObjectFn);
+        CPPUNIT_TEST(testGetSearchObjectFn);
+        CPPUNIT_TEST(testDynamicFn);
+        CPPUNIT_TEST(testDynamicCast);
         CPPUNIT_TEST_SUITE_END();
         
     public:
         TestDynamic();
         ~TestDynamic();
         
-        void testGetClassName();
-        void testGetClassConstructor();
-        void testRegClass();
-        void testOutClass();
-        /* have been tested in other test functions */
-        /* void testGetClassInfo(); */
-        void testRegDynamicFn();
-        void testOutDynamicFn();
-        /* have been tested in other test functions */
-        /* void testGetDynamicFn(); */
-        void testGetObjectId();
-        void testRegObjectAndOutObject();
-        /* testGetDynamicFnByIdAndStr已经测试了getObjectInfo */
-        void testGetDynamicFnByIdAndStr();
+        void testClassInfo();
+        void testObjectInfo();
+        void testSearchPoly();
+        void testGetDirectObjectFn();
+        void testGetSearchObjectFn();
+        void testDynamicFn();
+        void testDynamicCast();
 };

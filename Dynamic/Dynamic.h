@@ -94,32 +94,32 @@ class ObjectInfo
 class ClassInfos
 {
     private:
-        typedef std::map<const std::string, ClassInfo *> InfosMap;
+        typedef std::map<const std::string, ClassInfo *const> InfosMap;
         static InfosMap infosMap;
         
     public:
         ClassInfos();
         ~ClassInfos();
         
-        void regClass(const std::string &className, ClassInfo *ci);
+        void regClass(const std::string &className, ClassInfo *const ci);
         void outClass(const std::string &className);
-        ClassInfo *getClassInfo(const std::string &className);
+        ClassInfo *const getClassInfo(const std::string &className);
 };
 
 /* singleton */
 class ObjectInfos
 {
     private:
-        typedef std::map<const ObjectId, ObjectInfo *> InfosMap;
+        typedef std::map<const ObjectId, ObjectInfo *const> InfosMap;
         static InfosMap infosMap;
         
     public:
         ObjectInfos();
         ~ObjectInfos();
         
-        void regObject(const ObjectId &id, ObjectInfo *ci);
+        void regObject(const ObjectId &id, ObjectInfo *const ci);
         void outObject(const ObjectId &id);
-        ObjectInfo *getObjectInfo(const ObjectId &id);
+        ObjectInfo *const getObjectInfo(const ObjectId &id);
 };
 
 /* 如果要使用根据id和成员函数名调用成员函数，继承体系上必须有它作为父类 */
@@ -128,8 +128,10 @@ class DynamicRootObject
 {
         Declare_Class;
         Declare_Object;
+        
     protected:
         ObjectInfo objectInfo;
+        
     public:
         const ObjectId objectId;
         DynamicRootObject();

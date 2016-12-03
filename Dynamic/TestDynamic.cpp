@@ -5,29 +5,46 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestDynamic, "TestDynamic");
 TestDynamic::TestDynamic() {}
 TestDynamic::~TestDynamic() {}
 
-void TestDynamic::testGetClassName()
+void TestDynamic::testClassInfo()
 {
-    Father::RegisterClassInfo();
-    Son::RegisterClassInfo();
-    GrandSon::RegisterClassInfo();
-    
-    Father *f =
-        (Father *)ClassInfos().getClassInfo("Father")
-        -> getConstructor()(null);
-    Father *s =
-        (Father *)ClassInfos().getClassInfo("Son")
-        -> getConstructor()(null);
-    Father *g =
-        (Father *)ClassInfos().getClassInfo("GrandSon")
-        -> getConstructor()(null);
-        
-    CPPUNIT_ASSERT(f -> getClassInfo().getName() == "Father");
-    CPPUNIT_ASSERT(s -> getClassInfo().getName() == "Son");
-    CPPUNIT_ASSERT(g -> getClassInfo().getName() == "GrandSon");
-    
-    delete f;
-    delete s;
-    delete g;
+    CPPUNIT_ASSERT(ClassInfos().getClassInfo("Base") == nullptr);
+    Base::RegisterClassInfo();
+    CPPUNIT_ASSERT(ClassInfos().getClassInfo("Base") != nullptr);
+    Base::OutClassInfo();
+    CPPUNIT_ASSERT(ClassInfos().getClassInfo("Base") == nullptr);
+}
+
+void TestDynamic::testObjectInfo()
+{
+    Base base;
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(base.objectId) != nullptr);
+    base.OutObjectInfo();
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(base.objectId) == nullptr);
+    base.RegisterObjectInfo();
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(base.objectId) != nullptr);
+    ObjectInfos().outObject(base.objectId);
+    CPPUNIT_ASSERT(ObjectInfos().getObjectInfo(base.objectId) == nullptr);
+}
+
+void TestDynamic::testSearchPoly()
+{
+    DynamicRootObject *base = new Base;
+    DynamicRootObject *derived = new Derived;
+    CPPUNIT_ASSERT(base -> getClassInfo().ClassName == "Base");
+    CPPUNIT_ASSERT(derived -> getClassInfo().ClassName == "Derived");
+    CPPUNIT_ASSERT(&(base -> getObjectInfo()) != &(derived -> getObjectInfo()));
+}
+
+void TestDynamic::testGetDirectObjectFn()
+{
+    DynamicRootObject *base = new Base;
+    CPPUNIT_ASSERT
+    (reinterpret_cast<int>
+     (base -> getObjectInfo().getDynamicFn("get")(nullptr)) == 1);
+    DynamicRootObject *derived = new Derived;
+    CPPUNIT_ASSERT
+    (reinterpret_cast<int>
+     (derived -> getObjectInfo().getDynamicFn("get")(nullptr)) == 1);
 }
 
 void TestDynamic::testGetClassConstructor()

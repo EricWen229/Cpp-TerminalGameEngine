@@ -18,7 +18,7 @@ int main()
     
     Son::RegisterClassInfo();
     Father *s =
-        dynamic_cast<Son *>
+        dynamic_cast<Father *>
         (ClassInfos().getClassInfo("Son")
          -> Constructor(null));
     /* s -> RegisterObjectInfo(); */
