@@ -19,36 +19,29 @@ class GetObjectId
         ObjectId operator()();
 };
 
-/* 如果要使用根据id和成员函数名调用成员函数，继承体系上必须有它作为父类 */
-/* 且不要多次继承 */
-class RootObject
-{
-    public:
-        const ObjectId objectId;
-        RootObject();
-        virtual ~RootObject();
-};
-
-/* 如果是单例类，且需要一个静态的Id */
-/* 需要保证继承体系下不会出现多个ObjectId */
-/* 则可以不用继承RootObject而改为手动声明 */
-/* 也可以自己从负数中任意选取一个Id号 */
-/* 方便标识 */
-
 #define Declare_Class \
     protected: \
         static ClassInfo classInfo; \
-        ObjectInfo objectInfo; \
     public: \
         static void RegisterClassInfo(); \
+        static void OutClassInfo(); \
+        virtual ClassInfo &getClassInfo();
+
+#define Declare_Object \
+    public: \
         virtual void RegisterObjectInfo(); \
-        virtual ClassInfo &getClassInfo(); \
+        virtual void OutObjectInfo(); \
         virtual ObjectInfo &getObjectInfo();
 
 #define Implement_Class(name) \
-    ClassInfo name::classInfo((#name), (ClassInfo::ConFn)name::createObject); \
+    ClassInfo name::classInfo((#name), \
+    (std::function<DynamicRootObject*(void*)>)name::createObject); \
     void name::RegisterClassInfo() { ClassInfos().regClass(#name, &name::classInfo); } \
-    ClassInfo &name::getClassInfo() { return classInfo; } \
+    void name::OutClassInfo() { ClassInfos().outClass(#name); } \
+    ClassInfo &name::getClassInfo() { return classInfo; }
+
+#define Implement_Object(name) \
+    void name::OutObjectInfo() { ObjectInfos().outObject(objectId); } \
     ObjectInfo &name::getObjectInfo() { return objectInfo; } \
     void name::RegisterObjectInfo()
 
@@ -65,41 +58,34 @@ class RootObject
 #define Out_Object(className) \
     ObjectInfos().outObject(objectId);
 
-class Object;
+class DynamicRootObject;
 
-/* S represent Static */
 class ClassInfo
 {
     public:
-        typedef void *(*ConFn)(void *);
-        
-    private:
-        const std::string className;
-        const ConFn constructorFn;
+        typedef const std::function<DynamicRootObject*(void *)> ConFn;
+        const std::string ClassName;
+        ConFn Constructor;
         
     public:
-        ClassInfo(std::string cn, ConFn cfn);
+        ClassInfo(const std::string &cn, ConFn &cfn);
         ~ClassInfo();
-        
-        const std::string &getName();
-        ConFn getConstructor();
 };
 
-/* N represent Non-Static */
 class ObjectInfo
 {
     public:
-        typedef std::function<void *(void *)> DynamicFn;
+        typedef const std::function<void *(void *)> DynamicFn;
         
     private:
-        typedef std::map<std::string, DynamicFn> FunsMap;
+        typedef std::map<const std::string, DynamicFn> FunsMap;
         FunsMap funsMap;
         
     public:
         ObjectInfo();
         ~ObjectInfo();
         
-        void regDynamicFn(const std::string &funcName, DynamicFn fn);
+        void regDynamicFn(const std::string &funcName, const DynamicFn &fn);
         void outDynamicFn(const std::string &funcName);
         DynamicFn getDynamicFn(const std::string &funcName);
 };
@@ -108,7 +94,7 @@ class ObjectInfo
 class ClassInfos
 {
     private:
-        typedef std::map<std::string, ClassInfo *> InfosMap;
+        typedef std::map<const std::string, ClassInfo *> InfosMap;
         static InfosMap infosMap;
         
     public:
@@ -124,16 +110,31 @@ class ClassInfos
 class ObjectInfos
 {
     private:
-        typedef std::map<ObjectId, ObjectInfo *> InfosMap;
+        typedef std::map<const ObjectId, ObjectInfo *> InfosMap;
         static InfosMap infosMap;
         
     public:
         ObjectInfos();
         ~ObjectInfos();
         
-        void regObject(ObjectId id, ObjectInfo *ci);
-        void outObject(ObjectId id);
-        ObjectInfo *getObjectInfo(ObjectId id);
+        void regObject(const ObjectId &id, ObjectInfo *ci);
+        void outObject(const ObjectId &id);
+        ObjectInfo *getObjectInfo(const ObjectId &id);
+};
+
+/* 如果要使用根据id和成员函数名调用成员函数，继承体系上必须有它作为父类 */
+/* 且不要多次继承 */
+class DynamicRootObject
+{
+        Declare_Class;
+        Declare_Object;
+    protected:
+        ObjectInfo objectInfo;
+    public:
+        const ObjectId objectId;
+        DynamicRootObject();
+        virtual ~DynamicRootObject();
+        static DynamicRootObject *createObject(void *unused);
 };
 
 #endif

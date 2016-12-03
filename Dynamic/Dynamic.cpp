@@ -8,30 +8,16 @@ ObjectId GetObjectId::operator()()
     return num;
 }
 
-RootObject::RootObject(): objectId(GetObjectId()()) {}
-
-RootObject::~RootObject() {}
-
-ClassInfo::ClassInfo(std::string cn, ConFn cfn):
-    className(cn), constructorFn(cfn) {}
+ClassInfo::ClassInfo(const std::string &cn, ConFn &cfn):
+    ClassName(cn), Constructor(cfn) {}
 
 ClassInfo::~ClassInfo() {}
-
-const std::string &ClassInfo::getName()
-{
-    return className;
-}
-
-ClassInfo::ConFn ClassInfo::getConstructor()
-{
-    return constructorFn;
-}
 
 ObjectInfo::ObjectInfo() {}
 
 ObjectInfo::~ObjectInfo() {}
 
-void ObjectInfo::regDynamicFn(const std::string &funcName, DynamicFn fn)
+void ObjectInfo::regDynamicFn(const std::string &funcName, const DynamicFn &fn)
 {
     funsMap.insert(FunsMap::value_type(funcName, fn));
 }
@@ -58,7 +44,7 @@ ObjectInfo::DynamicFn ObjectInfo::getDynamicFn(const std::string &funcName)
     }
 }
 
-std::map<std::string, ClassInfo *> ClassInfos::infosMap;
+std::map<const std::string, ClassInfo *> ClassInfos::infosMap;
 
 ClassInfos::ClassInfos() {}
 
@@ -91,18 +77,18 @@ ClassInfo *ClassInfos::getClassInfo(const std::string &className)
     }
 }
 
-std::map<ObjectId, ObjectInfo *> ObjectInfos::infosMap;
+std::map<const ObjectId, ObjectInfo *> ObjectInfos::infosMap;
 
 ObjectInfos::ObjectInfos() {}
 
 ObjectInfos::~ObjectInfos() {}
 
-void ObjectInfos::regObject(ObjectId id, ObjectInfo *ci)
+void ObjectInfos::regObject(const ObjectId &id, ObjectInfo *ci)
 {
     infosMap.insert(InfosMap::value_type(id, ci));
 }
 
-void ObjectInfos::outObject(ObjectId id)
+void ObjectInfos::outObject(const ObjectId &id)
 {
     InfosMap::const_iterator it = infosMap.find(id);
     if (it != infosMap.end())
@@ -111,7 +97,7 @@ void ObjectInfos::outObject(ObjectId id)
     }
 }
 
-ObjectInfo *ObjectInfos::getObjectInfo(ObjectId id)
+ObjectInfo *ObjectInfos::getObjectInfo(const ObjectId &id)
 {
     InfosMap::const_iterator it = infosMap.find(id);
     if (it == infosMap.end())
@@ -122,4 +108,24 @@ ObjectInfo *ObjectInfos::getObjectInfo(ObjectId id)
     {
         return it -> second;
     }
+}
+
+Implement_Class(DynamicRootObject)
+
+Implement_Object(DynamicRootObject)
+{
+    Register_Object(DynamicRootObject);
+}
+
+DynamicRootObject::DynamicRootObject():
+    objectId(GetObjectId()()) {}
+
+DynamicRootObject::~DynamicRootObject()
+{
+    Out_Object(DynamicRootObject);
+}
+
+DynamicRootObject *DynamicRootObject::createObject(void *unused)
+{
+    return new DynamicRootObject;
 }
