@@ -135,6 +135,7 @@ class DynamicRootObject
     public:
         const ObjectId objectId;
         DynamicRootObject();
+        DynamicRootObject(const ObjectId &id);
         virtual ~DynamicRootObject();
         static DynamicRootObject *createObject(void *unused);
 };

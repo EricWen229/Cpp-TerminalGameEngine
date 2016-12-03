@@ -120,6 +120,9 @@ Implement_Object(DynamicRootObject)
 DynamicRootObject::DynamicRootObject():
     objectId(GetObjectId()()) {}
 
+DynamicRootObject::DynamicRootObject(const ObjectId &id):
+    objectId(id) {}
+
 DynamicRootObject::~DynamicRootObject()
 {
     Out_Object(DynamicRootObject);
