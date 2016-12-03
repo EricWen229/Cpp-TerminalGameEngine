@@ -9,7 +9,7 @@ void TestSemaphore::testSPositive()
 {
     Semaphore s;
     CPPUNIT_ASSERT(s.get() == 0);
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 100; i++)
     {
         s.V();
         CPPUNIT_ASSERT(s.get() == i + 1);
@@ -27,8 +27,9 @@ void TestSemaphore::testSNegative()
         {
             s.P();
         });
-        CPPUNIT_ASSERT(s.get() == -1 * (i + 1));
     }
+    sleep(1);
+    CPPUNIT_ASSERT(s.get() == -20);
     for (int i = 0; i < 20; i++)
     {
         s.V();
@@ -37,6 +38,7 @@ void TestSemaphore::testSNegative()
     {
         threads[i].join();
     }
+    CPPUNIT_ASSERT(s.get() == 0);
 }
 
 void TestSemaphore::testWakeUp()
@@ -52,7 +54,6 @@ void TestSemaphore::testWakeUp()
             s.P();
             count += i;
         });
-        CPPUNIT_ASSERT(s.get() == -1 * (i + 1));
     }
     for (int i = 0; i < 20; i++)
     {
@@ -63,4 +64,92 @@ void TestSemaphore::testWakeUp()
         threads[i].join();
     }
     CPPUNIT_ASSERT(count == std::atomic_int((0 + 19) * 20 / 2));
+}
+
+void TestSemaphore::testDeadlock()
+{
+    Semaphore mutex(1);
+    Semaphore s(1);
+    
+    std::function<void()> fn = [&]()
+    {
+        mutex.P();
+        usleep(2);
+        s.P();
+        usleep(2);
+        s.V();
+        mutex.V();
+    };
+    
+    std::thread threads[20];
+    for (int i = 0; i < 20; i++)
+    {
+        threads[i] = std::thread(fn);
+    }
+    for (int i = 0; i < 20; i++)
+    {
+        threads[i].join();
+    }
+}
+
+void TestSemaphore::testProducerConsumer()
+{
+    Semaphore mutex(1);
+    Semaphore s;
+    std::function<void()> producerA = [&]()
+    {
+        mutex.P();
+        usleep(1);
+        s.V();
+        mutex.V();
+    };
+    std::function<void()> producerB = [&]()
+    {
+        mutex.P();
+        usleep(3);
+        s.V();
+        mutex.V();
+    };
+    std::function<void()> consumer = [&]()
+    {
+        usleep(1);
+        s.P();
+        mutex.P();
+        usleep(2);
+        mutex.V();
+    };
+    std::thread threads[20];
+    
+    for (int i = 0; i < 10; i++)
+    {
+        threads[i] = std::thread(producerA);
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        threads[i + 10] = std::thread(consumer);
+    }
+    for (int i = 0; i < 20; i++)
+    {
+        threads[i].join();
+    }
+    
+    for (int i = 0; i < 10; i++)
+    {
+        threads[i] = std::thread(consumer);
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        threads[i + 10] = std::thread(producerB);
+    }
+    for (int i = 0; i < 20; i++)
+    {
+        threads[i].join();
+    }
+}
+
+void TestSemaphore::testNoCopy()
+{
+    Semaphore s;
+    /* Semaphore x = s; */
+    /* Semaphore y(s); */
 }

@@ -7,15 +7,22 @@
  * 但这一点也很难测试，只能指定2个到4个线程同时运行
  * 并且设定线程沉睡时间（比如间隔1ms、2ms等），模拟抢占的情况
  * 同时设定每一个拿到资源的线程都沉睡5ms以模拟对资源的占有过程 */
+/* 5.测试典型地生产者消费者问题是否会出现死锁（带临界区） */
+/* 6.测试是否所有的拷贝构造和赋值构造函数都不能正常使用
+ * 看编译期是否报错即可 */
 
 /* 1.testSPositive */
 /* 2.testSNegative */
 /* 3.testWakeUp */
 /* 4.testDeadlock */
+/* 5.testProducerConsumer */
+/* 6.testNoCopy */
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "Semaphore.h"
 #include <atomic>
+#include <functional>
+#include <unistd.h>
 
 class TestSemaphore: public CppUnit::TestFixture
 {
@@ -24,6 +31,8 @@ class TestSemaphore: public CppUnit::TestFixture
         CPPUNIT_TEST(testSPositive);
         CPPUNIT_TEST(testSNegative);
         CPPUNIT_TEST(testWakeUp);
+        CPPUNIT_TEST(testDeadlock);
+        CPPUNIT_TEST(testProducerConsumer);
         CPPUNIT_TEST_SUITE_END();
         
     public:
@@ -32,4 +41,7 @@ class TestSemaphore: public CppUnit::TestFixture
         void testSPositive();
         void testSNegative();
         void testWakeUp();
+        void testDeadlock();
+        void testProducerConsumer();
+        void testNoCopy();
 };

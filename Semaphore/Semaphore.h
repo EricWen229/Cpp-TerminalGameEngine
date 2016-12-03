@@ -27,6 +27,12 @@ class Semaphore
     public:
         Semaphore(int c = 0);
         ~Semaphore();
+        // not copyable
+        Semaphore(Semaphore const &) = delete;
+        Semaphore &operator=(Semaphore const &) = delete;
+        // not movable
+        Semaphore(Semaphore &&) = delete;
+        Semaphore &operator=(Semaphore &&) = delete;
         
         void P();
         void V();
