@@ -128,7 +128,7 @@ DynamicRootObject::~DynamicRootObject()
     Out_Object(DynamicRootObject);
 }
 
-DynamicRootObject *DynamicRootObject::createObject(void *unused)
+std::unique_ptr<DynamicRootObject *> DynamicRootObject::createObject(void *unused)
 {
-    return new DynamicRootObject;
+    return std::unique_ptr<DynamicRootObject *>(new DynamicRootObject);
 }
