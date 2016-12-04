@@ -1,5 +1,6 @@
 #include "Dynamic.h"
 #include "Example.h"
+#include "Table.h"
 #include <iostream>
 
 int main()
@@ -43,6 +44,10 @@ int main()
     std::cout << f -> getClassInfo().ClassName << std::endl;
     std::cout << s -> getClassInfo().ClassName << std::endl;
     /* std::cout << sin -> getClassInfo().ClassName << std::endl; */
+    
+    Son *son;
+    createObject(std::string("Son"), son);
+    std::cout << son -> sayHello(nullptr) << std::endl;
     
     delete f;
     delete s;
