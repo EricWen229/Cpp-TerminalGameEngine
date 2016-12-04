@@ -19,9 +19,9 @@ Father::~Father()
     Out_Object(Father);
 }
 
-Father *Father::createObject(void *unused)
+unique_ptr<Father> Father::createObject(void *unused)
 {
-    return new Father;
+    return unique_ptr<Father>(new Father);
 }
 
 void *Father::sayHello(void *unused)
@@ -49,9 +49,9 @@ Son::~Son()
     Out_Object(Son);
 }
 
-Son *Son::createObject(void *unused)
+unique_ptr<Son> Son::createObject(void *unused)
 {
-    return new Son;
+    return unique_ptr<Son>(new Son);
 }
 
 void *Son::sayHello(void *unused)
@@ -71,26 +71,3 @@ void *Son::sayHello(void *unused)
 }
 
 ObjectId Singleton::objectId = -1;
-
-Implement_Class(Singleton);
-
-Implement_Object(Singleton)
-{
-    Register_Object(Singleton);
-    Register_Fn(Singleton, sayHello);
-}
-
-Singleton::Singleton() {}
-
-Singleton::~Singleton() {}
-
-Singleton *Singleton::createObject(void *unused)
-{
-    return new Singleton;
-}
-
-void *Singleton::sayHello(void *unused)
-{
-    std::cout << "I'm Singleton!!!" << std::endl;
-    return null;
-}

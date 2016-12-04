@@ -36,7 +36,7 @@ class GetObjectId
 
 #define Implement_Class(name) \
     ClassInfo name::classInfo((#name), \
-    (std::function<std::unique_ptr<DynamicRootObject*>(void*)>)name::createObject); \
+    (std::function<std::unique_ptr<DynamicRootObject>(void*)>)name::createObject); \
     void name::RegisterClassInfo() { ClassInfos().regClass(#name, &name::classInfo); } \
     void name::OutClassInfo() { ClassInfos().outClass(#name); } \
     ClassInfo &name::getClassInfo() { return classInfo; }
@@ -65,7 +65,7 @@ class ClassInfo
 {
     public:
         typedef const std::function<std::unique_ptr
-        <DynamicRootObject *>(void *)> ConFn;
+        <DynamicRootObject>(void *)> ConFn;
         const std::string ClassName;
         ConFn Constructor;
         
@@ -139,7 +139,7 @@ class DynamicRootObject
         DynamicRootObject();
         DynamicRootObject(const ObjectId &id);
         virtual ~DynamicRootObject();
-        static std::unique_ptr<DynamicRootObject *> createObject(void *unused);
+        static std::unique_ptr<DynamicRootObject> createObject(void *unused);
 };
 
 #endif

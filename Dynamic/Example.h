@@ -2,6 +2,8 @@
 #define Example_H
 
 #include "Dynamic.h"
+#include <memory>
+using std::unique_ptr;
 
 /* example */
 class Father: virtual public DynamicRootObject
@@ -14,7 +16,7 @@ class Father: virtual public DynamicRootObject
         /* 可能是std:bind中类似于智能指针导致的问题 */
         virtual ~Father();
         
-        static Father *createObject(void *unused);
+        static unique_ptr<Father> createObject(void *unused);
         
         virtual void *sayHello(void *unused);
 };
@@ -27,22 +29,7 @@ class Son: public Father
         Son();
         virtual ~Son();
         
-        static Son *createObject(void *unusedP);
-        void *sayHello(void *unusedP);
-};
-
-class Singleton: public DynamicRootObject
-{
-        Declare_Class;
-        Declare_Object;
-    private:
-        static ObjectId objectId;
-        
-    public:
-        Singleton();
-        virtual ~Singleton();
-        static Singleton *createObject(void *unusedP);
-        
+        static unique_ptr<Son> createObject(void *unusedP);
         void *sayHello(void *unusedP);
 };
 

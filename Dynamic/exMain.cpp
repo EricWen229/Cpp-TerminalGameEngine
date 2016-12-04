@@ -1,6 +1,9 @@
 #include "Dynamic.h"
 #include "Example.h"
 #include <iostream>
+#include <memory>
+
+using std::dynamic_pointer_cast;
 
 int main()
 {
@@ -9,16 +12,16 @@ int main()
     void *b[] = {(void *) &x, (void *) &c};
     
     Father::RegisterClassInfo();
-    Father *f =
-        dynamic_cast<Father *>
+    auto f =
+        dynamic_pointer_cast<Father>
         (ClassInfos().getClassInfo("Father")
          -> Constructor(null));
     /* f -> RegisterObjectInfo(); */
     f -> getObjectInfo().getDynamicFn("sayHello")((void *)&b);
     
     Son::RegisterClassInfo();
-    Father *s =
-        dynamic_cast<Father *>
+    auto s =
+        dynamic_pointer_cast<Father>
         (ClassInfos().getClassInfo("Son")
          -> Constructor(null));
     /* s -> RegisterObjectInfo(); */
@@ -44,7 +47,7 @@ int main()
     std::cout << s -> getClassInfo().ClassName << std::endl;
     /* std::cout << sin -> getClassInfo().ClassName << std::endl; */
     
-    delete f;
-    delete s;
+    /* delete f; */
+    /* delete s; */
     /* delete sin; */
 }
