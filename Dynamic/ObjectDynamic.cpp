@@ -75,10 +75,18 @@ DynamicRootObject::DynamicRootObject():
 DynamicRootObject::DynamicRootObject(const ObjectId &id):
     objectId(id)
 {
-    RegisterObjectInfo();
+    /* 不要在构造函数中调用虚函数，行为不可预测 */
+    /* 要把这个事情挪动到具体类中去做 */
+    /* RegisterObjectInfo(); */
 }
 
 DynamicRootObject::~DynamicRootObject()
 {
-    Out_Object(DynamicRootObject);
+    /* 在析构函数中调用虚函数也是不可以的 */
+    OutObjectInfo();
+}
+
+void DynamicRootObject::OutObjectInfo()
+{
+    ObjectInfos().outObject(objectId);
 }

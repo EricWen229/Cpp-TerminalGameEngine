@@ -25,12 +25,9 @@ class GetObjectId
 
 #define Declare_Object \
     private: \
-        /* 只有DynamicRootObject类的构造函数和析构函数能够调用这两个函数 */ \
-        virtual void RegisterObjectInfo(); \
-        virtual void OutObjectInfo();
+        virtual void RegisterObjectInfo();
 
 #define Implement_Object(name) \
-    void name::OutObjectInfo() { ObjectInfos().outObject(objectId); } \
     void name::RegisterObjectInfo()
 
 #define Register_Fn(className, funcName) \
@@ -95,6 +92,7 @@ class DynamicRootObject
         DynamicRootObject();
         DynamicRootObject(const ObjectId &id);
         virtual ~DynamicRootObject();
+        void OutObjectInfo();
 };
 
 #endif
