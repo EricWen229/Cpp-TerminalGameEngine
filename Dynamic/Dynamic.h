@@ -64,14 +64,17 @@ class DynamicRootObject;
 class ClassInfo
 {
     public:
-        typedef const std::function<std::unique_ptr
-        <DynamicRootObject>(void *)> ConFn;
-        const std::string ClassName;
-        ConFn Constructor;
+        typedef const std::function<DynamicRootObject &&(void *)> ConFn;
+        
+    private:
+        const std::string className;
+        ConFn constructor;
         
     public:
         ClassInfo(const std::string &cn, ConFn &cfn);
         ~ClassInfo();
+        std::string getName() const;
+        ConFn getConstructor() const;
 };
 
 class ObjectInfo
