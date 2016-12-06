@@ -15,6 +15,8 @@ class Base: virtual public DynamicRootObject
         /* 可能是std:bind中类似于智能指针导致的问题 */
         virtual ~Base();
         
+        /* 如果子类有同名函数，建议声明为virtual */
+        /* 进一步地，如果不确定子类是否会有同名函数，建议声明为virtual */
         virtual void sayHello(void *unused);
 };
 
