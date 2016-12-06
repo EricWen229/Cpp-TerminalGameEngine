@@ -3,6 +3,7 @@
 /* 因此，ObjectDynamic也不服务于任何其他可以拿到对象的情况 */
 /* 故在DynamicRootObject中，是没有getObjectInfo方法的 */
 /* ObjectDynamic禁止任何动态注册的函数具有返回值，以方便实现 */
+/* Dynamic缩减的重要原因也是，无法给出前件和后件断言，也非常难测试 */
 
 #ifndef ObjectDynamic_H
 #define ObjectDynamic_H
