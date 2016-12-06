@@ -1,36 +1,32 @@
 #ifndef Example_H
 #define Example_H
 
-#include "Dynamic.h"
-#include <memory>
-using std::unique_ptr;
+#include "ObjectDynamic.h"
+#include <iostream>
 
 /* example */
-class Father: virtual public DynamicRootObject
+class Base: virtual public DynamicRootObject
 {
-        Declare_Class;
         Declare_Object;
+        
     public:
-        Father();
+        Base();
         /* 如果非虚析构函数，会导致内存泄漏 */
         /* 可能是std:bind中类似于智能指针导致的问题 */
-        virtual ~Father();
+        virtual ~Base();
         
-        static unique_ptr<Father> createObject(void *unused);
-        
-        virtual void *sayHello(void *unused);
+        virtual void sayHello(void *unused);
 };
 
-class Son: public Father
+class Derived: public Base
 {
-        Declare_Class;
         Declare_Object;
-    public:
-        Son();
-        virtual ~Son();
         
-        static unique_ptr<Son> createObject(void *unusedP);
-        void *sayHello(void *unusedP);
+    public:
+        Derived();
+        virtual ~Derived();
+        
+        void sayHello(void *unusedP);
 };
 
 #endif

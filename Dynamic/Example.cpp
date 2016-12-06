@@ -1,64 +1,41 @@
 #include "Example.h"
 
-Implement_Class(Father);
-
-Implement_Object(Father)
+Implement_Object(Base)
 {
-    Register_Object(Father);
-    Register_Fn(Father, sayHello);
+    Register_Object(Base);
+    Register_Fn(Base, sayHello);
 }
 
-Father::Father(): DynamicRootObject()
+Base::Base(): DynamicRootObject()
 {
-    RegisterClassInfo();
     RegisterObjectInfo();
 }
+Base::~Base() {}
 
-Father::~Father()
-{
-    Out_Object(Father);
-}
-
-unique_ptr<Father> Father::createObject(void *unused)
-{
-    return unique_ptr<Father>(new Father);
-}
-
-void *Father::sayHello(void *unused)
+void Base::sayHello(void *unused)
 {
     std::cout << "Hello!" << std::endl;
-    return null;
+    std::cout << "I'm Base." << std::endl;
 }
 
-Implement_Class(Son);
-
-Implement_Object(Son)
+Implement_Object(Derived)
 {
-    Register_Object(Son);
-    Register_Fn(Son, sayHello);
+    Register_Object(Derived);
+    Register_Fn(Derived, sayHello);
 }
 
-Son::Son(): Father()
+Derived::Derived(): Base()
 {
-    RegisterClassInfo();
     RegisterObjectInfo();
 }
+Derived::~Derived() {}
 
-Son::~Son()
+void Derived::sayHello(void *unused)
 {
-    Out_Object(Son);
-}
-
-unique_ptr<Son> Son::createObject(void *unused)
-{
-    return unique_ptr<Son>(new Son);
-}
-
-void *Son::sayHello(void *unused)
-{
-    if (unused == null)
+    if (unused == nullptr)
     {
         std::cout << "Hi!" << std::endl;
+        std::cout << "I' m Derived." << std::endl;
     }
     else
     {
@@ -67,7 +44,4 @@ void *Son::sayHello(void *unused)
         char b = *((char *)p[1]);
         std::cout << a << " " << b << std::endl;
     }
-    return null;
 }
-
-ObjectId Singleton::objectId = -1;
