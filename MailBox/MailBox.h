@@ -1,7 +1,7 @@
 #ifndef MailBox_H
 #define MailBox_H
 
-#include "../Dynamic/Dynamic.h"
+#include "../Dynamic/ObjectDynamic.h"
 #include "../Semaphore/Semaphore.h"
 #include <queue>
 #include <functional>

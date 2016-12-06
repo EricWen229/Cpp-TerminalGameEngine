@@ -1,17 +1,18 @@
 #include "MailBox.h"
-#include "../Dynamic/Dynamic.h"
+#include "../Dynamic/ObjectDynamic.h"
 #include <iostream>
 
-class Test: public RootObject
+class Test: public DynamicRootObject
 {
-        Declare_Class;
+        Declare_Object;
+        
     public:
-        Test(): RootObject() {}
-        virtual ~Test()
+        Test(): DynamicRootObject()
         {
-            Out_Object(Test);
+            RegisterObjectInfo();
         }
-        void *handleMessageInterval(void *pointer)
+        virtual ~Test() {}
+        void handleMessageInterval(void *pointer)
         {
 #ifdef AsyncCallback
             TopHalf(pointer, locker, msg);
@@ -20,15 +21,10 @@ class Test: public RootObject
 #else
             std::cout << ((Message *)pointer) -> description << std::endl;
 #endif
-            return null;
-        }
-        static void *createObject(void *)
-        {
-            return null;
         }
 };
 
-Implement_Class(Test)
+Implement_Object(Test)
 {
     Register_Object(Test);
     Register_Fn(Test, handleMessageInterval);
@@ -38,8 +34,6 @@ int main()
 {
     MailBox().loop();
     Test t1, t2;
-    t1.RegisterObjectInfo();
-    t2.RegisterObjectInfo();
     MailBox().put(Message(t1.objectId, t2.objectId, "Interval", "I love u"));
     MailBox().put(Message(t2.objectId, t1.objectId, "Interval", "I love u, too!"));
     MailBox().end();

@@ -34,7 +34,7 @@ void *MailBox::loopHelper(void *unused)
             /* std::cout << "can't find object" << std::endl; */
             continue;
         }
-        std::function<void *(void *)> handle =
+        std::function<void(void *)> handle =
             object ->
             getDynamicFn(std::string("handleMessage") + m.type);
         if (handle == null)
