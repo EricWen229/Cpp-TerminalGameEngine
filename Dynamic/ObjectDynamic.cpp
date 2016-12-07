@@ -63,13 +63,13 @@ ObjectInfo *const ObjectInfos::getObjectInfo(const ObjectId &id)
 
 Implement_Object(DynamicRootObject)
 {
-    Register_Object(DynamicRootObject);
+    /* Register_Object(DynamicRootObject); */
 }
 
 DynamicRootObject::DynamicRootObject():
     objectId(GetObjectId()())
 {
-    RegisterObjectInfo();
+    /* RegisterObjectInfo(); */
 }
 
 DynamicRootObject::DynamicRootObject(const ObjectId &id):
@@ -78,7 +78,6 @@ DynamicRootObject::DynamicRootObject(const ObjectId &id):
     /* 不要在构造函数中调用虚函数，行为不可预测 */
     /* 要把这个事情挪动到具体类中去做 */
     /* RegisterObjectInfo(); */
-    RegisterObjectInfo();
 }
 
 DynamicRootObject::~DynamicRootObject()
