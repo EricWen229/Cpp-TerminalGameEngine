@@ -1,9 +1,16 @@
-run : clean test.o
-	valgrind --leak-check=full --show-leak-kinds=all --log-file=res --tool=memcheck ./test.o
-
-test.o : test.cpp
-	g++ test.cpp ../MailBox/MailBox.cpp ../Dynamic/ObjectDynamic.cpp ../Semaphore/Semaphore.cpp Interface.cpp -std=c++11 -ggdb -lpthread -lncurses -o test.o
+run : clean Example.o
+	valgrind --leak-check=full --show-leak-kinds=all --log-file=res --tool=memcheck ./Example.o
 
 clean :
 	- rm *.o
 	- rm res
+
+Example.o :
+	g++ \
+		Example.cpp \
+		Interface.cpp \
+		../MailBox/MailBox.cpp \
+		../Semaphore/Semaphore.cpp \
+		../Dynamic/ObjectDynamic.cpp \
+		../Array/Array.h \
+		-std=c++11 -ggdb -lpthread -lncurses -o Example.o
