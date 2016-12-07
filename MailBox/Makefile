@@ -1,19 +1,32 @@
-objects = /CPP/lib/libcppunit.a main.cpp MailBox.cpp ../Semaphore/Semaphore.cpp ../Dynamic/Dynamic.cpp
-
-run : clean main.o
-	valgrind --tool=memcheck ./main.o
-	valgrind --tool=helgrind --log-file=res ./main.o
-
-main.o : clean main.cpp MailBox.cpp ../Semaphore/Semaphore.cpp ../Dynamic/Dynamic.cpp
-	g++ -ggdb -std=c++11 -L $(objects) -lcppunit -ldl -pthread -o main.o
-
-test : clean test.o
-	valgrind --tool=helgrind --log-file="res" ./test.o
-	valgrind --tool=memcheck ./test.o
-
-test.o :
-	g++ test.cpp MailBox.cpp ../Semaphore/Semaphore.cpp ../Dynamic/ObjectDynamic.cpp -std=c++11 -ggdb -lpthread -o test.o
+run : clean memUnitTest helUnitTest memExample helExample
 
 clean:
 	- rm *.o
-	- rm res
+
+memUnitTest : UnitTest.o
+	valgrind --tool=memcheck ./UnitTest.o
+
+helUnitTest : UnitTest.o
+	valgrind --tool=valgrind ./UnitTest.o
+
+memExample : Example.o
+	valgrind --tool=memcheck ./Example.o
+
+helExample : Example.o
+	valgring --tool=helgring ./Example.o
+
+UnitTest.o :
+	g++ -ggdb -std=c++11 -L /CPP/lib/libcppunit.a \
+		UnitTest.cpp \
+		MailBox.cpp \
+		../Semaphore/Semaphore.cpp \
+		../Dynamic/ObjectDynamic.cpp \
+		-lcppunit -ldl -pthread -o UnitTest.o
+
+Example.o :
+	g++ -ggdb -std=c++11 \
+		Example.cpp \
+		MailBox.cpp \
+		../Semaphore/Semaphore.cpp \
+		../Dynamic/ObjectDynamic.cpp \
+		-lpthread -o Example.o
