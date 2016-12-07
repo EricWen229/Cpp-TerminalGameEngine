@@ -4,16 +4,16 @@
 int judgeHelper;
 
 /* 下面这个对象的实现不保证在AsyncCallback下也能处理正确 */
-class Test: public RootObject
+class Test: public DynamicRootObject
 {
-        Declare_Class;
+        Declare_Object;
+        
     public:
-        Test(): RootObject() {}
-        virtual ~Test()
+        Test(): DynamicRootObject()
         {
-            Out_Object(Test);
+            RegisterObjectInfo();
         }
-        void *handleMessageInterval(void *pointer)
+        void handleMessageInterval(void *pointer)
         {
 #ifdef AsyncCallback
             TopHalf(pointer, locker, msg);
@@ -23,15 +23,10 @@ class Test: public RootObject
             std::cout << ((Message *)pointer) -> description << std::endl;
 #endif
             judgeHelper = 100;
-            return null;
-        }
-        static void *createObject(void *)
-        {
-            return null;
         }
 };
 
-Implement_Class(Test)
+Implement_Object(Test)
 {
     Register_Object(Test);
     Register_Fn(Test, handleMessageInterval);
