@@ -31,4 +31,6 @@ class Derived: public Base
         void sayHello(void *unusedP);
 };
 
+/* 本次开发Singleton指的都是数据静态，方法不静态的类 */
+
 #endif
