@@ -1,30 +1,24 @@
 #include "Interface.h"
 
+Interface::Interface(): DynamicRootObject(InterfaceId) {}
 Interface::~Interface() {}
 
-ObjectId Ncurses::objectId = -1;
 SmartArray<char> Ncurses::buffer;
 Thread Ncurses::pid[2];
 ObjectId Ncurses::sendTo;
 bool Ncurses::exit;
 
-Implement_Class(Ncurses)
+Implement_Object(Ncurses)
 {
     Register_Object(Ncurses);
     Register_Fn(Ncurses, handleMessageUpdate);
 }
 
-Ncurses::Ncurses() {}
-
-Ncurses::~Ncurses()
+Ncurses::Ncurses(): Interface()
 {
-    Out_Object(Ncurses);
+    RegisterObjectInfo();
 }
-
-Ncurses *Ncurses::createObject(void *unusedP)
-{
-    return new Ncurses;
-}
+Ncurses::~Ncurses() {}
 
 void *Ncurses::input(void *)
 {
@@ -37,14 +31,13 @@ void *Ncurses::input(void *)
     return null;
 }
 
-void *Ncurses::handleMessageUpdate(void *unused)
+void Ncurses::handleMessageUpdate(void *unused)
 {
     for (int i = 0; i < buffer -> height; i++)
     {
         mvprintw(i, 0, buffer[i]);
     }
     refresh();
-    return null;
 }
 
 void Ncurses::init(SmartArray<char>b, ObjectId st)
@@ -73,14 +66,11 @@ void Ncurses::init(SmartArray<char>b, ObjectId st)
 void Ncurses::loop()
 {
     pid[0] = createPthread(std::bind(&Ncurses::input, this, std::placeholders::_1));
-    /* pid[1] = createPthread(std::bind(&Ncurses::show, this, std::placeholders::_1)); */
 }
 
 void Ncurses::end()
 {
     waitPthread(pid[0]);
-    /* exit = true; */
-    /* waitPthread(pid[1]); */
     
     endwin();
 }

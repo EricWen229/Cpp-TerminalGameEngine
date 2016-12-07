@@ -2,9 +2,10 @@
 #include "../Array/Array.h"
 #include <iostream>
 
-class Test: public RootObject
+class Test: public DynamicRootObject
 {
-        Declare_Class;
+        Declare_Object;
+        
     public:
         SmartArray<char> s;
         
@@ -12,14 +13,11 @@ class Test: public RootObject
         Test()
         {
             s = createArray<char>(10, 10);
+            RegisterObjectInfo();
         }
         virtual ~Test() {}
-        static Test *createObject(void *unusedP)
-        {
-            return new Test;
-        }
         
-        void *handleMessageKeyDown(void *pointer)
+        void handleMessageKeyDown(void *pointer)
         {
             /* std::cout << ((Message *)pointer) -> description << std::endl; */
             switch (((Message *)pointer) -> description.c_str()[0])
@@ -39,11 +37,10 @@ class Test: public RootObject
                 case 'd':
                     break;
             }
-            return null;
         }
 };
 
-Implement_Class(Test)
+Implement_Object(Test)
 {
     Register_Object(Test);
     Register_Fn(Test, handleMessageKeyDown);
@@ -53,11 +50,7 @@ int main()
 {
     MailBox().loop();
     Ncurses ns;
-    Ncurses::RegisterClassInfo();
-    ns.RegisterObjectInfo();
     Test test;
-    Test::RegisterClassInfo();
-    test.RegisterObjectInfo();
     for (int i = 0; i < test.s -> height; i++)
     {
         for (int j = 0; j < test.s -> width; j++)
