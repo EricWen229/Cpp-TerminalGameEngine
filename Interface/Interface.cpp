@@ -1,6 +1,6 @@
 #include "Interface.h"
 
-Interface::Interface(): DynamicRootObject(InterfaceId) {}
+Interface::Interface() {}
 Interface::~Interface() {}
 
 SmartArray<char> Ncurses::buffer;
@@ -14,7 +14,7 @@ Implement_Object(Ncurses)
     Register_Fn(Ncurses, handleMessageUpdate);
 }
 
-Ncurses::Ncurses(): Interface()
+Ncurses::Ncurses(): Interface(), DynamicRootObject(-1)
 {
     RegisterObjectInfo();
 }
@@ -33,6 +33,7 @@ void *Ncurses::input(void *)
 
 void Ncurses::handleMessageUpdate(void *unused)
 {
+    /* std::cout << "R" << std::endl; */
     for (int i = 0; i < buffer -> height; i++)
     {
         mvprintw(i, 0, buffer[i]);

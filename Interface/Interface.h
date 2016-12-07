@@ -10,7 +10,7 @@
 #define InterfaceId -1
 /* user interface */
 /* interact with user */
-class Interface: virtual public DynamicRootObject
+class Interface
 {
     public:
         Interface();
@@ -21,7 +21,7 @@ class Interface: virtual public DynamicRootObject
 };
 
 /* singleton */
-class Ncurses: public Interface
+class Ncurses: public Interface, virtual public DynamicRootObject
 {
         Declare_Object;
         
@@ -32,7 +32,7 @@ class Ncurses: public Interface
         static bool exit;
         
         void *input(void *unused);
-        void handleMessageUpdate(void *unused);
+        virtual void handleMessageUpdate(void *unused);
         
     public:
         Ncurses();

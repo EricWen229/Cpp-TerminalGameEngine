@@ -9,14 +9,14 @@
 #include <iostream>
 #include <fstream>
 #include <mutex>
-std::mutex logFileMutex;
+/* std::mutex logFileMutex; */
 #define Log(info) \
     { \
-    logFileMutex.lock(); \
+    /* logFileMutex.lock(); \ */ \
     std::ofstream logFile("./logFile", std::ios::app); \
     logFile << info << std::endl; \
     logFile.close(); \
-    logFileMutex.unlock(); \
+    /* logFileMutex.unlock(); \ */ \
     }
 #else
 #define Log(info) \
