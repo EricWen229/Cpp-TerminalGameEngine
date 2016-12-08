@@ -1,9 +1,6 @@
 #include "Interface.h"
 
-Interface::Interface()
-{
-    std::cout << "I'm Interface." << std::endl;
-}
+Interface::Interface() {}
 Interface::~Interface() {}
 
 SmartArray<char> Ncurses::buffer;
@@ -70,6 +67,13 @@ void Ncurses::handleMessageUpdate(void *unused)
     }
     refresh();
 }
+
+void Ncurses::handleMessageSpriteDis(void *unused)
+{
+}
+
+void Ncurses::handleMessageSpriteApp(void *unused)
+{}
 
 void Ncurses::end()
 {
