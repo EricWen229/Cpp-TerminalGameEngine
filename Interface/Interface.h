@@ -15,9 +15,6 @@ class Interface
     public:
         Interface();
         virtual ~Interface();
-        virtual void init(SmartArray<char> b, ObjectId sendTo) = 0;
-        virtual void loop() = 0;
-        virtual void end() = 0;
 };
 
 /* singleton */
@@ -27,19 +24,19 @@ class Ncurses: public Interface, virtual public DynamicRootObject
         
     private:
         static SmartArray<char> buffer;
-        static Thread pid[2];
+        static Thread pid;
         static ObjectId sendTo;
+        static bool begin;
         static bool exit;
         
         void *input(void *unused);
         virtual void handleMessageUpdate(void *unused);
         
     public:
-        Ncurses();
+        Ncurses(SmartArray<char> b, ObjectId st);
         virtual ~Ncurses();
-        static Ncurses *createObject(void *unusedP);
         
-        void init(SmartArray<char>b, ObjectId st);
+        /* void init(SmartArray<char>b, ObjectId st); */
         void loop();
         void end();
 };

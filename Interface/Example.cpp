@@ -49,7 +49,6 @@ Implement_Object(Test)
 int main()
 {
     MailBox().loop();
-    Ncurses ns;
     Test test;
     for (int i = 0; i < test.s -> height; i++)
     {
@@ -59,7 +58,8 @@ int main()
         }
         test.s[i][test.s -> width - 1] = '\0';
     }
-    ns.init(test.s, test.objectId);
+    Ncurses ns(test.s, test.objectId);
+    /* ns.init(test.s, test.objectId); */
     ns.loop();
     ns.end();
     MailBox().end();

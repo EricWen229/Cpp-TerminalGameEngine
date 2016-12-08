@@ -1,12 +1,16 @@
 #include "Interface.h"
 
-Interface::Interface() {}
+Interface::Interface()
+{
+    std::cout << "I'm Interface." << std::endl;
+}
 Interface::~Interface() {}
 
 SmartArray<char> Ncurses::buffer;
-Thread Ncurses::pid[2];
+Thread Ncurses::pid;
 ObjectId Ncurses::sendTo;
 bool Ncurses::exit;
+bool Ncurses::begin = false;
 
 Implement_Object(Ncurses)
 {
@@ -14,11 +18,41 @@ Implement_Object(Ncurses)
     Register_Fn(Ncurses, handleMessageUpdate);
 }
 
-Ncurses::Ncurses(): Interface(), DynamicRootObject(-1)
+Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
+    Interface(), DynamicRootObject(-1)
 {
-    RegisterObjectInfo();
+    if (!begin)
+    {
+        begin = true;
+        Assert(objectId == -1);
+        RegisterObjectInfo();
+        
+        Ncurses::buffer = b;
+        sendTo = st;
+        exit = false;
+        
+        initscr();
+        /* Line bufering disabled */
+        /* raw(); */
+        /* pass everything to me, don't wait for \n(input) */
+        cbreak();
+        /* We get F1, F2, arrow, etc */
+        keypad(stdscr, true);
+        /* Don't echo() while we do getch */
+        noecho();
+        curs_set(0);
+        /* Control the screen size, so we don't use \n. */
+        /* 减少刷新缓冲区的次数，提高IO效率 */
+        /* 需要为\0字符留出空位，所以width-1 */
+        /* Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0); */
+        handleMessageUpdate(null);
+    }
 }
-Ncurses::~Ncurses() {}
+Ncurses::~Ncurses()
+{
+    /* waitPthread(pid); */
+    /* endwin(); */
+}
 
 void *Ncurses::input(void *)
 {
@@ -41,37 +75,17 @@ void Ncurses::handleMessageUpdate(void *unused)
     refresh();
 }
 
-void Ncurses::init(SmartArray<char>b, ObjectId st)
-{
-    Ncurses::buffer = b;
-    sendTo = st;
-    exit = false;
-    
-    initscr();
-    /* Line bufering disabled */
-    /* raw(); */
-    /* pass everything to me, don't wait for \n(input) */
-    cbreak();
-    /* We get F1, F2, arrow, etc */
-    keypad(stdscr, true);
-    /* Don't echo() while we do getch */
-    noecho();
-    curs_set(0);
-    /* Control the screen size, so we don't use \n. */
-    /* 减少刷新缓冲区的次数，提高IO效率 */
-    /* 需要为\0字符留出空位，所以width-1 */
-    /* Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0); */
-    handleMessageUpdate(null);
-}
+/* void Ncurses::init() */
+/* { */
+/* } */
 
 void Ncurses::loop()
 {
-    pid[0] = createPthread(std::bind(&Ncurses::input, this, std::placeholders::_1));
+    pid = createPthread(std::bind(&Ncurses::input, this, std::placeholders::_1));
 }
 
 void Ncurses::end()
 {
-    waitPthread(pid[0]);
-    
+    waitPthread(pid);
     endwin();
 }
