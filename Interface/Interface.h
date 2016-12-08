@@ -27,7 +27,6 @@ class Ncurses: public Interface, virtual public DynamicRootObject
         static Thread pid;
         static ObjectId sendTo;
         static bool begin;
-        static bool exit;
         
         void *input(void *unused);
         virtual void handleMessageUpdate(void *unused);
@@ -37,7 +36,7 @@ class Ncurses: public Interface, virtual public DynamicRootObject
         virtual ~Ncurses();
         
         /* void init(SmartArray<char>b, ObjectId st); */
-        void loop();
+        /* void loop(); */
         void end();
 };
 

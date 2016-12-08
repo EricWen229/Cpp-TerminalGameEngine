@@ -60,7 +60,7 @@ int main()
     }
     Ncurses ns(test.s, test.objectId);
     /* ns.init(test.s, test.objectId); */
-    ns.loop();
+    /* ns.loop(); */
     ns.end();
     MailBox().end();
 }
