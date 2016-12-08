@@ -35,8 +35,6 @@ class Ncurses: public Interface, virtual public DynamicRootObject
         Ncurses(SmartArray<char> b, ObjectId st);
         virtual ~Ncurses();
         
-        /* void init(SmartArray<char>b, ObjectId st); */
-        /* void loop(); */
         void end();
 };
 

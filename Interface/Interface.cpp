@@ -50,9 +50,6 @@ Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
 }
 Ncurses::~Ncurses()
 {
-    /* waitPthread(pid); */
-    /* endwin(); */
-    /* end(); */
 }
 
 void *Ncurses::input(void *)
@@ -61,28 +58,18 @@ void *Ncurses::input(void *)
     while ((key = getchar()) != 'q')
     {
         MailBox().put(Message(objectId, sendTo, "KeyDown", std::string(1, key)));
-        /* std::cout << key << std::endl; */
     }
     return null;
 }
 
 void Ncurses::handleMessageUpdate(void *unused)
 {
-    /* std::cout << "R" << std::endl; */
     for (int i = 0; i < buffer -> height; i++)
     {
         mvprintw(i, 0, buffer[i]);
     }
     refresh();
 }
-
-/* void Ncurses::init() */
-/* { */
-/* } */
-
-/* void Ncurses::loop() */
-/* { */
-/* } */
 
 void Ncurses::end()
 {
