@@ -4,9 +4,12 @@
 #include "../Array/Array.h"
 #include "../Dynamic/ObjectDynamic.h"
 #include "../MailBox/MailBox.h"
+#include "Sprite.h"
 #include "PQueue.h"
 #include <functional>
 #include <ncurses.h>
+
+/* class Sprite; */
 
 template <class T>
 class Interface
@@ -26,18 +29,48 @@ class Interface
         {
             Message msg = *((Message *)p);
             ObjectId from = msg.from;
+            Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
+            int height, width, zIndex;
+            std::tie(height, width, zIndex) = sprite -> getPars();
             
             const std::string &des = msg.description;
             std::string::size_type split = des.find(' ');
-            int i = std::stoi(des.substr(0, split));
-            int j = std::stoi(des.substr(split + 1));
+            int startI = std::stoi(des.substr(0, split));
+            int startJ = std::stoi(des.substr(split + 1));
             
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    update(startI + i, startJ + j, sprite -> getPixel(i, j));
+                }
+            }
         }
-        void handleMessageSpriteDis(void *p);
+        void handleMessageSpriteDis(void *p)
+        {
+            Message msg = *((Message *)p);
+            ObjectId from = msg.from;
+            Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
+            int height, width, zIndex;
+            std::tie(height, width, zIndex) = sprite -> getPars();
+            
+            const std::string &des = msg.description;
+            std::string::size_type split = des.find(' ');
+            int startI = std::stoi(des.substr(0, split));
+            int startJ = std::stoi(des.substr(split + 1));
+            
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    update(startI + i, startJ + j, sprite -> getPixel(i, j));
+                }
+            }
+        }
 };
 
 /* singleton */
-class Ncurses: public Interface, virtual public DynamicRootObject
+class Ncurses: public Interface<char>, virtual public DynamicRootObject
 {
         Declare_Object;
         
