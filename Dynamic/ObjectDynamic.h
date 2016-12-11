@@ -53,13 +53,15 @@ class ObjectInfo
     private:
         typedef std::map<const std::string, DynamicFn> FunsMap;
         FunsMap funsMap;
+        DynamicRootObject *object;
         
     public:
-        ObjectInfo();
+        ObjectInfo(DynamicRootObject *obj);
         ~ObjectInfo();
         
         DynamicFn getDynamicFn(const std::string &funcName);
         void regDynamicFn(const std::string &funcName, DynamicFn f);
+        DynamicRootObject *getObject();
 };
 
 /* singleton */

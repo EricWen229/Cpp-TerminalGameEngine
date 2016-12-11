@@ -8,7 +8,7 @@ ObjectId GetObjectId::operator()()
     return num;
 }
 
-ObjectInfo::ObjectInfo() {}
+ObjectInfo::ObjectInfo(DynamicRootObject *obj): object(obj) {}
 ObjectInfo::~ObjectInfo() {}
 
 void ObjectInfo::regDynamicFn(const std::string &funcName, DynamicFn fn)
@@ -27,6 +27,11 @@ ObjectInfo::DynamicFn ObjectInfo::getDynamicFn(const std::string &funcName)
     {
         return it -> second;
     }
+}
+
+DynamicRootObject *ObjectInfo::getObject()
+{
+    return object;
 }
 
 std::map<const ObjectId, ObjectInfo *const> ObjectInfos::infosMap;
@@ -67,13 +72,13 @@ Implement_Object(DynamicRootObject)
 }
 
 DynamicRootObject::DynamicRootObject():
-    objectId(GetObjectId()())
+    objectId(GetObjectId()()), objectInfo(this)
 {
     /* RegisterObjectInfo(); */
 }
 
 DynamicRootObject::DynamicRootObject(const ObjectId &id):
-    objectId(id)
+    objectId(id), objectInfo(this)
 {
     /* 不要在构造函数中调用虚函数，行为不可预测 */
     /* 要把这个事情挪动到具体类中去做 */
