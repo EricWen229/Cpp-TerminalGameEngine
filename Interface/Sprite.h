@@ -34,9 +34,6 @@ class RSprite
         RSprite(ObjectId id, int z);
 };
 
-bool operator>(const RSprite &a, const RSprite &b)
-{
-    return a.zIndex > b.zIndex;
-}
+bool operator>(const RSprite &a, const RSprite &b);
 
 #endif

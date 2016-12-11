@@ -9,8 +9,6 @@
 #include <functional>
 #include <ncurses.h>
 
-/* class Sprite; */
-
 template <class T>
 class Interface
 {
@@ -19,69 +17,82 @@ class Interface
         virtual void update(int i, int j, T pixel) = 0;
         
     public:
-        Interface(int height, int width)
-        {
-            bitmap = createArray<pQueue<ObjectId> >(height, width);
-        }
-        virtual ~Interface() {}
+        Interface(int height, int width);
+        virtual ~Interface();
         
-        void handleMessageSpriteApp(void *p)
-        {
-            Message msg = *((Message *)p);
-            ObjectId from = msg.from;
-            Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
-            int height, width, zIndex;
-            std::tie(height, width, zIndex) = sprite -> getPars();
-            
-            const std::string &des = msg.description;
-            std::string::size_type split = des.find(' ');
-            int startI = std::stoi(des.substr(0, split));
-            int startJ = std::stoi(des.substr(split + 1));
-            
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    bitmap[startI + i][startJ + j].push(RSprite(from, zIndex));
-                }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    if (bitmap[startI + i][startJ + j].top().objectId == from)
-                    {
-                        update(startI + i, startJ + j, sprite -> getPixel(i, j));
-                    }
-                }
-            }
-        }
-        
-        void handleMessageSpriteDis(void *p)
-        {
-            Message msg = *((Message *)p);
-            ObjectId from = msg.from;
-            Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
-            int height, width, zIndex;
-            std::tie(height, width, zIndex) = sprite -> getPars();
-            
-            const std::string &des = msg.description;
-            std::string::size_type split = des.find(' ');
-            int startI = std::stoi(des.substr(0, split));
-            int startJ = std::stoi(des.substr(split + 1));
-            
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
-                    ObjectId id = bitmap[startI + i][startJ + j].top();
-                    Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(id) -> getObject());
-                    update(startI + i, startJ + j, sprite -> getPixel(i, j));
-                }
-            }
-        }
+        virtual void handleMessageUpdate(void *p) = 0;
+        void handleMessageSpriteApp(void *p);
+        void handleMessageSpriteDis(void *p);
 };
+
+template <class T>
+Interface<T>::Interface(int height, int width)
+{
+    bitmap = createArray<pQueue<RSprite> >(height, width);
+}
+
+template <class T>
+Interface<T>::~Interface() {}
+
+template <class T>
+void Interface<T>::handleMessageSpriteApp(void *p)
+{
+    Message msg = *((Message *)p);
+    ObjectId from = msg.from;
+    Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
+    int height, width, zIndex;
+    std::tie(height, width, zIndex) = sprite -> getPars();
+    
+    const std::string &des = msg.description;
+    std::string::size_type split = des.find(' ');
+    int startI = std::stoi(des.substr(0, split));
+    int startJ = std::stoi(des.substr(split + 1));
+    
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            bitmap[startI + i][startJ + j].push(RSprite(from, zIndex));
+        }
+    }
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            if (bitmap[startI + i][startJ + j].top().objectId == from)
+            {
+                update(startI + i, startJ + j, sprite -> getPixel(i, j));
+            }
+        }
+    }
+}
+
+template <class T>
+void Interface<T>::handleMessageSpriteDis(void *p)
+{
+    Message msg = *((Message *)p);
+    ObjectId from = msg.from;
+    Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
+    int height, width, zIndex;
+    std::tie(height, width, zIndex) = sprite -> getPars();
+    
+    const std::string &des = msg.description;
+    std::string::size_type split = des.find(' ');
+    int startI = std::stoi(des.substr(0, split));
+    int startJ = std::stoi(des.substr(split + 1));
+    
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
+            ObjectId id = bitmap[startI + i][startJ + j].top();
+            Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(id) -> getObject());
+            /* 务必保证有背景，优先级最低 */
+            update(startI + i, startJ + j, sprite -> getPixel(i, j));
+        }
+    }
+}
 
 /* singleton */
 class Ncurses: public Interface<char>, virtual public DynamicRootObject
@@ -96,15 +107,12 @@ class Ncurses: public Interface<char>, virtual public DynamicRootObject
         static SmartArray<std::priority_queue<ObjectId> >bitmap;
         
         void *input(void *unused);
-        virtual void handleMessageUpdate(void *unused);
-        /* Dis means diappear */
-        virtual void handleMessageSpriteDis(void *unused);
-        /* App means appear */
-        virtual void handleMessageSpriteApp(void *unused);
+        void update(int i, int j, char pixel);
         
     public:
         Ncurses(SmartArray<char> b, ObjectId st);
         virtual ~Ncurses();
+        void handleMessageUpdate(void *unused);
         
         void end();
 };

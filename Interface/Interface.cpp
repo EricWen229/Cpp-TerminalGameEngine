@@ -12,7 +12,7 @@ Implement_Object(Ncurses)
 }
 
 Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
-    Interface(), DynamicRootObject(-1)
+    Interface(b -> height, b -> width), DynamicRootObject(-1)
 {
     if (!begin)
     {
@@ -42,11 +42,10 @@ Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
     }
     begin = false;
 }
-Ncurses::~Ncurses()
-{
-}
 
-void *Ncurses::input(void *)
+Ncurses::~Ncurses() {}
+
+void *Ncurses::input(void *unused)
 {
     char key;
     while ((key = getchar()) != 'q')
@@ -54,6 +53,11 @@ void *Ncurses::input(void *)
         MailBox().put(Message(objectId, sendTo, "KeyDown", std::string(1, key)));
     }
     return null;
+}
+
+void Ncurses::update(int i, int j, char pixel)
+{
+    buffer[i][j] = pixel;
 }
 
 void Ncurses::handleMessageUpdate(void *unused)
@@ -64,13 +68,6 @@ void Ncurses::handleMessageUpdate(void *unused)
     }
     refresh();
 }
-
-void Ncurses::handleMessageSpriteDis(void *unused)
-{
-}
-
-void Ncurses::handleMessageSpriteApp(void *unused)
-{}
 
 void Ncurses::end()
 {
