@@ -26,4 +26,17 @@ class Sprite: virtual public DynamicRootObject
         void moveAdd(int deltaI, int deltaJ);
 };
 
+class RSprite
+{
+    public:
+        ObjectId objectId;
+        int zIndex;
+        RSprite(ObjectId id, int z);
+};
+
+bool operator>(const RSprite &a, const RSprite &b)
+{
+    return a.zIndex > b.zIndex;
+}
+
 #endif

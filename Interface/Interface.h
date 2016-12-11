@@ -15,7 +15,7 @@ template <class T>
 class Interface
 {
     private:
-        SmartArray<pQueue<ObjectId> > bitmap;
+        SmartArray<pQueue<RSprite> > bitmap;
         virtual void update(int i, int j, T pixel) = 0;
         
     public:
@@ -42,10 +42,21 @@ class Interface
             {
                 for (int j = 0; j < width; j++)
                 {
-                    update(startI + i, startJ + j, sprite -> getPixel(i, j));
+                    bitmap[startI + i][startJ + j].push(RSprite(from, zIndex));
+                }
+            }
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    if (bitmap[startI + i][startJ + j].top().objectId == from)
+                    {
+                        update(startI + i, startJ + j, sprite -> getPixel(i, j));
+                    }
                 }
             }
         }
+        
         void handleMessageSpriteDis(void *p)
         {
             Message msg = *((Message *)p);
@@ -63,6 +74,9 @@ class Interface
             {
                 for (int j = 0; j < width; j++)
                 {
+                    bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
+                    ObjectId id = bitmap[startI + i][startJ + j].top();
+                    Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(id) -> getObject());
                     update(startI + i, startJ + j, sprite -> getPixel(i, j));
                 }
             }
