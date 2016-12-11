@@ -1,8 +1,5 @@
 #include "Interface.h"
 
-Interface::Interface() {}
-Interface::~Interface() {}
-
 SmartArray<char> Ncurses::buffer;
 Thread Ncurses::pid;
 ObjectId Ncurses::sendTo;

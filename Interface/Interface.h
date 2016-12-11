@@ -4,18 +4,36 @@
 #include "../Array/Array.h"
 #include "../Dynamic/ObjectDynamic.h"
 #include "../MailBox/MailBox.h"
-#include <queue>
+#include "PQueue.h"
 #include <functional>
 #include <ncurses.h>
 
-#define InterfaceId -1
-/* user interface */
-/* interact with user */
+template <class T>
 class Interface
 {
+    private:
+        SmartArray<pQueue<ObjectId> > bitmap;
+        virtual void update(int i, int j, T pixel) = 0;
+        
     public:
-        Interface();
-        virtual ~Interface();
+        Interface(int height, int width)
+        {
+            bitmap = createArray<pQueue<ObjectId> >(height, width);
+        }
+        virtual ~Interface() {}
+        
+        void handleMessageSpriteApp(void *p)
+        {
+            Message msg = *((Message *)p);
+            ObjectId from = msg.from;
+            
+            const std::string &des = msg.description;
+            std::string::size_type split = des.find(' ');
+            int i = std::stoi(des.substr(0, split));
+            int j = std::stoi(des.substr(split + 1));
+            
+        }
+        void handleMessageSpriteDis(void *p);
 };
 
 /* singleton */
