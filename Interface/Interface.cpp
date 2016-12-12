@@ -58,7 +58,8 @@ void Interface<T>::handleMessageUpdate(void *unused)
             int posI = bitmap[i][j].top().posI;
             int posJ = bitmap[i][j].top().posJ;
             int s = bitmap[i][j].top().objectId;
-            /* update(i , j, ); */
+            Sprite<T> *sprite = (dynamic_cast<Sprite<T> *>(ObjectInfos().getObjectInfo(s) -> getObject()));
+            update(i , j, sprite -> getPixel(posI, posJ));
         }
     }
 }
