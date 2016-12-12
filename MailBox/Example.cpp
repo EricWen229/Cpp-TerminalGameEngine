@@ -36,6 +36,7 @@ int main()
     Test t1, t2;
     MailBox().put(Message(t1.objectId, t2.objectId, "Interval", "I love u"));
     MailBox().put(Message(t2.objectId, t1.objectId, "Interval", "I love u, too!"));
+    MailBox().putAsync(Message(t2.objectId, t1.objectId, "Interval", "IIII"));
     MailBox().end();
     
     /* wait */
