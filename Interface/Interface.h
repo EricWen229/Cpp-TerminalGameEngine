@@ -53,7 +53,7 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     {
         for (int j = 0; j < width; j++)
         {
-            bitmap[startI + i][startJ + j].push(RSprite(from, zIndex));
+            bitmap[startI + i][startJ + j].push(RSprite(from, zIndex, i, j));
         }
     }
     for (int i = 0; i < height; i++)
