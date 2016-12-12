@@ -1,6 +1,8 @@
 #include "Interface.h"
 
-SmartArray<char> Ncurses::buffer;
+template <class T>
+SmartArray<T> Interface<T>::buffer;
+
 Thread Ncurses::pid;
 ObjectId Ncurses::sendTo;
 bool Ncurses::begin = false;
@@ -44,6 +46,12 @@ Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
 }
 
 Ncurses::~Ncurses() {}
+
+template <class T>
+void Interface<T>::handleMessageUpdate(void *unused)
+{
+    /* int height = buffer -> height, width = buffer -> width; */
+}
 
 void *Ncurses::input(void *unused)
 {

@@ -16,11 +16,14 @@ class Interface
         SmartArray<pQueue<RSprite> > bitmap;
         virtual void update(int i, int j, T pixel) = 0;
         
+    protected:
+        static SmartArray<T> buffer;
+        
     public:
         Interface(int height, int width);
         virtual ~Interface();
         
-        virtual void handleMessageUpdate(void *p) = 0;
+        virtual void handleMessageUpdate(void *p);
         void handleMessageSpriteApp(void *p);
         void handleMessageSpriteDis(void *p);
 };
@@ -97,11 +100,11 @@ class Ncurses: public Interface<char>, virtual public DynamicRootObject
         Declare_Object;
         
     private:
-        static SmartArray<char> buffer;
+        /* static SmartArray<char> buffer; */
         static Thread pid;
         static ObjectId sendTo;
         static bool begin;
-        static SmartArray<std::priority_queue<ObjectId> >bitmap;
+        /* static SmartArray<std::priority_queue<ObjectId> >bitmap; */
         
         void *input(void *unused);
         void update(int i, int j, char pixel);
