@@ -50,7 +50,14 @@ Ncurses::~Ncurses() {}
 template <class T>
 void Interface<T>::handleMessageUpdate(void *unused)
 {
-    /* int height = buffer -> height, width = buffer -> width; */
+    int height = buffer -> height, width = buffer -> width;
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            /* update(i , j, bitmap[i][j].top()); */
+        }
+    }
 }
 
 void *Ncurses::input(void *unused)
