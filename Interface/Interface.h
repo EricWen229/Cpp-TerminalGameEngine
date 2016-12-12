@@ -39,14 +39,12 @@ void Interface<T>::handleMessageSpriteApp(void *p)
 {
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
+    
     Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
     int height, width, zIndex;
     std::tie(height, width, zIndex) = sprite -> getPars();
-    
-    const std::string &des = msg.description;
-    std::string::size_type split = des.find(' ');
-    int startI = std::stoi(des.substr(0, split));
-    int startJ = std::stoi(des.substr(split + 1));
+    int startI, startJ;
+    std::tie(startI, startJ) = sprite -> getPos();
     
     for (int i = 0; i < height; i++)
     {
@@ -72,14 +70,13 @@ void Interface<T>::handleMessageSpriteDis(void *p)
 {
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
+    
     Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
     int height, width, zIndex;
     std::tie(height, width, zIndex) = sprite -> getPars();
     
-    const std::string &des = msg.description;
-    std::string::size_type split = des.find(' ');
-    int startI = std::stoi(des.substr(0, split));
-    int startJ = std::stoi(des.substr(split + 1));
+    int startI, startJ;
+    std::tie(startI, startJ) = sprite -> getPos();
     
     for (int i = 0; i < height; i++)
     {

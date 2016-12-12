@@ -65,11 +65,10 @@ void Sprite<T>::moveTo(int newI, int newJ)
         return;
     }
     
-    MailBox().put
+    MailBox().putAsync
     (Message
      (
-         objectId, -1, "SpriteDis",
-         std::to_string(posI) + std::string(" ") + std::to_string(posJ)
+         objectId, -1, "SpriteDis", ""
      )
     );
     posI = newI;
@@ -77,8 +76,7 @@ void Sprite<T>::moveTo(int newI, int newJ)
     MailBox().put
     (Message
      (
-         objectId, -1, "SpriteApp",
-         std::to_string(posI) + std::string(" ") + std::to_string(posJ)
+         objectId, -1, "SpriteApp", ""
      )
     );
 }
