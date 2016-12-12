@@ -55,7 +55,10 @@ void Interface<T>::handleMessageUpdate(void *unused)
     {
         for (int j = 0; j < width; j++)
         {
-            /* update(i , j, bitmap[i][j].top()); */
+            int posI = bitmap[i][j].top().posI;
+            int posJ = bitmap[i][j].top().posJ;
+            int s = bitmap[i][j].top().objectId;
+            /* update(i , j, ); */
         }
     }
 }
