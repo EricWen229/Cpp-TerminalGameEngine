@@ -59,6 +59,7 @@ class MailBox
         ~MailBox();
         
         void put(Message m);
+        void putAsync(Message m);
         void loop();
         void end();
 };

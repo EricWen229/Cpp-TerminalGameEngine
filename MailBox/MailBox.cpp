@@ -74,6 +74,23 @@ void MailBox::put(Message m)
     s.V();
 }
 
+void MailBox::putAsync(Message m)
+{
+    auto object = ObjectInfos().getObjectInfo(m.to);
+    if (object == null)
+    {
+        return;
+    }
+    std::function<void(void *)> handle =
+        object ->
+        getDynamicFn(std::string("handleMessage") + m.type);
+    if (handle == null)
+    {
+        return;
+    }
+    handle((void *)&m);
+}
+
 void MailBox::loop()
 {
     pid = createPthread(loopHelper);
