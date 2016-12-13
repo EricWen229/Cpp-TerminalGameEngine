@@ -77,12 +77,12 @@ void Sprite<T>::moveTo(int newI, int newJ)
         return;
     }
     
-    /* MailBox().putAsync */
-    /* (Message */
-    /*  ( */
-    /*      objectId, -1, "SpriteDis", "" */
-    /*  ) */
-    /* ); */
+    MailBox().putAsync
+    (Message
+     (
+         objectId, -1, "SpriteDis", ""
+     )
+    );
     posI = newI;
     posJ = newJ;
     MailBox().putAsync

@@ -86,6 +86,10 @@ void Interface<T>::handleMessageSpriteDis(void *p)
         for (int j = 0; j < width; j++)
         {
             bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
+            if (bitmap[startI + i][startJ + j].empty())
+            {
+                continue;
+            }
             ObjectId id = bitmap[startI + i][startJ + j].top().objectId;
             Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(id) -> getObject()));
             /* 务必保证有背景，优先级最低 */
