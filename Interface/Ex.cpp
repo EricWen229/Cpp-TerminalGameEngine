@@ -28,10 +28,10 @@ class Fly: public Sprite<char>
             switch (((Message *)pointer) -> description.c_str()[0])
             {
                 case 'w':
-                    moveAdd(1, 0);
+                    moveAdd(-1, 0);
                     break;
                 case 's':
-                    moveAdd(-1, 0);
+                    moveAdd(1, 0);
                     break;
                 case 'a':
                     moveAdd(0, -1);

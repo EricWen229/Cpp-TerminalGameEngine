@@ -42,11 +42,11 @@ void pQueue<T>::pop()
 template <class T>
 void pQueue<T>::push(const T &value)
 {
-    ExtraRun
-    (
-        typename std::set<T>::const_iterator it = container.find(value);
-        Assert(it == container.end());
-    );
+    /* ExtraRun */
+    /* ( */
+    /*     typename std::set<T>::const_iterator it = container.find(value); */
+    /*     Assert(it == container.end()); */
+    /* ); */
     container.insert(value);
 }
 
