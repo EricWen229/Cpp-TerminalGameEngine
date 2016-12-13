@@ -11,6 +11,8 @@ Implement_Object(Ncurses)
 {
     Register_Object(Ncurses);
     Register_Fn(Ncurses, handleMessageUpdate);
+    Register_Fn(Ncurses, handleMessageSpriteApp);
+    Register_Fn(Ncurses, handleMessageSpriteDis);
 }
 
 Ncurses::Ncurses(SmartArray<char>b, ObjectId st):

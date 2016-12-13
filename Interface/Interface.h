@@ -43,7 +43,7 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
     
-    Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
+    Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(from) -> getObject()));
     int height, width, zIndex;
     std::tie(height, width, zIndex) = sprite -> getPars();
     int startI, startJ;
@@ -74,7 +74,7 @@ void Interface<T>::handleMessageSpriteDis(void *p)
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
     
-    Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(from) -> getObject());
+    Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(from) -> getObject()));
     int height, width, zIndex;
     std::tie(height, width, zIndex) = sprite -> getPars();
     
@@ -85,9 +85,9 @@ void Interface<T>::handleMessageSpriteDis(void *p)
     {
         for (int j = 0; j < width; j++)
         {
-            bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
-            ObjectId id = bitmap[startI + i][startJ + j].top();
-            Sprite<T> *sprite = (Sprite<T> *)(ObjectInfos().getObjectInfo(id) -> getObject());
+            bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
+            ObjectId id = bitmap[startI + i][startJ + j].top().objectId;
+            Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(id) -> getObject()));
             /* 务必保证有背景，优先级最低 */
             update(startI + i, startJ + j, sprite -> getPixel(i, j));
         }
