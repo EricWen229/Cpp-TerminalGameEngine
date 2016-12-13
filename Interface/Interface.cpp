@@ -81,6 +81,7 @@ void Ncurses::update(int i, int j, char pixel)
     buffer[i][j] = pixel;
     /* mvprintw(i, j, ) */
     mvaddch(i, j,pixel);
+    refresh();
 }
 
 void Ncurses::handleMessageUpdate(void *unused)

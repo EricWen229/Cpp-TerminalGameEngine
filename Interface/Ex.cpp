@@ -21,7 +21,26 @@ class Background: public Sprite<char>
 
 class Fly: public Sprite<char>
 {
+        Declare_Object;
     public:
+        void handleMessageKeyDown(void *pointer)
+        {
+            switch (((Message *)pointer) -> description.c_str()[0])
+            {
+                case 'w':
+                    moveAdd(1, 0);
+                    break;
+                case 's':
+                    moveAdd(-1, 0);
+                    break;
+                case 'a':
+                    moveAdd(0, -1);
+                    break;
+                case 'd':
+                    moveAdd(0, 1);
+                    break;
+            }
+        }
         Fly(): Sprite(0, 0, 3, 3)
         {
             appear = createArray<char>(3, 3);
@@ -32,9 +51,16 @@ class Fly: public Sprite<char>
                     appear[i][j] = 'A';
                 }
             }
+            RegisterObjectInfo();
         }
         ~Fly() {}
 };
+
+Implement_Object(Fly)
+{
+    Register_Object(Fly);
+    Register_Fn(Fly, handleMessageKeyDown);
+}
 
 class Test: public DynamicRootObject
 {
