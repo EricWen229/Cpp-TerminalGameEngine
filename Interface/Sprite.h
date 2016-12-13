@@ -9,6 +9,8 @@
 template <class T>
 class Sprite: virtual public DynamicRootObject
 {
+        Declare_Object;
+        
     private:
         int posI, posJ, height, width;
         /* zIndex代表Sprite在屏幕上显示的优先级 */
@@ -30,11 +32,19 @@ class Sprite: virtual public DynamicRootObject
 };
 
 template <class T>
+Implement_Object(Sprite<T>)
+{
+    Register_Object(Sprite<T>);
+}
+
+template <class T>
 Sprite<T>::Sprite(int i, int j, int h,int w, int z):
     posI(i), posJ(j),
     height(h), width(w),
     zIndex(z)
-{}
+{
+    RegisterObjectInfo();
+}
 
 template <class T>
 Sprite<T>::~Sprite() {}
@@ -67,12 +77,12 @@ void Sprite<T>::moveTo(int newI, int newJ)
         return;
     }
     
-    MailBox().putAsync
-    (Message
-     (
-         objectId, -1, "SpriteDis", ""
-     )
-    );
+    /* MailBox().putAsync */
+    /* (Message */
+    /*  ( */
+    /*      objectId, -1, "SpriteDis", "" */
+    /*  ) */
+    /* ); */
     posI = newI;
     posJ = newJ;
     MailBox().putAsync
@@ -99,5 +109,6 @@ class RSprite
 };
 
 bool operator>(const RSprite &a, const RSprite &b);
+bool operator==(const RSprite &a, const RSprite &b);
 
 #endif
