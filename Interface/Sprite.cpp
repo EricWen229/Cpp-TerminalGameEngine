@@ -4,3 +4,6 @@ bool operator>(const RSprite &a, const RSprite &b)
 {
     return a.zIndex > b.zIndex;
 }
+
+RSprite::RSprite(ObjectId id, int z, int i, int j):
+    objectId(id), zIndex(z), posI(i), posJ(j) {}

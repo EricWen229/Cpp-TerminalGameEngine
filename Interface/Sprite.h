@@ -13,6 +13,8 @@ class Sprite: virtual public DynamicRootObject
         int posI, posJ, height, width;
         /* zIndex代表Sprite在屏幕上显示的优先级 */
         int zIndex;
+        
+    protected:
         SmartArray<T> appear;
         
     public:
@@ -73,7 +75,7 @@ void Sprite<T>::moveTo(int newI, int newJ)
     );
     posI = newI;
     posJ = newJ;
-    MailBox().put
+    MailBox().putAsync
     (Message
      (
          objectId, -1, "SpriteApp", ""
