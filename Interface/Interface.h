@@ -23,6 +23,7 @@ class Interface
         
     public:
         Interface(int height, int width);
+        Interface(SmartArray<T> b);
         virtual ~Interface();
         
         virtual void handleMessageUpdate(void *p);
@@ -33,6 +34,23 @@ class Interface
 template <class T>
 Interface<T>::Interface(int height, int width)
 {
+    bitmap = createArray<pQueue<RSprite> >(height, width);
+    change = createArray<bool>(height, width);
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            change[i][j] = false;
+        }
+    }
+}
+
+template <class T>
+Interface<T>::Interface(SmartArray<T> b)
+{
+    buffer = b;
+    int height = buffer -> height;
+    int width = buffer -> width;
     bitmap = createArray<pQueue<RSprite> >(height, width);
     change = createArray<bool>(height, width);
     for (int i = 0; i < height; i++)

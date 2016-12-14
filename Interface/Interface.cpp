@@ -24,7 +24,8 @@ Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
         Assert(objectId == -1);
         RegisterObjectInfo();
         
-        Ncurses::buffer = b;
+        /* Ncurses::buffer = b; */
+        buffer = b;
         sendTo = st;
         
         initscr();
