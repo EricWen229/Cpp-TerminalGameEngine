@@ -80,7 +80,7 @@ void Sprite<T>::moveTo(int newI, int newJ)
     MailBox().putAsync
     (Message
      (
-         objectId, -1, "SpriteDis", ""
+         objectId, -1, "SpriteDis", "false"
      )
     );
     posI = newI;
