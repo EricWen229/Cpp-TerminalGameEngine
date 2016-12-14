@@ -108,7 +108,11 @@ void Interface<T>::handleMessageSpriteDis(void *p)
             buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
             /* 务必保证有背景，优先级最低 */
             /* update(startI + i, startJ + j, sprite -> getPixel(i, j)); */
-            update();
+            bool needUpdate = (msg.description != "fasle");
+            if (needUpdate)
+            {
+                update();
+            }
         }
     }
 }
