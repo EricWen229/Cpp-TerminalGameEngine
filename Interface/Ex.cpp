@@ -121,6 +121,7 @@ int main()
     Ncurses ns(buffer, fly.objectId);
     Background back;
     MailBox().putAsync(Message(back.objectId, -1, "SpriteApp", ""));
+    MailBox().putAsync(Message(fly.objectId, -1, "SpriteApp", ""));
     /* Test test; */
     /* for (int i = 0; i < test.s -> height; i++) */
     /* { */
