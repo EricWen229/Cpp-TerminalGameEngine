@@ -9,7 +9,7 @@ template <class T>
 class pQueue
 {
     private:
-        std::set<T, std::greater<T> > container;
+        std::multiset<T, std::greater<T> > container;
         
     public:
         bool empty();

@@ -7,7 +7,7 @@ class Background: public Sprite<char>
 {
         Declare_Object;
     public:
-        Background(): Sprite(0, 0, 10, 10)
+        Background(): Sprite(0, 0, 10, 10, 0)
         {
             appear = createArray<char>(10, 10);
             for (int i = 0; i < 10; i++)
