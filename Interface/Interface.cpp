@@ -61,7 +61,7 @@ void Interface<T>::handleMessageUpdate(void *unused)
             int posJ = bitmap[i][j].top().posJ;
             int s = bitmap[i][j].top().objectId;
             Sprite<T> *sprite = (dynamic_cast<Sprite<T> *>(ObjectInfos().getObjectInfo(s) -> getObject()));
-            update(i , j, sprite -> getPixel(posI, posJ));
+            /* update(i , j, sprite -> getPixel(posI, posJ)); */
         }
     }
 }
@@ -76,11 +76,23 @@ void *Ncurses::input(void *unused)
     return null;
 }
 
-void Ncurses::update(int i, int j, char pixel)
+void Ncurses::update()
 {
-    buffer[i][j] = pixel;
-    /* mvprintw(i, j, ) */
-    mvaddch(i, j,pixel);
+    /* buffer[i][j] = pixel; */
+    /* /1* mvprintw(i, j, ) *1/ */
+    /* mvaddch(i, j,pixel); */
+    /* refresh(); */
+    for (int i = 0; i < buffer -> height; i++)
+    {
+        for (int j = 0; j < buffer -> width; j++)
+        {
+            if (change[i][j])
+            {
+                mvaddch(i, j, buffer[i][j]);
+                change[i][j] = false;
+            }
+        }
+    }
     refresh();
 }
 

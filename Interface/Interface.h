@@ -14,9 +14,11 @@ class Interface
 {
     private:
         SmartArray<pQueue<RSprite> > bitmap;
-        virtual void update(int i, int j, T pixel) = 0;
+        /* virtual void update(int i, int j, T pixel) = 0; */
+        virtual void update() = 0;
         
     protected:
+        SmartArray<bool> change;
         static SmartArray<T> buffer;
         
     public:
@@ -32,6 +34,14 @@ template <class T>
 Interface<T>::Interface(int height, int width)
 {
     bitmap = createArray<pQueue<RSprite> >(height, width);
+    change = createArray<bool>(height, width);
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            change[i][j] = false;
+        }
+    }
 }
 
 template <class T>
@@ -60,9 +70,15 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     {
         for (int j = 0; j < width; j++)
         {
+            /* if (bitmap[startI + i][startJ + j].top().objectId == from) */
+            /* { */
+            /*     update(startI + i, startJ + j, sprite -> getPixel(i, j)); */
+            /* } */
             if (bitmap[startI + i][startJ + j].top().objectId == from)
             {
-                update(startI + i, startJ + j, sprite -> getPixel(i, j));
+                buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
+                change[startI + i][startJ + j] = true;
+                update();
             }
         }
     }
@@ -88,8 +104,11 @@ void Interface<T>::handleMessageSpriteDis(void *p)
             bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
             ObjectId id = bitmap[startI + i][startJ + j].top().objectId;
             Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(id) -> getObject()));
+            change[startI + i][startJ + j] = true;
+            buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
             /* 务必保证有背景，优先级最低 */
-            update(startI + i, startJ + j, sprite -> getPixel(i, j));
+            /* update(startI + i, startJ + j, sprite -> getPixel(i, j)); */
+            update();
         }
     }
 }
@@ -108,6 +127,7 @@ class Ncurses: public Interface<char>, virtual public DynamicRootObject
         
         void *input(void *unused);
         void update(int i, int j, char pixel);
+        void update();
         
     public:
         Ncurses(SmartArray<char> b, ObjectId st);
