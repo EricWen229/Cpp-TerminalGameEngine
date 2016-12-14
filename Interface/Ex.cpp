@@ -5,6 +5,7 @@
 
 class Background: public Sprite<char>
 {
+        Declare_Object;
     public:
         Background(): Sprite(0, 0, 10, 10)
         {
@@ -16,8 +17,14 @@ class Background: public Sprite<char>
                     appear[i][j] = 'B';
                 }
             }
+            RegisterObjectInfo();
         }
 };
+
+Implement_Object(Background)
+{
+    Register_Object(Background);
+}
 
 class Fly: public Sprite<char>
 {
@@ -113,7 +120,7 @@ int main()
     SmartArray<char> buffer = createArray<char>(20, 20);
     Ncurses ns(buffer, fly.objectId);
     Background back;
-    back.moveTo(1, 1);
+    MailBox().putAsync(Message(back.objectId, -1, "SpriteApp", ""));
     /* Test test; */
     /* for (int i = 0; i < test.s -> height; i++) */
     /* { */
