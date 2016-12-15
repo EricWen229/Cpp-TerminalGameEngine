@@ -2,9 +2,7 @@
 #define Queue_H
 
 #include <set>
-#include <list>
 #include <iostream>
-#include "../Dynamic/ObjectDynamic.h"
 #include "../DiagHelper.h"
 
 template <class T>
@@ -20,20 +18,6 @@ class pQueue
         void push(const T &value);
         void erase(const T &value);
         bool exist(const T &value);
-};
-
-class PQueue
-{
-    private:
-        std::list<ObjectId> container;
-        
-    public:
-        bool empty() const;
-        const ObjectId top() const;
-        void pop();
-        void push(const ObjectId id);
-        void erase(const ObjectId id);
-        bool exist(const ObjectId id) const;
 };
 
 template <class T>

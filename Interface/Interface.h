@@ -99,9 +99,9 @@ void Interface<T>::handleMessageSpriteApp(void *p)
             Assert
             (
                 spriteBitmap[startI + i][startJ + j].
-                exist(RSprite(from, zIndex, i, j)) == false
+                exist(RSprite(from, zIndex)) == false
             );
-            spriteBitmap[startI + i][startJ + j].push(RSprite(from, zIndex, i, j));
+            spriteBitmap[startI + i][startJ + j].push(RSprite(from, zIndex));
         }
     }
     for (int i = 0; i < height; i++)
@@ -154,9 +154,9 @@ void Interface<T>::handleMessageSpriteDis(void *p)
             Assert
             (
                 spriteBitmap[startI + i][startJ + j].
-                exist(RSprite(from, zIndex, i, j)) == false
+                exist(RSprite(from, zIndex)) == false
             );
-            spriteBitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
+            spriteBitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
             
             Assert
             (

@@ -104,8 +104,8 @@ class RSprite
     public:
         ObjectId objectId;
         int zIndex;
-        int posI, posJ;
-        RSprite(ObjectId id, int z, int i, int j);
+        /* int posI, posJ; */
+        RSprite(ObjectId id, int z);
 };
 
 bool operator>(const RSprite &a, const RSprite &b);
