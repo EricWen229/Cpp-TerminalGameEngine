@@ -21,7 +21,6 @@ class Interface
         static SmartArray<T> buffer;
         
     public:
-        /* Interface(int height, int width); */
         Interface(SmartArray<T> b);
         virtual ~Interface();
         
@@ -38,20 +37,6 @@ SmartArray<bool> Interface<T>::change;
 
 template <class T>
 SmartArray<T> Interface<T>::buffer;
-
-/* template <class T> */
-/* Interface<T>::Interface(int height, int width) */
-/* { */
-/*     spriteBitmap = createArray<pQueue<RSprite> >(height, width); */
-/*     change = createArray<bool>(height, width); */
-/*     for (int i = 0; i < height; i++) */
-/*     { */
-/*         for (int j = 0; j < width; j++) */
-/*         { */
-/*             change[i][j] = false; */
-/*         } */
-/*     } */
-/* } */
 
 template <class T>
 Interface<T>::Interface(SmartArray<T> b)
