@@ -10,7 +10,7 @@
 #include <ncurses.h>
 
 template <class T>
-class Interface: public virtual DynamicRootObject
+class Interface: public DynamicRootObject
 {
         Declare_Object;
         
@@ -48,8 +48,8 @@ template <class T>
 SmartArray<T> Interface<T>::buffer;
 
 template <class T>
-Interface<T>::Interface(SmartArray<T> b)
-/* DynamicRootObject(-1) */
+Interface<T>::Interface(SmartArray<T> b):
+    DynamicRootObject(-1)
 {
     buffer = b;
     int height = buffer -> height;

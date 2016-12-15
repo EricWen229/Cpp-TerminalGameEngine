@@ -5,7 +5,8 @@ ObjectId Ncurses::sendTo;
 bool Ncurses::begin = false;
 
 Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
-    Interface(b), DynamicRootObject(-1)
+    Interface(b)
+    /* , DynamicRootObject(-1) */
 {
     if (!begin)
     {
