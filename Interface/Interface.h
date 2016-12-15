@@ -10,8 +10,10 @@
 #include <ncurses.h>
 
 template <class T>
-class Interface
+class Interface: public virtual DynamicRootObject
 {
+        Declare_Object;
+        
     private:
         static SmartArray<pQueue<RSprite> > spriteBitmap;
         virtual void update() = 0;
@@ -24,10 +26,17 @@ class Interface
         Interface(SmartArray<T> b);
         virtual ~Interface();
         
-        /* virtual void handleMessageUpdate(void *p); */
         void handleMessageSpriteApp(void *p);
         void handleMessageSpriteDis(void *p);
 };
+
+template <class T>
+Implement_Object(Interface<T>)
+{
+    Register_Object(Interface<T>);
+    Register_Fn(Interface<T>, handleMessageSpriteApp);
+    Register_Fn(Interface<T>, handleMessageSpriteDis);
+}
 
 template <class T>
 SmartArray<pQueue<RSprite> > Interface<T>::spriteBitmap;
@@ -39,7 +48,8 @@ template <class T>
 SmartArray<T> Interface<T>::buffer;
 
 template <class T>
-Interface<T>::Interface(SmartArray<T> b)
+Interface<T>::Interface(SmartArray<T> b):
+    DynamicRootObject(-1)
 {
     buffer = b;
     int height = buffer -> height;
@@ -53,6 +63,7 @@ Interface<T>::Interface(SmartArray<T> b)
             change[i][j] = false;
         }
     }
+    RegisterObjectInfo();
 }
 
 template <class T>
@@ -61,6 +72,7 @@ Interface<T>::~Interface() {}
 template <class T>
 void Interface<T>::handleMessageSpriteApp(void *p)
 {
+    Assert(p != nullptr);
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
     
@@ -115,6 +127,7 @@ void Interface<T>::handleMessageSpriteApp(void *p)
 template <class T>
 void Interface<T>::handleMessageSpriteDis(void *p)
 {
+    Assert(p != nullptr);
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
     
@@ -173,7 +186,7 @@ void Interface<T>::handleMessageSpriteDis(void *p)
 /* singleton */
 class Ncurses: public Interface<char>, virtual public DynamicRootObject
 {
-        Declare_Object;
+        /* Declare_Object; */
         
     private:
         /* static SmartArray<char> buffer; */
