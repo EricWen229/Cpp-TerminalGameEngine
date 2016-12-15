@@ -47,22 +47,22 @@ Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
 
 Ncurses::~Ncurses() {}
 
-template <class T>
-void Interface<T>::handleMessageUpdate(void *unused)
-{
-    int height = buffer -> height, width = buffer -> width;
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            int posI = spriteBitmap[i][j].top().posI;
-            int posJ = spriteBitmap[i][j].top().posJ;
-            int s = spriteBitmap[i][j].top().objectId;
-            Sprite<T> *sprite = (dynamic_cast<Sprite<T> *>(ObjectInfos().getObjectInfo(s) -> getObject()));
-            /* update(i , j, sprite -> getPixel(posI, posJ)); */
-        }
-    }
-}
+/* template <class T> */
+/* void Interface<T>::handleMessageUpdate(void *unused) */
+/* { */
+/*     int height = buffer -> height, width = buffer -> width; */
+/*     for (int i = 0; i < height; i++) */
+/*     { */
+/*         for (int j = 0; j < width; j++) */
+/*         { */
+/*             int posI = spriteBitmap[i][j].top().posI; */
+/*             int posJ = spriteBitmap[i][j].top().posJ; */
+/*             int s = spriteBitmap[i][j].top().objectId; */
+/*             Sprite<T> *sprite = (dynamic_cast<Sprite<T> *>(ObjectInfos().getObjectInfo(s) -> getObject())); */
+/*             /1* update(i , j, sprite -> getPixel(posI, posJ)); *1/ */
+/*         } */
+/*     } */
+/* } */
 
 void *Ncurses::input(void *unused)
 {

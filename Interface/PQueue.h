@@ -17,6 +17,7 @@ class pQueue
         void pop();
         void push(const T &value);
         void erase(const T &value);
+        bool exist(const T &value);
 };
 
 template <class T>
@@ -58,6 +59,12 @@ void pQueue<T>::erase(const T &value)
     {
         container.erase(it);
     }
+}
+
+template <class T>
+bool pQueue<T>::exist(const T &value)
+{
+    return false;
 }
 
 #endif

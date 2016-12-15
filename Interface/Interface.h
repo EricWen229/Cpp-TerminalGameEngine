@@ -24,7 +24,7 @@ class Interface
         Interface(SmartArray<T> b);
         virtual ~Interface();
         
-        virtual void handleMessageUpdate(void *p);
+        /* virtual void handleMessageUpdate(void *p); */
         void handleMessageSpriteApp(void *p);
         void handleMessageSpriteDis(void *p);
 };
@@ -64,16 +64,31 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
     
-    Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(from) -> getObject()));
+    Assert(ObjectInfos().getObjectInfo(from) != nullptr);
+    Assert(ObjectInfos().getObjectInfo(from) -> getObject() != nullptr);
+    Sprite<T> *sprite =
+        dynamic_cast<Sprite<T> *>
+        ((ObjectInfos().getObjectInfo(from) -> getObject()));
+    Assert(sprite != nullptr);
+    
     int height, width, zIndex;
     std::tie(height, width, zIndex) = sprite -> getPars();
     int startI, startJ;
     std::tie(startI, startJ) = sprite -> getPos();
+    Assert(startI >= 0);
+    Assert(startI + height <= buffer -> height);
+    Assert(startJ >= 0);
+    Assert(startJ + width <= buffer -> width);
     
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
+            Assert
+            (
+                spriteBitmap[startI + i][startJ + j].
+                exist(RSprite(from, zIndex, i, j)) == false
+            );
             spriteBitmap[startI + i][startJ + j].push(RSprite(from, zIndex, i, j));
         }
     }
@@ -81,17 +96,19 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     {
         for (int j = 0; j < width; j++)
         {
-            /* if (spriteBitmap[startI + i][startJ + j].top().objectId == from) */
-            /* { */
-            /*     update(startI + i, startJ + j, sprite -> getPixel(i, j)); */
-            /* } */
+            Assert(spriteBitmap[startI + i][startJ + j].empty() == false);
             if (spriteBitmap[startI + i][startJ + j].top().objectId == from)
             {
                 buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
                 change[startI + i][startJ + j] = true;
-                update();
             }
         }
+    }
+    
+    bool needUpdate = (msg.description != "fasle");
+    if (needUpdate)
+    {
+        update();
     }
 }
 
@@ -101,30 +118,55 @@ void Interface<T>::handleMessageSpriteDis(void *p)
     Message msg = *((Message *)p);
     ObjectId from = msg.from;
     
-    Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(from) -> getObject()));
+    Assert(ObjectInfos().getObjectInfo(from) != nullptr);
+    Assert(ObjectInfos().getObjectInfo(from) -> getObject() != nullptr);
+    Sprite<T> *sprite =
+        dynamic_cast<Sprite<T> *>
+        ((ObjectInfos().getObjectInfo(from) -> getObject()));
+    Assert(sprite != nullptr);
+    
     int height, width, zIndex;
     std::tie(height, width, zIndex) = sprite -> getPars();
-    
     int startI, startJ;
     std::tie(startI, startJ) = sprite -> getPos();
+    Assert(startI >= 0);
+    Assert(startI + height <= buffer -> height);
+    Assert(startJ >= 0);
+    Assert(startJ + width <= buffer -> width);
     
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
+            Assert
+            (
+                spriteBitmap[startI + i][startJ + j].
+                exist(RSprite(from, zIndex, i, j)) == false
+            );
             spriteBitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
+            
+            Assert
+            (
+                spriteBitmap[startI + i][startJ + j].empty() == false
+            );
             ObjectId id = spriteBitmap[startI + i][startJ + j].top().objectId;
-            Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(id) -> getObject()));
+            
+            Assert(ObjectInfos().getObjectInfo(id) != nullptr);
+            Assert(ObjectInfos().getObjectInfo(id) -> getObject() != nullptr);
+            Sprite<T> *sprite =
+                dynamic_cast<Sprite<T> *>
+                ((ObjectInfos().getObjectInfo(id) -> getObject()));
+            Assert(sprite != nullptr);
+            
             change[startI + i][startJ + j] = true;
             buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
-            /* 务必保证有背景，优先级最低 */
-            /* update(startI + i, startJ + j, sprite -> getPixel(i, j)); */
-            bool needUpdate = (msg.description != "fasle");
-            if (needUpdate)
-            {
-                update();
-            }
         }
+    }
+    
+    bool needUpdate = (msg.description != "fasle");
+    if (needUpdate)
+    {
+        update();
     }
 }
 
