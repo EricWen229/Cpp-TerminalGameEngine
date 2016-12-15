@@ -184,7 +184,8 @@ void Interface<T>::handleMessageSpriteDis(void *p)
 }
 
 /* singleton */
-class Ncurses: public Interface<char>, virtual public DynamicRootObject
+class Ncurses: public Interface<char>
+/* , virtual public DynamicRootObject */
 {
         /* Declare_Object; */
         
