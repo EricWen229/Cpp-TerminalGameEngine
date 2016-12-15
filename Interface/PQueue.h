@@ -12,22 +12,22 @@ class pQueue
         std::multiset<T, std::greater<T> > container;
         
     public:
-        bool empty();
-        const T &top();
+        bool empty() const;
+        const T &top() const;
         void pop();
         void push(const T &value);
         void erase(const T &value);
-        bool exist(const T &value);
+        bool exist(const T &value) const;
 };
 
 template <class T>
-bool pQueue<T>::empty()
+bool pQueue<T>::empty() const
 {
     return container.empty();
 }
 
 template <class T>
-const T &pQueue<T>::top()
+const T &pQueue<T>::top() const
 {
     Assert(empty() == false);
     return *(container.begin());
@@ -55,14 +55,12 @@ template <class T>
 void pQueue<T>::erase(const T &value)
 {
     typename std::set<T>::const_iterator it = container.find(value);
-    if (it != container.end())
-    {
-        container.erase(it);
-    }
+    Assert(it != container.end());
+    container.erase(it);
 }
 
 template <class T>
-bool pQueue<T>::exist(const T &value)
+bool pQueue<T>::exist(const T &value) const
 {
     typename std::set<T>::const_iterator it = container.find(value);
     return it != container.end();
