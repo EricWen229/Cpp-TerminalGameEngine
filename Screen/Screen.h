@@ -5,7 +5,7 @@
 #include "../Interface/Interface.h"
 #include "../MailBox/MailBox.h"
 #include "../Semaphore/Semaphore.h"
-#include "../Dynamic/Dynamic.h"
+#include "../Dynamic/ObjectDynamic.h"
 #include <vector>
 #include <functional>
 
