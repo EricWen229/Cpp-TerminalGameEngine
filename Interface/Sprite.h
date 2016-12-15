@@ -104,7 +104,6 @@ class RSprite
     public:
         ObjectId objectId;
         int zIndex;
-        /* int posI, posJ; */
         RSprite(ObjectId id, int z);
 };
 
