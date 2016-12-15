@@ -17,7 +17,7 @@ class NoticeBoard
         NoticeBoard(SmartArray<T> b, int i = 0, int j = 0);
         virtual ~NoticeBoard();
         
-        T &at(int i, int j);
+        void write(int i, int j, const T &value);
         virtual void update() = 0;
 };
 
@@ -27,6 +27,7 @@ NoticeBoard<T>::NoticeBoard(SmartArray<T> b, int i, int j):
 {
     int height = buffer -> height;
     int width = buffer -> width;
+    change = createArray<bool>(height, width);
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -40,16 +41,18 @@ template <class T>
 NoticeBoard<T>::~NoticeBoard() {}
 
 template <class T>
-T &NoticeBoard<T>::at(int i, int j)
+void NoticeBoard<T>::write(int i, int j, const T &value)
 {
     Assert(i >= 0 && i < buffer -> height);
     Assert(j >= 0 && j < buffer -> width);
-    return buffer[i][j];
+    buffer[i][j] = value;
+    change[i][j] = true;
 }
 
 class NcursesBoard: public NoticeBoard<char>
 {
     public:
+        NcursesBoard(SmartArray<char> b, int i = 0, int j = 0);
         void update();
 };
 

@@ -1,5 +1,8 @@
 #include "NoticeBoard.h"
 
+NcursesBoard::NcursesBoard(SmartArray<char> b, int i, int j)
+    : NoticeBoard<char>(b, i, j) {}
+
 void NcursesBoard::update()
 {
     for (int i = 0; i < buffer -> height; i++)

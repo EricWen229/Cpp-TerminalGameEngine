@@ -1,6 +1,7 @@
 #include "Interface.h"
 #include "../Array/Array.h"
 #include "Sprite.h"
+#include "NoticeBoard.h"
 #include <iostream>
 
 class Background: public Sprite<char>
@@ -74,6 +75,16 @@ int main()
     MailBox().loop();
     Fly fly;
     SmartArray<char> buffer = createArray<char>(20, 20);
+    SmartArray<char> notice = createArray<char>(20, 10);
+    NcursesBoard board(notice, 20, 0);
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            board.write(i, j, '|');
+        }
+    }
+    board.update();
     Ncurses ns(buffer, fly.objectId);
     Background back;
     MailBox().putAsync(Message(back.objectId, -1, "SpriteApp", ""));

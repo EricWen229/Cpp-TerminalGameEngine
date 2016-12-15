@@ -9,6 +9,7 @@ Example.o :
 	g++ \
 		Example.cpp \
 		Interface.cpp \
+		NoticeBoard.cpp \
 		Sprite.cpp \
 		../MailBox/MailBox.cpp \
 		../Semaphore/Semaphore.cpp \
