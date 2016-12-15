@@ -64,7 +64,8 @@ void pQueue<T>::erase(const T &value)
 template <class T>
 bool pQueue<T>::exist(const T &value)
 {
-    return false;
+    typename std::set<T>::const_iterator it = container.find(value);
+    return it != container.end();
 }
 
 #endif

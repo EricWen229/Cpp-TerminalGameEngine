@@ -154,7 +154,7 @@ void Interface<T>::handleMessageSpriteDis(void *p)
             Assert
             (
                 spriteBitmap[startI + i][startJ + j].
-                exist(RSprite(from, zIndex)) == false
+                exist(RSprite(from, zIndex)) == true
             );
             spriteBitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
             
