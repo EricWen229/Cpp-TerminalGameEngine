@@ -26,8 +26,8 @@ class Interface: public virtual DynamicRootObject
         Interface(SmartArray<T> b);
         virtual ~Interface();
         
-        void handleMessageSpriteApp(void *p);
-        void handleMessageSpriteDis(void *p);
+        virtual void handleMessageSpriteApp(void *p);
+        virtual void handleMessageSpriteDis(void *p);
 };
 
 template <class T>
