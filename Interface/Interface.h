@@ -87,6 +87,27 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     std::tie(height, width, zIndex) = sprite -> getPars();
     int startI, startJ;
     std::tie(startI, startJ) = sprite -> getPos();
+    if (startI < 0)
+    {
+        sprite -> posI = 0;
+        sprite -> ifBound(OutBoundTop);
+    }
+    else if (startI + height > buffer -> height)
+    {
+        sprite -> posI = buffer -> height - height;
+        sprite -> ifBound(OutBoundBottom);
+    }
+    if (startJ < 0)
+    {
+        sprite -> posJ = 0;
+        sprite -> ifBound(OutBoundLeft);
+    }
+    else if (startJ + width > buffer -> width)
+    {
+        sprite -> posJ = buffer -> width - width;
+        sprite -> ifBound(OutBoundRight);
+    }
+    std::tie(startI, startJ) = sprite -> getPos();
     Assert(startI >= 0);
     Assert(startI + height <= buffer -> height);
     Assert(startJ >= 0);

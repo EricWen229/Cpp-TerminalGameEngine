@@ -6,6 +6,15 @@
 #include "../MailBox/MailBox.h"
 #include <tuple>
 
+typedef int OutBoundType;
+#define OutBoundTop 1
+#define OutBoundBottom 2
+#define OutBoundLeft 3
+#define OutBoundRight 4
+
+template <class T>
+class Interface;
+
 template <class T>
 class Sprite: virtual public DynamicRootObject
 {
@@ -15,6 +24,7 @@ class Sprite: virtual public DynamicRootObject
         int posI, posJ, height, width;
         /* zIndex代表Sprite在屏幕上显示的优先级 */
         int zIndex;
+        friend class Interface<T>;
         
     protected:
         SmartArray<T> appear;
@@ -29,6 +39,7 @@ class Sprite: virtual public DynamicRootObject
         
         void moveTo(int newI, int newJ);
         void moveAdd(int deltaI, int deltaJ);
+        virtual void ifBound(OutBoundType type);
 };
 
 template <class T>
@@ -92,6 +103,9 @@ void Sprite<T>::moveTo(int newI, int newJ)
      )
     );
 }
+
+template <class T>
+void Sprite<T>::ifBound(OutBoundType type) {}
 
 template <class T>
 void Sprite<T>::moveAdd(int deltaI, int deltaJ)
