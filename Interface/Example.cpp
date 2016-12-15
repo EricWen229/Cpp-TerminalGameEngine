@@ -84,11 +84,11 @@ int main()
             board.write(i, j, '|');
         }
     }
-    board.update();
     Ncurses ns(buffer, fly.objectId);
     Background back;
     MailBox().putAsync(Message(back.objectId, -1, "SpriteApp", ""));
     MailBox().putAsync(Message(fly.objectId, -1, "SpriteApp", ""));
+    board.update();
     ns.end();
     MailBox().end();
 }

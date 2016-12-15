@@ -122,7 +122,8 @@ void Interface<T>::handleMessageSpriteApp(void *p)
                 spriteBitmap[startI + i][startJ + j].
                 exist(RSprite(from, zIndex)) == false
             );
-            spriteBitmap[startI + i][startJ + j].push(RSprite(from, zIndex));
+            spriteBitmap[startI + i][startJ + j].
+            push(RSprite(from, zIndex));
         }
     }
     for (int i = 0; i < height; i++)
@@ -177,16 +178,22 @@ void Interface<T>::handleMessageSpriteDis(void *p)
                 spriteBitmap[startI + i][startJ + j].
                 exist(RSprite(from, zIndex)) == true
             );
-            spriteBitmap[startI + i][startJ + j].erase(RSprite(from, zIndex));
+            spriteBitmap[startI + i][startJ + j].
+            erase(RSprite(from, zIndex));
             
             Assert
             (
                 spriteBitmap[startI + i][startJ + j].empty() == false
             );
-            ObjectId id = spriteBitmap[startI + i][startJ + j].top().objectId;
-            
+            ObjectId id =
+                spriteBitmap[startI + i][startJ + j].
+                top().objectId;
+                
             Assert(ObjectInfos().getObjectInfo(id) != nullptr);
-            Assert(ObjectInfos().getObjectInfo(id) -> getObject() != nullptr);
+            Assert
+            (
+                ObjectInfos().getObjectInfo(id) -> getObject() != nullptr
+            );
             Sprite<T> *sprite =
                 dynamic_cast<Sprite<T> *>
                 ((ObjectInfos().getObjectInfo(id) -> getObject()));
