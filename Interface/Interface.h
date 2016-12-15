@@ -40,9 +40,6 @@ Implement_Object(Interface<T>)
 }
 
 template <class T>
-bool Interface<T>::firstInstance = true;
-
-template <class T>
 SmartArray<pQueue<RSprite> > Interface<T>::spriteBitmap;
 
 template <class T>
@@ -55,34 +52,27 @@ template <class T>
 Interface<T>::Interface(SmartArray<T> b):
     DynamicRootObject(-1)
 {
-    if (firstInstance)
+    buffer = b;
+    
+    int height = buffer -> height;
+    int width = buffer -> width;
+    
+    spriteBitmap = createArray<pQueue<RSprite> >(height, width);
+    
+    change = createArray<bool>(height, width);
+    for (int i = 0; i < height; i++)
     {
-        buffer = b;
-        
-        int height = buffer -> height;
-        int width = buffer -> width;
-        
-        spriteBitmap = createArray<pQueue<RSprite> >(height, width);
-        
-        change = createArray<bool>(height, width);
-        for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; j++)
         {
-            for (int j = 0; j < width; j++)
-            {
-                change[i][j] = false;
-            }
+            change[i][j] = false;
         }
-        
-        RegisterObjectInfo();
-        firstInstance = false;
     }
+    
+    RegisterObjectInfo();
 }
 
 template <class T>
-Interface<T>::~Interface()
-{
-    firstInstance = true;
-}
+Interface<T>::~Interface() {}
 
 template <class T>
 void Interface<T>::handleMessageSpriteApp(void *p)
