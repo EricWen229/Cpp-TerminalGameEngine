@@ -13,16 +13,15 @@ template <class T>
 class Interface
 {
     private:
-        SmartArray<pQueue<RSprite> > bitmap;
-        /* virtual void update(int i, int j, T pixel) = 0; */
+        static SmartArray<pQueue<RSprite> > spriteBitmap;
         virtual void update() = 0;
         
     protected:
-        SmartArray<bool> change;
+        static SmartArray<bool> change;
         static SmartArray<T> buffer;
         
     public:
-        Interface(int height, int width);
+        /* Interface(int height, int width); */
         Interface(SmartArray<T> b);
         virtual ~Interface();
         
@@ -32,18 +31,27 @@ class Interface
 };
 
 template <class T>
-Interface<T>::Interface(int height, int width)
-{
-    bitmap = createArray<pQueue<RSprite> >(height, width);
-    change = createArray<bool>(height, width);
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            change[i][j] = false;
-        }
-    }
-}
+SmartArray<pQueue<RSprite> > Interface<T>::spriteBitmap;
+
+template <class T>
+SmartArray<bool> Interface<T>::change;
+
+template <class T>
+SmartArray<T> Interface<T>::buffer;
+
+/* template <class T> */
+/* Interface<T>::Interface(int height, int width) */
+/* { */
+/*     spriteBitmap = createArray<pQueue<RSprite> >(height, width); */
+/*     change = createArray<bool>(height, width); */
+/*     for (int i = 0; i < height; i++) */
+/*     { */
+/*         for (int j = 0; j < width; j++) */
+/*         { */
+/*             change[i][j] = false; */
+/*         } */
+/*     } */
+/* } */
 
 template <class T>
 Interface<T>::Interface(SmartArray<T> b)
@@ -51,7 +59,7 @@ Interface<T>::Interface(SmartArray<T> b)
     buffer = b;
     int height = buffer -> height;
     int width = buffer -> width;
-    bitmap = createArray<pQueue<RSprite> >(height, width);
+    spriteBitmap = createArray<pQueue<RSprite> >(height, width);
     change = createArray<bool>(height, width);
     for (int i = 0; i < height; i++)
     {
@@ -81,18 +89,18 @@ void Interface<T>::handleMessageSpriteApp(void *p)
     {
         for (int j = 0; j < width; j++)
         {
-            bitmap[startI + i][startJ + j].push(RSprite(from, zIndex, i, j));
+            spriteBitmap[startI + i][startJ + j].push(RSprite(from, zIndex, i, j));
         }
     }
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            /* if (bitmap[startI + i][startJ + j].top().objectId == from) */
+            /* if (spriteBitmap[startI + i][startJ + j].top().objectId == from) */
             /* { */
             /*     update(startI + i, startJ + j, sprite -> getPixel(i, j)); */
             /* } */
-            if (bitmap[startI + i][startJ + j].top().objectId == from)
+            if (spriteBitmap[startI + i][startJ + j].top().objectId == from)
             {
                 buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
                 change[startI + i][startJ + j] = true;
@@ -119,8 +127,8 @@ void Interface<T>::handleMessageSpriteDis(void *p)
     {
         for (int j = 0; j < width; j++)
         {
-            bitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
-            ObjectId id = bitmap[startI + i][startJ + j].top().objectId;
+            spriteBitmap[startI + i][startJ + j].erase(RSprite(from, zIndex, i, j));
+            ObjectId id = spriteBitmap[startI + i][startJ + j].top().objectId;
             Sprite<T> *sprite = dynamic_cast<Sprite<T> *>((ObjectInfos().getObjectInfo(id) -> getObject()));
             change[startI + i][startJ + j] = true;
             buffer[startI + i][startJ + j] = sprite -> getPixel(i, j);
@@ -145,7 +153,7 @@ class Ncurses: public Interface<char>, virtual public DynamicRootObject
         static Thread pid;
         static ObjectId sendTo;
         static bool begin;
-        /* static SmartArray<std::priority_queue<ObjectId> >bitmap; */
+        /* static SmartArray<std::priority_queue<ObjectId> >spriteBitmap; */
         
         void *input(void *unused);
         void update(int i, int j, char pixel);

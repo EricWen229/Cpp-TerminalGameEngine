@@ -1,8 +1,5 @@
 #include "Interface.h"
 
-template <class T>
-SmartArray<T> Interface<T>::buffer;
-
 Thread Ncurses::pid;
 ObjectId Ncurses::sendTo;
 bool Ncurses::begin = false;
@@ -16,7 +13,7 @@ Implement_Object(Ncurses)
 }
 
 Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
-    Interface(b -> height, b -> width), DynamicRootObject(-1)
+    Interface(b), DynamicRootObject(-1)
 {
     if (!begin)
     {
@@ -58,9 +55,9 @@ void Interface<T>::handleMessageUpdate(void *unused)
     {
         for (int j = 0; j < width; j++)
         {
-            int posI = bitmap[i][j].top().posI;
-            int posJ = bitmap[i][j].top().posJ;
-            int s = bitmap[i][j].top().objectId;
+            int posI = spriteBitmap[i][j].top().posI;
+            int posJ = spriteBitmap[i][j].top().posJ;
+            int s = spriteBitmap[i][j].top().objectId;
             Sprite<T> *sprite = (dynamic_cast<Sprite<T> *>(ObjectInfos().getObjectInfo(s) -> getObject()));
             /* update(i , j, sprite -> getPixel(posI, posJ)); */
         }
