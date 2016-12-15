@@ -7,14 +7,14 @@ class Background: public Sprite<char>
 {
         Declare_Object;
     public:
-        Background(): Sprite(0, 0, 10, 10, 0)
+        Background(): Sprite(0, 0, 20, 20, 0)
         {
-            appear = createArray<char>(10, 10);
-            for (int i = 0; i < 10; i++)
+            appear = createArray<char>(20, 20);
+            for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < 20; j++)
                 {
-                    appear[i][j] = 'B';
+                    appear[i][j] = '-';
                 }
             }
             RegisterObjectInfo();
