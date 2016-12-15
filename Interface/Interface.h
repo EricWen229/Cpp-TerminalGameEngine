@@ -48,8 +48,8 @@ template <class T>
 SmartArray<T> Interface<T>::buffer;
 
 template <class T>
-Interface<T>::Interface(SmartArray<T> b):
-    DynamicRootObject(-1)
+Interface<T>::Interface(SmartArray<T> b)
+/* DynamicRootObject(-1) */
 {
     buffer = b;
     int height = buffer -> height;
@@ -183,27 +183,19 @@ void Interface<T>::handleMessageSpriteDis(void *p)
     }
 }
 
-/* singleton */
 class Ncurses: public Interface<char>
-/* , virtual public DynamicRootObject */
 {
-        /* Declare_Object; */
-        
     private:
-        /* static SmartArray<char> buffer; */
         static Thread pid;
         static ObjectId sendTo;
         static bool begin;
-        /* static SmartArray<std::priority_queue<ObjectId> >spriteBitmap; */
         
         void *input(void *unused);
-        void update(int i, int j, char pixel);
         void update();
         
     public:
         Ncurses(SmartArray<char> b, ObjectId st);
         virtual ~Ncurses();
-        void handleMessageUpdate(void *unused);
         
         void end();
 };

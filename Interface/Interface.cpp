@@ -4,43 +4,21 @@ Thread Ncurses::pid;
 ObjectId Ncurses::sendTo;
 bool Ncurses::begin = false;
 
-/* Implement_Object(Ncurses) */
-/* { */
-/*     Register_Object(Ncurses); */
-/*     Register_Fn(Ncurses, handleMessageUpdate); */
-/*     Register_Fn(Ncurses, handleMessageSpriteApp); */
-/*     Register_Fn(Ncurses, handleMessageSpriteDis); */
-/* } */
-
 Ncurses::Ncurses(SmartArray<char>b, ObjectId st):
-    Interface(b)
-    , DynamicRootObject(-1)
+    Interface(b), DynamicRootObject(-1)
 {
     if (!begin)
     {
         begin = true;
         Assert(objectId == -1);
-        /* RegisterObjectInfo(); */
         
-        /* Ncurses::buffer = b; */
-        buffer = b;
         sendTo = st;
         
         initscr();
-        /* Line bufering disabled */
-        /* raw(); */
-        /* pass everything to me, don't wait for \n(input) */
         cbreak();
-        /* We get F1, F2, arrow, etc */
         keypad(stdscr, true);
-        /* Don't echo() while we do getch */
         noecho();
         curs_set(0);
-        /* Control the screen size, so we don't use \n. */
-        /* 减少刷新缓冲区的次数，提高IO效率 */
-        /* 需要为\0字符留出空位，所以width-1 */
-        /* Ncurses::win = newwin(buffer -> height, buffer -> width - 1, 0, 0); */
-        handleMessageUpdate(null);
         pid = createPthread(std::bind(&Ncurses::input, this, std::placeholders::_1));
     }
     begin = false;
@@ -60,10 +38,6 @@ void *Ncurses::input(void *unused)
 
 void Ncurses::update()
 {
-    /* buffer[i][j] = pixel; */
-    /* /1* mvprintw(i, j, ) *1/ */
-    /* mvaddch(i, j,pixel); */
-    /* refresh(); */
     for (int i = 0; i < buffer -> height; i++)
     {
         for (int j = 0; j < buffer -> width; j++)
@@ -74,15 +48,6 @@ void Ncurses::update()
                 change[i][j] = false;
             }
         }
-    }
-    refresh();
-}
-
-void Ncurses::handleMessageUpdate(void *unused)
-{
-    for (int i = 0; i < buffer -> height; i++)
-    {
-        mvprintw(i, 0, buffer[i]);
     }
     refresh();
 }
