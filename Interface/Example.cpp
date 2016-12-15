@@ -76,7 +76,7 @@ int main()
     Fly fly;
     SmartArray<char> buffer = createArray<char>(20, 20);
     SmartArray<char> notice = createArray<char>(20, 10);
-    NcursesBoard board(notice, 20, 0);
+    NcursesBoard board(notice, 0, 20);
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 10; j++)
