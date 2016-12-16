@@ -66,6 +66,27 @@ class Fly: public Sprite<char>
         ~Fly() {}
 };
 
+class Frag: public Sprite<char>
+{
+        Declare_Object;
+    public:
+        void ifBang(Sprite<char> *sprite)
+        {
+            appear[0][0]++;
+        }
+        Frag(): Sprite(10, 10, 1, 1)
+        {
+            RegisterObjectInfo();
+            appear = createArray<char>(1, 1);
+            appear[0][0] = 'B';
+        }
+};
+
+Implement_Object(Frag)
+{
+    Register_Object(Frag);
+}
+
 Implement_Object(Fly)
 {
     Register_Object(Fly);
@@ -76,6 +97,7 @@ int main()
 {
     MailBox().loop();
     Fly fly;
+    Frag frag;
     SmartArray<char> buffer = createArray<char>(20, 20);
     SmartArray<char> notice = createArray<char>(20, 10);
     NcursesBoard board(notice, 0, 20);
@@ -90,6 +112,7 @@ int main()
     Background back;
     MailBox().putAsync(Message(back.objectId, -1, "SpriteApp", ""));
     MailBox().putAsync(Message(fly.objectId, -1, "SpriteApp", ""));
+    MailBox().putAsync(Message(frag.objectId, -1, "SpriteApp", ""));
     board.update();
     ns.end();
     MailBox().end();
