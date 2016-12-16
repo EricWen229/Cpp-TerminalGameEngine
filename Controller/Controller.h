@@ -2,7 +2,8 @@
 #define Controller_H
 
 #include "../Array/Array.h"
-#include "../Screen/Screen.h"
+#include "../Interface/Interface.h"
+#include "../Interface/Sprite.h"
 #include <vector>
 #include <functional>
 
