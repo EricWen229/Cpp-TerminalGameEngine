@@ -6,6 +6,7 @@
 #include "../MailBox/MailBox.h"
 #include "Sprite.h"
 #include "PQueue.h"
+#include <set>
 #include <functional>
 #include <ncurses.h>
 
@@ -131,6 +132,44 @@ void Interface<T>::handleMessageSpriteApp(void *p)
             push(RSprite(from, zIndex));
         }
     }
+    
+    std::set<ObjectId> bangSprites;
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            pQueue<RSprite> sprites = spriteBitmap[startI + i][startJ + j];
+            for
+            (
+                typename pQueue<RSprite>::Iterator it = sprites.begin();
+                it != sprites.end();
+                it++
+            )
+            {
+                bangSprites.insert(it -> objectId);
+            }
+        }
+    }
+    for
+    (
+        std::set<ObjectId>::iterator it = bangSprites.begin();
+        it != bangSprites.end();
+        it++
+    )
+    {
+        if (*it != from)
+        {
+            Assert(ObjectInfos().getObjectInfo(*it) != nullptr);
+            Assert(ObjectInfos().getObjectInfo(*it) -> getObject() != nullptr);
+            Sprite<T> *otherSprite =
+                dynamic_cast<Sprite<T> *>
+                ((ObjectInfos().getObjectInfo(*it) -> getObject()));
+            Assert(otherSprite != nullptr);
+            otherSprite -> ifBang(sprite);
+            sprite ->  ifBang(otherSprite);
+        }
+    }
+    
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)

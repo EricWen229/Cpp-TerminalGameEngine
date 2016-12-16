@@ -8,6 +8,7 @@ class Background: public Sprite<char>
 {
         Declare_Object;
     public:
+        void ifBang(Sprite<char> *sprite) {}
         Background(): Sprite(0, 0, 20, 20, 0)
         {
             appear = createArray<char>(20, 20);
@@ -31,6 +32,7 @@ class Fly: public Sprite<char>
 {
         Declare_Object;
     public:
+        void ifBang(Sprite<char> *sprite) {}
         void handleMessageKeyDown(void *pointer)
         {
             switch (((Message *)pointer) -> description.c_str()[0])

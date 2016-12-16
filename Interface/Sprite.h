@@ -40,6 +40,7 @@ class Sprite: virtual public DynamicRootObject
         void moveTo(int newI, int newJ);
         void moveAdd(int deltaI, int deltaJ);
         virtual void ifBound(OutBoundType type);
+        virtual void ifBang(Sprite<T> *sprite) = 0;
 };
 
 template <class T>

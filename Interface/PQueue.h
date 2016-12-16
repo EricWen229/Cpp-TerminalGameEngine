@@ -18,6 +18,10 @@ class pQueue
         void push(const T &value);
         void erase(const T &value);
         bool exist(const T &value) const;
+        
+        typedef typename std::multiset<T, std::greater<T> >::iterator Iterator;
+        Iterator begin();
+        Iterator end();
 };
 
 template <class T>
@@ -64,6 +68,18 @@ bool pQueue<T>::exist(const T &value) const
 {
     typename std::set<T>::const_iterator it = container.find(value);
     return it != container.end();
+}
+
+template <class T>
+typename pQueue<T>::Iterator pQueue<T>::begin()
+{
+    return container.begin();
+}
+
+template <class T>
+typename pQueue<T>::Iterator pQueue<T>::end()
+{
+    return container.end();
 }
 
 #endif
