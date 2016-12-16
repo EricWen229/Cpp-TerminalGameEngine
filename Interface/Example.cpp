@@ -74,7 +74,7 @@ class Frag: public Sprite<char>
         {
             appear[0][0]++;
         }
-        Frag(): Sprite(10, 10, 1, 1)
+        Frag(): Sprite(1, 1, 1, 1, 4)
         {
             RegisterObjectInfo();
             appear = createArray<char>(1, 1);
