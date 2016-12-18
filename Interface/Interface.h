@@ -250,14 +250,12 @@ void Interface<T>::handleMessageSpriteDis(void *p)
             int spriteJ = startJ + j - startJ_;
             /* ExtraRun */
             /* ( */
-            /*     int spriteHeight; */
-            /*     int spriteWidth; */
-            /*     std::tie(spriteHeight, spriteWidth, zIndex) = sprite -> getPars(); */
+            /*     std::tie(height, width, std::ignore) = sprite -> getPars(); */
             /*     Assert(spriteI >= 0); */
-            /*     Assert(spriteI < spriteHeight); */
+            /*     Assert(spriteI < height); */
             /*     Assert(spriteJ >= 0); */
-            /*     Assert(spriteJ < spriteWidth); */
-            /* ) */
+            /*     Assert(spriteJ < width); */
+            /* ); */
             buffer[startI + i][startJ + j] = sprite -> getPixel(spriteI, spriteJ);
         }
     }
