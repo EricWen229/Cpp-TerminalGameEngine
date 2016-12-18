@@ -251,14 +251,16 @@ void Interface<T>::handleMessageSpriteDis(void *p)
             std::tie(startI_, startJ_) = sprite -> getPos();
             int spriteI = startI + i - startI_;
             int spriteJ = startJ + j - startJ_;
-            /* ExtraRun */
-            /* ( */
-            /*     std::tie(height, width, std::ignore) = sprite -> getPars(); */
-            /*     Assert(spriteI >= 0); */
-            /*     Assert(spriteI < height); */
-            /*     Assert(spriteJ >= 0); */
-            /*     Assert(spriteJ < width); */
-            /* ); */
+            ExtraRun
+            (
+                int spriteHeight;
+                int spriteWidth;
+                std::tie(spriteHeight, spriteWidth, std::ignore) = sprite -> getPars();
+                Assert(spriteI >= 0);
+                Assert(spriteI < spriteHeight);
+                Assert(spriteJ >= 0);
+                Assert(spriteJ < spriteWidth);
+            );
             buffer[startI + i][startJ + j] = sprite -> getPixel(spriteI, spriteJ);
         }
     }
@@ -308,6 +310,12 @@ void Interface<T>::handleMessageSpriteUpdate(void *p)
                 change[startI + i][startJ + j] = true;
             }
         }
+    }
+    
+    bool needUpdate = (msg.description != "fasle");
+    if (needUpdate)
+    {
+        update();
     }
 }
 
