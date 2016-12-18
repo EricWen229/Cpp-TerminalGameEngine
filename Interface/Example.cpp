@@ -72,9 +72,8 @@ class Frag: public Sprite<char>
     public:
         void ifBang(Sprite<char> *sprite)
         {
-            MailBox().putAsync(Message(objectId, -1, "SpriteDis", ""));
             appear[0][0]++;
-            MailBox().putAsync(Message(objectId, -1, "SpriteApp", ""));
+            MailBox().putAsync(Message(objectId, -1, "SpriteUpdate", ""));
         }
         Frag(): Sprite(1, 1, 1, 1, 4)
         {
