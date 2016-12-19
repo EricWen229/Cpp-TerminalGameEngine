@@ -31,7 +31,7 @@ class Sprite: virtual public DynamicRootObject
         
     public:
         Sprite(int i, int j, int h, int w, int z = 1);
-        ~Sprite();
+        virtual ~Sprite();
         
         std::tuple<int, int> getPos();
         std::tuple<int, int, int> getPars();
@@ -59,7 +59,10 @@ Sprite<T>::Sprite(int i, int j, int h,int w, int z):
 }
 
 template <class T>
-Sprite<T>::~Sprite() {}
+Sprite<T>::~Sprite()
+{
+    /* MailBox().putAsync(Message(objectId, -1, "SpriteDis", "")); */
+}
 
 template <class T>
 std::tuple<int, int> Sprite<T>::getPos()
