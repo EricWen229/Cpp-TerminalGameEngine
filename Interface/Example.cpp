@@ -80,6 +80,7 @@ class Frag: public Sprite<char>
             RegisterObjectInfo();
             appear = createArray<char>(1, 1);
             appear[0][0] = 'B';
+            MailBox().putAsync(Message(objectId, -1, "SpriteDis", ""));
         }
 };
 
