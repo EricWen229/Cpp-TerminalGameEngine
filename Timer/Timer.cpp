@@ -1,44 +1,30 @@
 #include "Timer.h"
 
-void *Timer::loopHelper(void *unused)
+void *Timer::loop(void *unused)
 {
-    count++;
-    for (Container::const_iterator it = container.begin();
-            it != container.end(); it++)
+    while (true)
     {
-        if (count % (it -> first) == 0)
+        for (Iterator it = container.begin(); it != container.end(); it++)
         {
-            ObjectId objectId;
-            std::string funcName;
-            void *paras;
-            std::tie(objectId, funcName, paras) = it -> second;
-            ObjectInfos().getObjectInfo(objectId)
-            -> getDynamicFn(funcName)(paras);
+        
         }
     }
-    return null;
+    return nullptr;
 }
 
-void Timer::reg
-(ObjectId id,
- std::string funcName,
- void *paras,
- int frequency)
+void Timer::reg(ObjectId id, long int usecond, const std::string &name)
 {
-    container.insert(Container::value_type
-                     (frequency,
-                      Element(id, funcName, paras)));
+    container.insert(Container::value_type(usecond,Element(id, name)));
 }
 
-void Timer::out(ObjectId id, std::string funcName)
+void Timer::out(ObjectId id, const std::string &name)
 {
-    for (Container::const_iterator it = container.begin();
-            it != container.end(); it++)
+    for (Iterator it = container.begin(); it != container.end(); it++)
     {
         ObjectId objectId;
         std::string fN;
-        std::tie(objectId, fN, std::ignore) = it -> second;
-        if (objectId == id && fN == funcName)
+        std::tie(objectId, fN) = it -> second;
+        if (objectId == id && fN == name)
         {
             container.erase(it);
             break;
