@@ -14,8 +14,11 @@ INCS = $(shell find $(INCDIR) -name *.h)
 $(BUILDDIR)/$(TARGET): $(SRCS) $(INCS)
 	$(CC) $(SRCS) $(CFLAGS) $(LFLAGS) -o $@
 
-.PHONY: clean
+.PHONY: run clean
 
 clean:
 	rm -f $(BUILDDIR)/*
+
+run: $(BUILDDIR)/$(TARGET)
+	$(BUILDDIR)/$(TARGET)
 
